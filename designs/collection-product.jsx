@@ -122,11 +122,49 @@ export default () => {
         ? _.get(collection, "customPageRedirectionUrl", "")
         : `/product-listing?collectionproduct=${_.get(collection, "_id", "")}`;
 
+      const imageContent = imageUrl ? (
+        <Image
+          src={formatImageUrl(imageUrl)}
+          alt={title || "Collection"}
+          fill
+          className="object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-gray-500 font-raleway">
+          Add a collection image
+        </div>
+      );
+
       return (
         <section
           className="w-full py-8 md:py-12 lg:py-16"
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
+          {/* Image sizing lives in plain CSS (not Tailwind arbitrary classes).
+              The image is rendered twice and one copy is hidden per breakpoint:
+              - below lg: .csi-inline, sits inside the text column between the
+                description and the product cards (4:3 mobile, 16:9 tablet)
+              - lg+:      .csi-side, its own grid column, stretches to the
+                content column's height */}
+          <style>{`
+            .csi-img {
+              position: relative;
+              width: 100%;
+              overflow: hidden;
+              border-radius: 12px;
+              background: #f3f4f6;
+            }
+            .csi-inline { aspect-ratio: 4 / 3; margin-top: 20px; }
+            .csi-side { display: none; }
+            @media (min-width: 768px) {
+              .csi-inline { aspect-ratio: 16 / 9; }
+            }
+            @media (min-width: 1024px) {
+              .csi-inline { display: none; }
+              .csi-side { display: block; align-self: stretch; min-height: 420px; }
+            }
+          `}</style>
+
           <Container>
             <div className="grid grid-cols-1 gap-7 lg:grid-cols-2 lg:items-stretch lg:gap-8">
 
@@ -145,6 +183,8 @@ export default () => {
                       }}
                     />
                   )}
+
+                  <div className="csi-img csi-inline">{imageContent}</div>
 
                   {_.size(products) > 0 ? (
                     <div className="mt-6 min-w-0">
@@ -215,21 +255,9 @@ export default () => {
                   </Link>
                 </div>
               </div>
-                <div className="relative min-h-[300px] overflow-hidden rounded-xl bg-gray-100 sm:min-h-[420px] lg:min-h-[600px]">
-                {imageUrl ? (
-                  <Image
-                    src={formatImageUrl(imageUrl)}
-                    alt={title || "Collection"}
-                    fill
-                    priority
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full min-h-[300px] items-center justify-center px-6 text-center text-sm text-gray-500 font-raleway sm:min-h-[420px] lg:min-h-[600px]">
-                    Add a collection image
-                  </div>
-                )}
-              </div>
+
+              <div className="csi-img csi-side">{imageContent}</div>
+
             </div>
           </Container>
         </section>
