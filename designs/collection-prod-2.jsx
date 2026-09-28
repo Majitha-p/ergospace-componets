@@ -130,7 +130,7 @@ export default () => {
           <Container>
             <div className="grid grid-cols-1 gap-7 lg:grid-cols-2 lg:items-stretch lg:gap-8">
 
-              <div className="flex min-w-0 flex-col justify-between gap-7 lg:py-3">
+              <div className="order-2 flex min-w-0 flex-col justify-between gap-7 lg:order-2 lg:py-3">
                 <div>
                   {title && (
                     <h2 className="text-4xl font-bold leading-[0.95] tracking-tight text-[#1B4D4F] font-raleway md:text-4xl">
@@ -215,15 +215,15 @@ export default () => {
                   </Link>
                 </div>
               </div>
-                <div className="relative min-h-[300px] overflow-hidden rounded-xl bg-gray-100 sm:min-h-[420px] lg:min-h-[600px]">
-                {imageUrl ? (
-                  <Image
-                    src={formatImageUrl(imageUrl)}
-                    alt={title || "Collection"}
-                    fill
-                    priority
-                    className="object-cover"
-                  />
+                  <div className="relative order-first min-h-[300px] overflow-hidden rounded-xl bg-gray-100 sm:min-h-[420px] lg:order-1 lg:min-h-[600px]">
+                    {imageUrl ? (
+                      <Image
+                        src={formatImageUrl(imageUrl)}
+                        alt={title || "Collection"}
+                        fill
+                        priority
+                        className="object-cover"
+                      />
                 ) : (
                   <div className="flex h-full min-h-[300px] items-center justify-center px-6 text-center text-sm text-gray-500 font-raleway sm:min-h-[420px] lg:min-h-[600px]">
                     Add a collection image
