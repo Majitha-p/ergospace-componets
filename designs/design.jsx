@@ -172,7 +172,7 @@ export default () => {
                     className="c4h-label pointer-events-none absolute inset-0 flex items-center justify-center px-4 text-center"
                     style={{ opacity: 1 }}
                   >
-                    <span className="bg-black px-6 py-3 text-xl font-semibold uppercase tracking-[0.16em] text-white font-raleway md:text-2xl">
+                    <span className="bg-[#7C4A2D] px-6 py-3 text-xl font-semibold uppercase tracking-[0.16em] text-white font-raleway md:text-2xl">
                       {imageLabels[index]}
                     </span>
                   </div>

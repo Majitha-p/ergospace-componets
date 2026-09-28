@@ -168,6 +168,10 @@ export default () => {
           <Container>
             <div className="grid grid-cols-1 gap-7 lg:grid-cols-2 lg:items-stretch lg:gap-8">
 
+              {/* Desktop image: first in the grid, so it sits in the left column.
+                  Hidden below lg, where the inline copy inside the text column is used. */}
+              <div className="csi-img csi-side">{imageContent}</div>
+
               <div className="flex min-w-0 flex-col justify-between gap-7 lg:py-3">
                 <div>
                   {title && (
@@ -255,8 +259,6 @@ export default () => {
                   </Link>
                 </div>
               </div>
-
-              <div className="csi-img csi-side">{imageContent}</div>
 
             </div>
           </Container>
