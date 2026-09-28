@@ -38,9 +38,8 @@ export default () => {
           number: stat1Number,
           label: "Product That we have Created",
           icon: (
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-              <polyline points="17 6 23 6 23 12" />
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 20.998C11.6063 20.9987 11.2174 20.9123 10.861 20.745L4.461 17.773C4.02832 17.5766 3.66087 17.2604 3.402 16.8619C3.14313 16.4634 3.00365 15.9992 3 15.524V8.45704C3.00452 8.03364 3.12263 7.61921 3.342 7.25704C3.34266 7.25273 3.34266 7.24835 3.342 7.24404C3.34124 7.2394 3.34124 7.23467 3.342 7.23004C3.34432 7.22557 3.34736 7.22152 3.351 7.21804L3.359 7.20704C3.39744 7.14679 3.43917 7.0887 3.484 7.03304L3.508 7.00304C3.52 6.99004 3.531 6.97604 3.542 6.96304C3.56301 6.939 3.58647 6.91722 3.612 6.89804C3.84438 6.61182 4.13699 6.38033 4.469 6.22004L10.866 3.24704C11.221 3.083 11.6074 2.99805 11.9985 2.99805C12.3896 2.99805 12.776 3.083 13.131 3.24704L19.531 6.22204C19.8628 6.3822 20.1551 6.61372 20.387 6.90004C20.409 6.91977 20.4291 6.94153 20.447 6.96504L20.477 7.00004L20.515 7.05004C20.5572 7.10232 20.5963 7.15709 20.632 7.21404L20.639 7.22304C20.6429 7.22629 20.646 7.2304 20.648 7.23504C20.6489 7.24 20.6489 7.24508 20.648 7.25004C20.6477 7.25337 20.6477 7.25671 20.648 7.26004C20.87 7.6205 20.9915 8.03378 21 8.45704V15.54C20.9924 16.0141 20.8502 16.4762 20.5899 16.8724C20.3296 17.2687 19.962 17.5828 19.53 17.778L13.13 20.75C12.776 20.9143 12.3903 20.9989 12 20.998ZM5 9.10404V15.532C5.00241 15.6255 5.0321 15.7161 5.0854 15.7929C5.13871 15.8697 5.2133 15.9291 5.3 15.964L11 18.609V11.891L5 9.10404ZM19 9.10404L13 11.891V18.607L18.69 15.963C18.7769 15.9296 18.8524 15.8718 18.9074 15.7966C18.9623 15.7214 18.9945 15.632 19 15.539V9.10404ZM12 4.99804C11.8991 4.99761 11.7994 5.01947 11.708 5.06204L6.378 7.53804L12 10.149L17.621 7.53804L12.292 5.06404C12.2007 5.02096 12.101 4.99844 12 4.99804V4.99804Z" />
             </svg>
           ),
         },
@@ -48,17 +47,19 @@ export default () => {
           number: stat2Number,
           label: "Happy and loyal customers",
           icon: (
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <polygon fillRule="nonzero" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21" />
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
+              <path d="M51.66,15.15A13.28,13.28,0,0,0,32,16.3a13.28,13.28,0,0,0-19.66-1.15,13.1,13.1,0,0,0,0,18.5l18.6,18.59a1.49,1.49,0,0,0,2.12,0l18.6-18.59A13.15,13.15,0,0,0,51.66,15.15Z" />
             </svg>
+            
           ),
         },
         {
           number: stat3Number,
           label: "Customers purchase and return again",
           icon: (
-            <svg width="32" height="32" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-              <path d="M51.66,15.15A13.28,13.28,0,0,0,32,16.3a13.28,13.28,0,0,0-19.66-1.15,13.1,13.1,0,0,0,0,18.5l18.6,18.59a1.49,1.49,0,0,0,2.12,0l18.6-18.59A13.15,13.15,0,0,0,51.66,15.15Z" />
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+              <polyline points="17 6 23 6 23 12" />
             </svg>
           ),
         },
@@ -67,7 +68,7 @@ export default () => {
           label: "Unique design we crafted",
           icon: (
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 20.998C11.6063 20.9987 11.2174 20.9123 10.861 20.745L4.461 17.773C4.02832 17.5766 3.66087 17.2604 3.402 16.8619C3.14313 16.4634 3.00365 15.9992 3 15.524V8.45704C3.00452 8.03364 3.12263 7.61921 3.342 7.25704C3.34266 7.25273 3.34266 7.24835 3.342 7.24404C3.34124 7.2394 3.34124 7.23467 3.342 7.23004C3.34432 7.22557 3.34736 7.22152 3.351 7.21804L3.359 7.20704C3.39744 7.14679 3.43917 7.0887 3.484 7.03304L3.508 7.00304C3.52 6.99004 3.531 6.97604 3.542 6.96304C3.56301 6.939 3.58647 6.91722 3.612 6.89804C3.84438 6.61182 4.13699 6.38033 4.469 6.22004L10.866 3.24704C11.221 3.083 11.6074 2.99805 11.9985 2.99805C12.3896 2.99805 12.776 3.083 13.131 3.24704L19.531 6.22204C19.8628 6.3822 20.1551 6.61372 20.387 6.90004C20.409 6.91977 20.4291 6.94153 20.447 6.96504L20.477 7.00004L20.515 7.05004C20.5572 7.10232 20.5963 7.15709 20.632 7.21404L20.639 7.22304C20.6429 7.22629 20.646 7.2304 20.648 7.23504C20.6489 7.24 20.6489 7.24508 20.648 7.25004C20.6477 7.25337 20.6477 7.25671 20.648 7.26004C20.87 7.6205 20.9915 8.03378 21 8.45704V15.54C20.9924 16.0141 20.8502 16.4762 20.5899 16.8724C20.3296 17.2687 19.962 17.5828 19.53 17.778L13.13 20.75C12.776 20.9143 12.3903 20.9989 12 20.998ZM5 9.10404V15.532C5.00241 15.6255 5.0321 15.7161 5.0854 15.7929C5.13871 15.8697 5.2133 15.9291 5.3 15.964L11 18.609V11.891L5 9.10404ZM19 9.10404L13 11.891V18.607L18.69 15.963C18.7769 15.9296 18.8524 15.8718 18.9074 15.7966C18.9623 15.7214 18.9945 15.632 19 15.539V9.10404ZM12 4.99804C11.8991 4.99761 11.7994 5.01947 11.708 5.06204L6.378 7.53804L12 10.149L17.621 7.53804L12.292 5.06404C12.2007 5.02096 12.101 4.99844 12 4.99804V4.99804Z" />
+              <polygon fillRule="nonzero" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21" />
             </svg>
           ),
         },
@@ -80,8 +81,35 @@ export default () => {
         <section className="w-full py-10 md:py-14">
           <style>{`
             .sync-2-stats-grid { column-gap: 4px !important; row-gap: 20px !important; }
+            .sync-2-stats-grid .sync-2-stat-icon {
+              display: flex;
+              align-items: center;
+              gap: 0;
+              margin-bottom: 0;
+            }
+            .sync-2-stats-grid svg { display: block; }
+            .sync-2-image-frame {
+              position: relative;
+              height: 420px;
+              overflow: visible;
+              box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            }
+            .sync-2-stats-band {
+              position: absolute;
+              z-index: 10;
+              left: 24px;
+              right: 24px;
+              top: 24px;
+              background: rgba(15,76,70,0.65);
+              backdrop-filter: blur(8px);
+              box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            }
             @media (min-width: 768px) {
               .sync-2-stats-grid { column-gap: 8px !important; row-gap: 0 !important; }
+            }
+            @media (max-width: 767px) {
+              .sync-2-image-frame { height: 520px; }
+              .sync-2-stats-band { left: 16px; right: 16px; top: 16px; }
             }
           `}</style>
           <Container>
@@ -112,50 +140,10 @@ export default () => {
               )}
             </div>
 
-            {/* ===== Stats band — overlaps slightly onto the image below ===== */}
-            <div
-              className="relative z-10 w-full px-5 py-8 md:px-10 md:py-11"
-              style={{
-                backgroundColor: accentSoft,
-                boxShadow: "0 10px 30px rgba(15,76,70,0.06)",
-                marginBottom: "-32px",
-                borderTopLeftRadius: "12px",
-                borderTopRightRadius: "12px",
-              }}
-            >
-              <div className="sync-2-stats-grid mx-auto grid w-full max-w-5xl grid-cols-2 md:grid-cols-4">
-                {stats.map((stat, index) => (
-                  <div
-                    key={index}
-                    className="relative flex flex-col items-center px-2 text-center"
-                  >
-                    <div style={{ color: accentColor, marginBottom: "14px" }}>
-                      {stat.icon}
-                    </div>
-
-                    <div
-                      className="mb-2 text-2xl md:text-4xl font-extrabold font-raleway leading-none tracking-tight"
-                      style={{ color: accentColor }}
-                    >
-                      {stat.number}
-                    </div>
-
-                    <p className="max-w-[150px] text-xs md:text-sm leading-snug text-gray-600 font-raleway">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* ===== Bottom image ===== */}
             {imageUrl && (
               <div
-                className="relative w-full overflow-hidden rounded-2xl"
-                style={{
-                  height: "clamp(220px, 55vw, 420px)",
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
-                }}
+                className="sync-2-image-frame w-full"
               >
                 <Image
                   src={formatImageUrl(imageUrl)}
@@ -164,6 +152,35 @@ export default () => {
                   className="object-cover object-center"
                   priority
                 />
+
+                <div className="sync-2-stats-band w-auto px-5 py-8 md:px-10 md:py-11">
+                  <div className="sync-2-stats-grid mx-auto grid w-full max-w-5xl grid-cols-2 md:grid-cols-4">
+                    {stats.map((stat, index) => (
+                      <div
+                        key={index}
+                        className="relative flex flex-col items-center px-2 text-center"
+                      >
+                        <div className="sync-2-stat-icon" style={{ color: accentSoft }}>
+                          {stat.icon}
+                        </div>
+
+                        <div
+                          className="mb-2 text-2xl font-extrabold font-raleway leading-none tracking-tight md:text-4xl"
+                          style={{ color: accentSoft }}
+                        >
+                          {stat.number}
+                        </div>
+
+                        <p
+                          className="max-w-[150px] text-xs leading-snug text-gray-600 font-raleway md:text-sm"
+                          style={{ color: accentSoft }}
+                        >
+                          {stat.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </Container>
