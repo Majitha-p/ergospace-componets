@@ -119,7 +119,7 @@ export default () => {
       ];
 
       return (
-        <section className="bg-white py-12 md:py-16">
+        <section className="bg-white py-12 md:py-8">
           {/* Plain CSS for hover, not Tailwind's group-hover variant — see
               note in the guide about dynamically-authored components not
               being covered by the static Tailwind build. */}
@@ -143,7 +143,7 @@ export default () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               {_.map(images, (image, index) => (
                 <Link
                   key={index}
@@ -172,7 +172,7 @@ export default () => {
                     className="c4h-label pointer-events-none absolute inset-0 flex items-center justify-center px-4 text-center"
                     style={{ opacity: 1 }}
                   >
-                    <span className="bg-[#7C4A2D] px-6 py-3 text-xl font-semibold uppercase tracking-[0.16em] text-white font-raleway md:text-2xl">
+                    <span className="bg-[#176161] px-6 py-3 text-xl font-semibold uppercase tracking-[0.16em] text-white font-raleway md:text-2xl">
                       {imageLabels[index]}
                     </span>
                   </div>
