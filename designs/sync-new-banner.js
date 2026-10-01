@@ -60,17 +60,45 @@ export default () => {
                 transform: translateY(0);
               }
             }
+
+            /* Mobile: show the right side of the photo */
+            .hero-bg-img {
+              object-fit: cover;
+              object-position: 75% center !important;
+            }
+
+            /* Desktop: back to centered, unchanged */
+            @media (min-width: 768px) {
+              .hero-bg-img {
+                object-position: center !important;
+              }
+            }
+
+            /* Mobile only: taller section and taller text card */
+            @media (max-width: 767px) {
+              .hero-mobile-wrap {
+                min-height: 640px !important;
+              }
+              .hero-mobile-card {
+                min-height: 500px;
+                padding-top: 50px !important;
+                padding-bottom: 50px !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+              }
+            }
           `}</style>
           <Container>
             <div
-              className="relative w-full overflow-hidden"
+              className="hero-mobile-wrap relative w-full overflow-hidden"
               style={{ minHeight: minHeight || "460px", maxHeight: maxHeight || "760px" }}
             >
               <Image
                 src={imageSrc}
                 alt={bannerTitle || "Banner"}
                 fill
-                className="object-cover object-center"
+                className="hero-bg-img"
                 priority
               />
 
@@ -78,7 +106,7 @@ export default () => {
                 className={`absolute inset-y-0 ${overlaySide === "right" ? "left-0" : "right-0"} flex h-full w-full items-center justify-center px-6 py-12 text-center md:w-1/2 md:justify-start md:px-8 md:text-left`}
               >
                 <div className="absolute inset-0 hidden md:block" style={{ background: safeOverlayColor }} />
-                <div className="relative z-10 w-full max-w-[28rem] rounded-lg px-4 py-6 text-center md:max-w-none md:rounded-none md:p-0 md:text-left">
+                <div className="hero-mobile-card relative z-10 w-full max-w-[28rem] rounded-lg px-4 py-6 text-center md:max-w-none md:rounded-none md:p-0 md:text-left">
                   <div className="absolute inset-0 rounded-lg md:hidden" style={{ background: safeOverlayColor }} />
                   <div className="relative z-10">
                     {bannerTitle && (
