@@ -1,17 +1,9 @@
 export default () => {
   return {
     fields: {
-      collectionImage: {
-        type: "text",
-        label: "Main Image URL Override (Optional)",
-      },
       galleryImageTwo: {
         type: "text",
-        label: "Gallery Image 2 URL",
-      },
-      galleryImageThree: {
-        type: "text",
-        label: "Gallery Image 3 URL",
+        label: "Second Collection Image URL",
       },
       ctaLabel: {
         type: "text",
@@ -24,11 +16,8 @@ export default () => {
     },
 
     defaultProps: {
-      collectionImage: "",
       galleryImageTwo:
         "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
-      galleryImageThree:
-        "https://ergospaceae.s3.me-central-1.amazonaws.com/collection/collectionImage-1767446316429-838707078.webp",
       ctaLabel: "Explore collection",
       bgColor: "#FFFFFF",
       data: {
@@ -78,70 +67,24 @@ export default () => {
               },
             ],
           },
-          {
-            _id: "default-product-id-3",
-            slug: "executive-desk-3",
-            productTitle: "White Series Workstation",
-            productImageUrl:
-              "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
-            productVariants: [
-              {
-                slug: "executive-desk-3",
-                extraProductTitle: "White Series Workstation",
-                variantImageUrl:
-                  "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
-                price: 2550,
-                discountPrice: 0,
-                offerPrice: 0,
-              },
-            ],
-          },
-          {
-            _id: "default-product-id-4",
-            slug: "executive-desk-4",
-            productTitle: "White Series Meeting Desk",
-            productImageUrl:
-              "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
-            productVariants: [
-              {
-                slug: "executive-desk-4",
-                extraProductTitle: "White Series Meeting Desk",
-                variantImageUrl:
-                  "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
-                price: 8695,
-                discountPrice: 0,
-                offerPrice: 0,
-              },
-            ],
-          },
         ],
       },
     },
 
-    render: ({
-      data,
-      collectionImage,
-      galleryImageTwo,
-      galleryImageThree,
-      ctaLabel,
-      bgColor,
-    }) => {
+    render: ({ data, galleryImageTwo, ctaLabel, bgColor }) => {
       const source = _.get(data, "data", data);
       const collection = _.isArray(source)
         ? _.get(source, "[0]", {})
         : source || {};
       const productsValue = _.get(collection, "collectionsProducts", []);
-      const products = _.isArray(productsValue) ? productsValue : [];
+      const products = (_.isArray(productsValue) ? productsValue : []).slice(
+        0,
+        2
+      );
       const title = _.get(collection, "collectionTitle", "");
       const eyebrow = _.get(collection, "collectionSubTitle", "");
       const description = _.get(collection, "description", "");
-      const mainImageUrl =
-        collectionImage || _.get(collection, "collectionImageUrl", "");
-      const collectionId = _.get(collection, "_id", "collection");
-      const carouselId = `cp3-products-${String(collectionId).replace(
-        /[^a-zA-Z0-9_-]/g,
-        "-"
-      )}`;
+      const mainImageUrl = _.get(collection, "collectionImageUrl", "");
       const collectionHref = !_.isEmpty(
         _.get(collection, "customPageRedirectionUrl", "")
       )
@@ -196,34 +139,33 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <style>{`
-            .cp3-hero {
+            .cp4-layout {
               display: grid;
               grid-template-columns: minmax(0, 1fr);
               gap: 2rem;
-              align-items: center;
+              align-items: start;
             }
-            .cp3-bento {
+            .cp4-gallery {
               display: grid;
-              grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-              grid-template-rows: minmax(140px, 1fr) minmax(140px, 1fr);
+              grid-template-columns: repeat(2, minmax(0, 1fr));
               gap: 0.75rem;
-              min-height: 360px;
+              min-height: 300px;
             }
-            .cp3-bento-main {
-              grid-column: 1;
-              grid-row: 1 / span 2;
-            }
-            .cp3-tile {
+            .cp4-tile {
               position: relative;
+              height: 100%;
+              min-height: 0;
               overflow: hidden;
               border-radius: 1rem;
               background: #f5f4f1;
-              min-height: 140px;
             }
-            .cp3-cta-wrap {
+            .cp4-copy {
+              text-align: center;
+            }
+            .cp4-cta-wrap {
               margin-top: 1.75rem;
             }
-            .cp3-cta {
+            .cp4-cta {
               display: inline-flex;
               align-items: center;
               justify-content: center;
@@ -236,30 +178,14 @@ export default () => {
               text-decoration: none;
               line-height: 1.25;
             }
-            .cp3-cta:hover {
+            .cp4-cta:hover {
               opacity: 0.9;
             }
-            .cp3-products {
-              margin-top: 2.5rem;
-            }
-            .cp3-products-nav {
-              display: flex;
-              justify-content: flex-end;
-              gap: 8px;
-              margin-bottom: 12px;
-            }
-            .cp3-nav-btn {
-              width: 36px;
-              height: 36px;
-              border-radius: 9999px;
-              border: 1px solid #e5e5e5;
-              background: #ffffff;
-              color: #111111;
-              box-shadow: 0 2px 8px rgba(17, 17, 17, 0.06);
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
+            .cp4-products {
+              display: grid;
+              grid-template-columns: repeat(2, minmax(0, 1fr));
+              gap: 12px;
+              margin-top: 2rem;
             }
             .cp3-card {
               height: 100%;
@@ -376,146 +302,125 @@ export default () => {
               background: #262626;
               color: #ffffff;
             }
-            @media (min-width: 1024px) {
-              .cp3-hero {
-                grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-                gap: 2rem;
+            @media (min-width: 640px) {
+              .cp4-gallery {
+                min-height: 400px;
               }
-              .cp3-bento {
-                min-height: 480px;
+            }
+            @media (min-width: 1024px) {
+              .cp4-layout {
+                grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+                gap: 2rem;
+                align-items: stretch;
+              }
+              .cp4-gallery {
+                min-height: 0;
+              }
+              .cp4-copy {
+                text-align: left;
               }
             }
           `}</style>
 
           <Container>
-            <div className="cp3-hero">
-              <div className="text-center lg:text-left">
-                {eyebrow && (
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
-                    {eyebrow}
-                  </p>
-                )}
-                {title && (
-                  <h2 className="text-3xl font-bold leading-tight text-[#1B4D4F] font-raleway md:text-5xl lg:text-6xl">
-                    {title}
-                  </h2>
-                )}
-                {description && (
-                  <div
-                    className="mt-5 max-w-xl text-base leading-7 text-[#34413f] font-raleway md:text-lg lg:mx-0 mx-auto"
-                    dangerouslySetInnerHTML={{ __html: description }}
-                  />
-                )}
-                <div className="cp3-cta-wrap">
-                  <Link
-                    href={collectionHref}
-                    className="cp3-cta font-raleway"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "12px 28px",
-                      borderRadius: "9999px",
-                      background: "linear-gradient(to right, #1b4d4f, #153f41)",
-                      color: "#ffffff",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                    }}
-                  >
-                    {ctaLabel || "Explore collection"}
-                  </Link>
-                </div>
-              </div>
-
-              <div className="cp3-bento">
-                <div className="cp3-tile cp3-bento-main">
+            <div className="cp4-layout">
+              <div className="cp4-gallery">
+                <div className="cp4-tile">
                   {renderTile(
                     mainImageUrl,
-                    title || "Collection banner",
-                    "Add a collection image"
+                    title || "Collection image",
+                    "Add a collection image in the collection data"
                   )}
                 </div>
-                <div className="cp3-tile">
+                <div className="cp4-tile">
                   {renderTile(
                     galleryImageTwo,
-                    `${title || "Collection"} gallery image 2`,
-                    "Add gallery image 2 URL"
-                  )}
-                </div>
-                <div className="cp3-tile">
-                  {renderTile(
-                    galleryImageThree,
-                    `${title || "Collection"} gallery image 3`,
-                    "Add gallery image 3 URL"
+                    `${title || "Collection"} gallery image`,
+                    "Add a second image URL in Puck"
                   )}
                 </div>
               </div>
-            </div>
 
-            {_.size(products) > 0 ? (
-              <div className="cp3-products">
-                <div className="cp3-products-nav">
-                  <button
-                    type="button"
-                    aria-label="Previous products"
-                    className={`${carouselId}-prev cp3-nav-btn`}
-                  >
-                    <LeftIcon />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next products"
-                    className={`${carouselId}-next cp3-nav-btn`}
-                  >
-                    <RightIcon />
-                  </button>
+              <div>
+                <div className="cp4-copy">
+                  {eyebrow && (
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                      {eyebrow}
+                    </p>
+                  )}
+                  {title && (
+                    <h2 className="text-3xl font-bold leading-tight text-[#1B4D4F] font-raleway md:text-5xl lg:text-6xl">
+                      {title}
+                    </h2>
+                  )}
+                  {description && (
+                    <div
+                      className="mt-5 max-w-xl text-base leading-7 text-[#34413f] font-raleway md:text-lg lg:mx-0"
+                      dangerouslySetInnerHTML={{ __html: description }}
+                    />
+                  )}
+                  <div className="cp4-cta-wrap">
+                    <Link
+                      href={collectionHref}
+                      className="cp4-cta font-raleway"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "12px 28px",
+                        borderRadius: "9999px",
+                        background:
+                          "linear-gradient(to right, #1b4d4f, #153f41)",
+                        color: "#ffffff",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      {ctaLabel || "Explore collection"}
+                    </Link>
+                  </div>
                 </div>
-                <Swiper
-                  modules={[Navigation]}
-                  spaceBetween={12}
-                  slidesPerView={2}
-                  breakpoints={{
-                    640: { slidesPerView: 3, spaceBetween: 12 },
-                    1024: { slidesPerView: 4, spaceBetween: 14 },
-                    1280: { slidesPerView: 5, spaceBetween: 14 },
-                  }}
-                  navigation={{
-                    prevEl: `.${carouselId}-prev`,
-                    nextEl: `.${carouselId}-next`,
-                  }}
-                  className="!w-full !pb-1"
-                >
-                  {_.map(products, (product, index) => {
-                    const variant = _.get(product, "productVariants[0]", {});
-                    const productTitle =
-                      _.get(product, "productTitle", "") ||
-                      _.get(variant, "extraProductTitle", "");
-                    const productImage =
-                      _.get(variant, "variantImageUrl", "") ||
-                      _.get(product, "productImageUrl", "");
-                    const hoverImage = productImage.replace(
-                      /3(?=\.[^./?#]+(?:[?#]|$))/,
-                      "1"
-                    );
-                    const productSlug =
-                      _.get(variant, "slug", "") || _.get(product, "slug", "");
-                    const productHref = productSlug
-                      ? `/product-detail/${productSlug}`
-                      : "";
-                    const price =
-                      _.get(variant, "offerPrice", 0) ||
-                      _.get(variant, "discountPrice", 0) ||
-                      _.get(variant, "price", 0) ||
-                      _.get(product, "salePrice", 0);
-                    const seriesLabel = getSeriesLabel(productTitle, productImage);
 
-                    return (
-                      <SwiperSlide
-                        key={_.get(product, "_id", _.get(product, "slug", index))}
-                        className="!h-auto py-1"
-                      >
-                        <article className="cp3-card">
+                {_.size(products) > 0 ? (
+                  <div className="cp4-products">
+                    {_.map(products, (product, index) => {
+                      const variant = _.get(product, "productVariants[0]", {});
+                      const productTitle =
+                        _.get(product, "productTitle", "") ||
+                        _.get(variant, "extraProductTitle", "");
+                      const productImage =
+                        _.get(variant, "variantImageUrl", "") ||
+                        _.get(product, "productImageUrl", "");
+                      const hoverImage = productImage.replace(
+                        /3(?=\.[^./?#]+(?:[?#]|$))/,
+                        "1"
+                      );
+                      const productSlug =
+                        _.get(variant, "slug", "") ||
+                        _.get(product, "slug", "");
+                      const productHref = productSlug
+                        ? `/product-detail/${productSlug}`
+                        : "";
+                      const price =
+                        _.get(variant, "offerPrice", 0) ||
+                        _.get(variant, "discountPrice", 0) ||
+                        _.get(variant, "price", 0) ||
+                        _.get(product, "salePrice", 0);
+                      const seriesLabel = getSeriesLabel(
+                        productTitle,
+                        productImage
+                      );
+
+                      return (
+                        <article
+                          key={_.get(
+                            product,
+                            "_id",
+                            _.get(product, "slug", index)
+                          )}
+                          className="cp3-card"
+                        >
                           <div className="cp3-card-media">
                             {seriesLabel && (
                               <span className="cp3-badge font-raleway">
@@ -583,7 +488,10 @@ export default () => {
                           <div className="cp3-card-body">
                             {productTitle &&
                               (productHref ? (
-                                <Link href={productHref} className="cp3-card-title font-raleway">
+                                <Link
+                                  href={productHref}
+                                  className="cp3-card-title font-raleway"
+                                >
                                   {productTitle}
                                 </Link>
                               ) : (
@@ -622,16 +530,16 @@ export default () => {
                             )}
                           </div>
                         </article>
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="mt-10 text-center text-sm text-[#64706d] font-raleway">
+                    No products are available in this collection yet.
+                  </p>
+                )}
               </div>
-            ) : (
-              <p className="mt-10 text-center text-sm text-[#64706d] font-raleway">
-                No products are available in this collection yet.
-              </p>
-            )}
+            </div>
           </Container>
         </section>
       );
