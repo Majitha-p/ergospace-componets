@@ -276,24 +276,24 @@ export default () => {
             }
             .cp3-card-media {
               position: relative;
-              aspect-ratio: 1 / 1;
+              aspect-ratio: 4 / 3;
               background: #f7f7f5;
               overflow: hidden;
             }
             .cp3-badge {
               position: absolute;
-              top: 8px;
-              right: 8px;
+              top: 6px;
+              right: 6px;
               left: auto;
               z-index: 3;
-              max-width: calc(100% - 16px);
-              padding: 5px 10px;
+              max-width: calc(100% - 12px);
+              padding: 4px 8px;
               border-radius: 6px;
               background: rgba(255, 255, 255, 0.92);
               border: 1px solid #ececec;
               box-shadow: 0 2px 8px rgba(17, 17, 17, 0.08);
               color: #111111;
-              font-size: 10px;
+              font-size: 9px;
               font-weight: 600;
               letter-spacing: 0.06em;
               line-height: 1.2;
@@ -305,12 +305,12 @@ export default () => {
             }
             .cp3-card-img {
               position: absolute;
-              top: 10px;
-              right: 10px;
-              bottom: 10px;
-              left: 10px;
-              width: calc(100% - 20px);
-              height: calc(100% - 20px);
+              top: 8px;
+              right: 8px;
+              bottom: 8px;
+              left: 8px;
+              width: calc(100% - 16px);
+              height: calc(100% - 16px);
               object-fit: contain;
               object-position: center;
               transition: opacity 0.35s ease;
@@ -327,10 +327,10 @@ export default () => {
               opacity: 0;
             }
             .cp3-card-body {
-              padding: 10px 12px 12px;
+              padding: 8px 10px 10px;
               display: flex;
               flex-direction: column;
-              gap: 6px;
+              gap: 5px;
               flex: 1;
               min-width: 0;
               box-sizing: border-box;
@@ -339,7 +339,7 @@ export default () => {
               margin: 0;
               font-size: 13px;
               font-weight: 600;
-              line-height: 1.35;
+              line-height: 1.3;
               color: #111111;
               text-decoration: none;
               display: -webkit-box;
@@ -350,27 +350,31 @@ export default () => {
             .cp3-card-price {
               margin: 0;
               font-size: 12px;
-              font-weight: 500;
-              color: #666666;
+              font-weight: 600;
+              color: #555555;
             }
             .cp3-cart {
               margin-top: auto;
-              display: inline-flex;
+              display: flex;
               align-items: center;
               justify-content: center;
-              align-self: flex-start;
-              max-width: 100%;
-              padding: 6px 12px;
+              width: 100%;
+              padding: 8px 14px;
               border-radius: 6px;
               background: #111111;
               color: #ffffff;
-              font-size: 11px;
+              font-size: 12px;
               font-weight: 600;
-              line-height: 1;
+              line-height: 1.2;
               text-decoration: none;
               border: 0;
               box-sizing: border-box;
               white-space: nowrap;
+              transition: background-color 0.2s ease, opacity 0.2s ease;
+            }
+            .cp3-cart:hover {
+              background: #262626;
+              color: #ffffff;
             }
             @media (min-width: 1024px) {
               .cp3-hero {
@@ -528,12 +532,12 @@ export default () => {
                                   className="cp3-card-img cp3-card-img--primary"
                                   style={{
                                     position: "absolute",
-                                    top: 10,
-                                    right: 10,
-                                    bottom: 10,
-                                    left: 10,
-                                    width: "calc(100% - 20px)",
-                                    height: "calc(100% - 20px)",
+                                    top: 8,
+                                    right: 8,
+                                    bottom: 8,
+                                    left: 8,
+                                    width: "calc(100% - 16px)",
+                                    height: "calc(100% - 16px)",
                                     objectFit: "contain",
                                     objectPosition: "center",
                                   }}
@@ -547,12 +551,12 @@ export default () => {
                                     className="cp3-card-img cp3-card-img--hover"
                                     style={{
                                       position: "absolute",
-                                      top: 10,
-                                      right: 10,
-                                      bottom: 10,
-                                      left: 10,
-                                      width: "calc(100% - 20px)",
-                                      height: "calc(100% - 20px)",
+                                      top: 8,
+                                      right: 8,
+                                      bottom: 8,
+                                      left: 8,
+                                      width: "calc(100% - 16px)",
+                                      height: "calc(100% - 16px)",
                                       objectFit: "contain",
                                       objectPosition: "center",
                                     }}
@@ -597,18 +601,17 @@ export default () => {
                                 href={productHref}
                                 className="cp3-cart font-raleway"
                                 style={{
-                                  display: "inline-flex",
+                                  display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
-                                  alignSelf: "flex-start",
-                                  maxWidth: "100%",
-                                  padding: "6px 12px",
+                                  width: "100%",
+                                  padding: "8px 14px",
                                   borderRadius: "6px",
                                   background: "#111111",
                                   color: "#ffffff",
-                                  fontSize: "11px",
+                                  fontSize: "12px",
                                   fontWeight: 600,
-                                  lineHeight: 1,
+                                  lineHeight: 1.2,
                                   textDecoration: "none",
                                   boxSizing: "border-box",
                                   whiteSpace: "nowrap",
