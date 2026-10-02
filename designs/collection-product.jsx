@@ -249,7 +249,20 @@ export default () => {
                   )}
                   <Link
                     href={collectionHref}
-                    className="inline-flex shrink-0 items-center justify-center rounded-full border-0 bg-white px-5 py-2.5 text-[11px] font-semibold tracking-[0.08em] text-slate-900 shadow-sm transition-all duration-200 ease-out hover:bg-[#d9c5a6] hover:text-slate-900 active:bg-[#c7af85] active:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 font-raleway md:text-xs"
+                    className="shrink-0 font-raleway transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f]"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0.75rem 1.75rem",
+                      borderRadius: "9999px",
+                      background: "linear-gradient(to right, #1b4d4f, #153f41)",
+                      color: "#ffffff",
+                      fontSize: "0.875rem",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      lineHeight: 1.25,
+                    }}
                   >
                     {ctaLabel || "View More"}
                   </Link>

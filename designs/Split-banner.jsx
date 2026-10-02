@@ -4,7 +4,11 @@ export default () => {
       eyebrow: { type: "text", label: "Eyebrow" },
       headingLine1: { type: "text", label: "Heading line 1" },
       description: { type: "textarea", label: "Description" },
-      bgColor: { type: "text", label: "Panel background color" },
+      bgColorStart: { type: "text", label: "Gradient start color" },
+      bgColorEnd: { type: "text", label: "Gradient end color" },
+      eyebrowColor: { type: "text", label: "Eyebrow text color" },
+      headingColor: { type: "text", label: "Heading text color" },
+      descriptionColor: { type: "text", label: "Description text color" },
       imageUrl: { type: "text", label: "Image URL" },
     },
 
@@ -12,11 +16,25 @@ export default () => {
       eyebrow: "SYNC SERIES",
       headingLine1: "Sync Series.",
       description: "Designed to bring style, function, and flexibility together in every workspace.",
-      bgColor: "#176161",
+      bgColorStart: "#000000",
+      bgColorEnd: "#015c61",
+      eyebrowColor: "#E8D5B0",
+      headingColor: "#ffffff",
+      descriptionColor: "rgba(255, 255, 255, 0.84)",
       imageUrl: "/designs/design.jpeg",
     },
 
-    render: ({ eyebrow, headingLine1, description, bgColor, imageUrl }) => {
+    render: ({
+      eyebrow,
+      headingLine1,
+      description,
+      bgColorStart,
+      bgColorEnd,
+      eyebrowColor,
+      headingColor,
+      descriptionColor,
+      imageUrl,
+    }) => {
       const imageSrc = formatImageUrl(imageUrl || "/designs/design.jpeg");
 
       return (
@@ -74,14 +92,13 @@ export default () => {
               <div
                 className="split-banner-content relative z-10 flex flex-col items-center justify-center px-6 pt-8 pb-10 text-center md:items-start md:px-10 md:py-12 md:text-left md:shadow-xl"
                 style={{
-                  color: "#ffffff",
-                  backgroundColor: bgColor || "#176161",
+                  background: `linear-gradient(90deg, ${bgColorStart || "#000000"} 0%, ${bgColorEnd || "#015c61"} 100%)`,
                 }}
               >
                 {eyebrow && (
                   <p
                     className="mb-4 flex items-center gap-3 text-xs font-bold uppercase"
-                    style={{ color: "#E8D5B0", letterSpacing: "0.22em" }}
+                    style={{ color: eyebrowColor || "#E8D5B0", letterSpacing: "0.22em" }}
                   >
                     <span
                       style={{
@@ -90,7 +107,7 @@ export default () => {
                         width: "28px",
                         height: "2px",
                         borderRadius: "9999px",
-                        backgroundColor: "#E8D5B0",
+                        backgroundColor: eyebrowColor || "#E8D5B0",
                       }}
                     />
                     {eyebrow}
@@ -99,7 +116,7 @@ export default () => {
 
                 <h1
                   className="text-3xl font-extrabold leading-tight break-words md:text-4xl"
-                  style={{ letterSpacing: "-0.02em" }}
+                  style={{ color: headingColor || "#ffffff", letterSpacing: "-0.02em" }}
                 >
                   <span className="block">{headingLine1}</span>
                 </h1>
@@ -107,7 +124,7 @@ export default () => {
                 {description && (
                   <p
                     className="mt-5 max-w-md text-sm leading-relaxed md:text-base"
-                    style={{ color: "rgba(255, 255, 255, 0.84)" }}
+                    style={{ color: descriptionColor || "rgba(255, 255, 255, 0.84)" }}
                   >
                     {description}
                   </p>
