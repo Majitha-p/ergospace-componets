@@ -40,7 +40,7 @@ export default () => {
         "banner-tag inline-flex min-w-0 items-center justify-center rounded-full px-3 py-2 text-center text-[11px] font-semibold tracking-[0.08em] uppercase md:px-5 md:py-2.5 font-raleway";
 
       return (
-        <section className="w-full py-6 md:py-10">
+        <section className="w-full pt-8 pb-6 md:py-10">
           <style>{`
             .banner-description,
             .banner-description * {
@@ -56,14 +56,15 @@ export default () => {
               inset: 0;
               pointer-events: none;
             }
+            .banner-layout {
+              min-height: 700px;
+            }
+            .banner-image-panel {
+              min-height: 700px;
+            }
             .banner-image-default {
               visibility: visible;
               transition:  1s linear 300ms, visibility 3s linear 300ms;
-            }
-            .group:hover .banner-image-default {
-              opacity: 0;
-              visibility: hidden;
-              transition-delay: 0s;
             }
             .banner-image-hover {
               opacity: 0;
@@ -78,10 +79,27 @@ export default () => {
             .banner-tag:hover {
               background: rgba(164, 211, 202, 0.38);
             }
-            .group:hover .banner-image-hover {
-              opacity: 1;
-              visibility: visible;
-              transition: opacity 300ms ease-in-out, visibility 0s;
+            @media (hover: hover) and (pointer: fine) {
+              .banner-has-hover-image:hover .banner-image-default {
+                opacity: 0;
+                visibility: hidden;
+                transition-delay: 0s;
+              }
+              .banner-has-hover-image:hover .banner-image-hover {
+                opacity: 1;
+                visibility: visible;
+                transition: opacity 300ms ease-in-out, visibility 0s;
+              }
+            }
+            @media (max-width: 767px) {
+              .banner-layout {
+                min-height: 0;
+                grid-template-rows: 420px auto;
+              }
+              .banner-image-panel {
+                min-height: 420px;
+                height: 420px;
+              }
             }
             @media (min-width: 768px) {
               .banner-image-fade {
@@ -90,15 +108,10 @@ export default () => {
             }
           `}</style>
           <Container>
-            <div
-              className="mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12"
-              style={{
-                minHeight: "700px",
-              }}
-            >
+            <div className="banner-layout mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12">
               {/* Left Column: Image with Hover Transition */}
               <div
-                className="group relative h-[360px] w-full overflow-hidden bg-gray-100 sm:h-[420px] md:col-span-7 md:h-auto lg:col-span-7"
+                className={`banner-image-panel relative w-full overflow-hidden bg-gray-100 md:col-span-7 lg:col-span-7${hasHoverImage ? " banner-has-hover-image" : ""}`}
                 style={{ "--banner-bg-color": "#f7fafa" }}
               >
                 {hasImage && (
@@ -127,35 +140,35 @@ export default () => {
 
               {/* Right Column: Left-Aligned Content Panel */}
               <div
-                className="flex min-w-0 flex-col justify-center px-6 py-6 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
+                className="flex min-w-0 flex-col justify-center px-5 py-4 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
                 style={{ backgroundColor: "#f7fafa" }}
               >
                 <div className="flex w-full max-w-md flex-col justify-center text-left">
                   {eyebrowText && (
-                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-[#176161] font-raleway md:mb-3">
+                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-[#176161] font-raleway md:mb-5 lg:mb-6">
                       {eyebrowText}
                     </p>
                   )}
 
                   {titleText && (
-                    <h1 className="mb-3 text-3xl font-extrabold tracking-tight  font-raleway md:mb-4 md:text-4xl">
+                    <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[#176161] font-raleway md:mb-6 md:text-5xl lg:mb-8 lg:text-6xl">
                       {titleText}
                     </h1>
                   )}
 
                   {!_.isEmpty(sourceDescription) ? (
                     <div
-                      className="banner-description text-base font-medium md:text-xl"
+                      className="banner-description text-base font-medium md:mt-2 md:text-xl lg:mt-3"
                       dangerouslySetInnerHTML={{ __html: sourceDescription }}
                     />
                   ) : !_.isEmpty(manualDescriptionText) ? (
-                    <div className="banner-description text-base font-medium md:text-xl">
+                    <div className="banner-description text-base font-medium md:mt-2 md:text-xl lg:mt-3">
                       {manualDescriptionText}
                     </div>
                   ) : null}
 
                   {hasTags && (
-                    <div className="mt-5 flex w-full flex-wrap items-left justify-left gap-2  text-[#176161] pt-4 md:mt-8 md:gap-3 md:pt-6">    
+                    <div className="mt-3 flex w-full flex-wrap items-left justify-left gap-2 pt-2 text-[#176161] md:mt-8 md:gap-3 md:pt-6">
                       {tag1 && <span className={tagClassName}>{tag1}</span>}
                       {tag2 && <span className={tagClassName}>{tag2}</span>}
                       {tag3 && <span className={tagClassName}>{tag3}</span>}
