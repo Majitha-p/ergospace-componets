@@ -160,7 +160,7 @@ export default () => {
               background: #f5f4f1;
             }
             .cp4-copy {
-              text-align: center;
+              text-align: left;
             }
             .cp4-cta-wrap {
               margin-top: 1.75rem;
