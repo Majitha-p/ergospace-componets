@@ -37,56 +37,69 @@ export default () => {
       const hasTags = !_.isEmpty(tag1) || !_.isEmpty(tag2) || !_.isEmpty(tag3);
 
       const tagClassName =
-        "banner-tag inline-flex min-w-0 flex-1 items-center justify-center rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-[0.08em] uppercase md:flex-none md:px-5 md:py-2 font-raleway";
+        "banner-tag inline-flex min-w-0 items-center justify-center rounded-full px-3 py-2 text-center text-[11px] font-semibold tracking-[0.08em] uppercase md:px-5 md:py-2.5 font-raleway";
 
       return (
         <section className="w-full py-6 md:py-10">
           <style>{`
-            .banner-grid {
-              min-height: 700px;
+            .banner-description,
+            .banner-description * {
+              color: inherit !important;
+              font-family: inherit !important;
+              font-size: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+              text-align: left !important;
             }
             .banner-image-fade {
               position: absolute;
               inset: 0;
               pointer-events: none;
-              background: linear-gradient(to bottom, transparent 58%, var(--banner-bg-color) 100%);
+            }
+            .banner-image-default {
+              visibility: visible;
+              transition:  1s linear 300ms, visibility 3s linear 300ms;
+            }
+            .group:hover .banner-image-default {
+              opacity: 0;
+              visibility: hidden;
+              transition-delay: 0s;
             }
             .banner-image-hover {
               opacity: 0;
-              transition: opacity 500ms ease-in-out;
+              visibility: hidden;
+              transition: opacity 300ms ease-in-out, visibility 3s linear 300ms;
             }
             .banner-tag {
-              border: 1px solid rgba(23, 97, 97, 0.22);
               background: rgba(164, 211, 202, 0.2);
               color: #176161;
-              transition: background-color 180ms ease, border-color 180ms ease;
+              transition: background-color 180ms ease;
             }
             .banner-tag:hover {
-              border-color: rgba(23, 97, 97, 0.42);
               background: rgba(164, 211, 202, 0.38);
             }
             .group:hover .banner-image-hover {
               opacity: 1;
+              visibility: visible;
+              transition: opacity 300ms ease-in-out, visibility 0s;
             }
             @media (min-width: 768px) {
               .banner-image-fade {
                 background: linear-gradient(to right, transparent 58%, var(--banner-bg-color) 100%);
               }
             }
-            @media (max-width: 767px) {
-              .banner-grid {
-                min-height: 0;
-              }
-            }
           `}</style>
           <Container>
             <div
-              className="banner-grid mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12"
+              className="mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12"
+              style={{
+                minHeight: "700px",
+              }}
             >
               {/* Left Column: Image with Hover Transition */}
               <div
                 className="group relative h-[360px] w-full overflow-hidden bg-gray-100 sm:h-[420px] md:col-span-7 md:h-auto lg:col-span-7"
-                style={{ "--banner-bg-color": "#faf9f7" }}
+                style={{ "--banner-bg-color": "#f7fafa" }}
               >
                 {hasImage && (
                   <Image
@@ -94,7 +107,7 @@ export default () => {
                     alt="Ergospace office furniture"
                     fill
                     sizes="(min-width: 768px) 60vw, 100vw"
-                    className="object-cover object-center"
+                    className="object-cover object-center banner-image-default"
                     priority
                   />
                 )}
@@ -112,12 +125,12 @@ export default () => {
 
               </div>
 
-              {/* Right Column: Centered Content Panel */}
+              {/* Right Column: Left-Aligned Content Panel */}
               <div
-                className="flex min-w-0 flex-col justify-center px-6 py-4 text-center md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
-                style={{ backgroundColor: "#faf9f7" }}
+                className="flex min-w-0 flex-col justify-center px-6 py-6 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
+                style={{ backgroundColor: "#f7fafa" }}
               >
-                <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center">
+                <div className="flex w-full max-w-md flex-col justify-center text-left">
                   {eyebrowText && (
                     <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-[#176161] font-raleway md:mb-3">
                       {eyebrowText}
@@ -132,17 +145,17 @@ export default () => {
 
                   {!_.isEmpty(sourceDescription) ? (
                     <div
-                      className="text-base font-medium md:text-xl "
+                      className="banner-description text-base font-medium md:text-xl"
                       dangerouslySetInnerHTML={{ __html: sourceDescription }}
                     />
                   ) : !_.isEmpty(manualDescriptionText) ? (
-                    <div className="text-base font-medium md:text-xl">
+                    <div className="banner-description text-base font-medium md:text-xl">
                       {manualDescriptionText}
                     </div>
                   ) : null}
 
                   {hasTags && (
-                    <div className="mt-5 flex w-full flex-wrap items-center justify-center gap-2 border-t border-dashed text-[#176161] pt-4 md:mt-8 md:gap-3 md:pt-6">
+                    <div className="mt-5 flex w-full flex-wrap items-left justify-left gap-2  text-[#176161] pt-4 md:mt-8 md:gap-3 md:pt-6">    
                       {tag1 && <span className={tagClassName}>{tag1}</span>}
                       {tag2 && <span className={tagClassName}>{tag2}</span>}
                       {tag3 && <span className={tagClassName}>{tag3}</span>}
