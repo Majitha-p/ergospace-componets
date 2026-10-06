@@ -389,7 +389,7 @@ export default () => {
 
           <Container>
             <div className="cp3-hero">
-              <div className="text-center lg:text-left">
+              <div className="text-left">
                 {eyebrow && (
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
                     {eyebrow}
