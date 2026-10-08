@@ -3,6 +3,8 @@ export default () => {
     fields: {
       eyebrow: { type: "text", label: "Eyebrow" },
       heading: { type: "text", label: "Heading" },
+      cardBackgroundColor: { type: "text", label: "Card background color" },
+      borderColor: { type: "text", label: "Card border color" },
       benefitOneTitle: { type: "text", label: "Benefit 1 title" },
       benefitOneDescription: { type: "textarea", label: "Benefit 1 description" },
       benefitTwoTitle: { type: "text", label: "Benefit 2 title" },
@@ -14,6 +16,8 @@ export default () => {
     defaultProps: {
       eyebrow: "The Ergospace promise",
       heading: "Better value, delivered with care.",
+      cardBackgroundColor: "transparent",
+      borderColor: "transparent",
       benefitOneTitle: "Affordable prices",
       benefitOneDescription:
         "Thoughtfully designed furniture at prices that make creating a better space easier.",
@@ -28,6 +32,8 @@ export default () => {
     render: ({
       eyebrow,
       heading,
+      cardBackgroundColor,
+      borderColor,
       benefitOneTitle,
       benefitOneDescription,
       benefitTwoTitle,
@@ -87,7 +93,7 @@ export default () => {
       ];
 
       return (
-        <section className="bg-[#f5f4ef] py-16 md:py-24">
+        <section className="py-16 md:py-24">
           <Container>
             <header className="mx-auto mb-10 max-w-2xl text-center md:mb-16">
               {eyebrow && (
@@ -106,10 +112,14 @@ export default () => {
               {benefits.map(({ title, description, icon }, index) => (
                 <article
                   key={index}
-                  className="group flex h-full flex-col items-start rounded-3xl border border-[#1b4d4f]/[0.10] bg-[#fffdfa] p-7 text-left shadow-[0_8px_28px_rgba(27,77,79,0.045)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#1b4d4f]/[0.18] hover:shadow-[0_18px_42px_rgba(27,77,79,0.10)] motion-reduce:transform-none motion-reduce:transition-none md:p-9"
+                  className="group flex h-full flex-col items-start border p-7 text-left shadow-[0_8px_28px_rgba(27,77,79,0.045)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(27,77,79,0.10)] motion-reduce:transform-none motion-reduce:transition-none md:p-9"
+                  style={{
+                    backgroundColor: cardBackgroundColor || "transparent",
+                    borderColor: borderColor || "transparent",
+                  }}
                 >
                   <div className="mb-8 flex w-full items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1b4d4f]/[0.07] text-[#1b4d4f] transition-colors duration-300 group-hover:bg-[#1b4d4f]/[0.11]">
+                    <span className="flex h-12 w-12 items-center justify-center text-[#1b4d4f]">
                       {icon}
                     </span>
                     <span className="font-raleway text-xs font-medium tracking-[0.16em] text-[#1b4d4f]/40">
