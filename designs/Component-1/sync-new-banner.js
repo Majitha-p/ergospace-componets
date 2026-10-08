@@ -1,10 +1,10 @@
 export default () => {
   return {
     fields: {
-      heading: { type: "text", label: "Heading", default: "Work smarter in a brighter space" },
-      subtitle: { type: "text", label: "Subtitle", default: "Flexible furniture for modern teams" },
-      descriptionText: { type: "textarea", label: "Description", default: "Create a workspace that feels more open, efficient, and human — built for everyday focus." },
-      buttonLabel: { type: "text", label: "Button label", default: "Explore collection" },
+      heading: { type: "text", label: "Heading", default: "Sync Series" },
+      subtitle: { type: "text", label: "Subtitle", default: "Modern Design, Smarter Workspaces" },
+      descriptionText: { type: "textarea", label: "Description", default: "The SYNC Series combines modern office furniture design, durable materials, and practical functionality for inspiring offices in UAE & Dubai" },
+      buttonLabel: { type: "text", label: "Button label", default: "Explore Furniture Collections" },
       buttonLink: { type: "text", label: "Button link", default: "/collections" },
       imageUrl: { type: "text", label: "Background image URL", default: "/designs/design.jpeg" },
       overlaySide: {
@@ -22,9 +22,9 @@ export default () => {
     },
 
     defaultProps: {
-      heading: "Work smarter in a brighter space",
-      subtitle: "Flexible furniture for modern teams",
-      descriptionText: "Create a workspace that feels more open, efficient, and human — built for everyday focus.",
+      heading: "Sync Series",
+      subtitle: "Modern Design, Smarter Workspaces",
+      descriptionText: "The SYNC Series combines modern office furniture design, durable materials, and practical functionality for inspiring offices in UAE & Dubai",
       buttonLabel: "Explore collection",
       buttonLink: "/collections",
       imageUrl: "/designs/design.jpeg",
@@ -80,12 +80,12 @@ export default () => {
                 min-height: 640px !important;
               }
               .hero-mobile-card {
-                min-height: 500px;
-                padding-top: 50px !important;
-                padding-bottom: 50px !important;
+                min-height: 440px;
+                padding-top: 40px !important;
+                padding-bottom: 40px !important;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: left;
               }
             }
           `}</style>
