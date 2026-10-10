@@ -21,6 +21,10 @@ export default () => {
         type: "text",
         label: "Background Color",
       },
+      productBorderColor: {
+        type: "text",
+        label: "Product Border Color",
+      },
     },
 
     defaultProps: {
@@ -29,6 +33,7 @@ export default () => {
       collectionImage: "",
       ctaLabel: "Learn More",
       bgColor: "#FFFFFF",
+      productBorderColor: "#EBEBEB",
       data: {
         _id: "acoustic-booth-collection",
         collectionTitle: "Premium Acoustic Booth",
@@ -47,6 +52,7 @@ export default () => {
       collectionImage,
       ctaLabel,
       bgColor,
+      productBorderColor,
     }) => {
       const hasCollectionFields =
         _.has(data, "collectionTitle") ||
@@ -57,7 +63,10 @@ export default () => {
       const collection = _.isArray(source)
         ? _.get(source, "[0]", {})
         : source || {};
-      const products = _.get(collection, "collectionsProducts", []);
+      const productsValue = _.get(collection, "collectionsProducts", []);
+      const products = _.isArray(productsValue)
+        ? productsValue.slice(0, 3)
+        : [];
       const firstProduct = _.get(
         _.isArray(products) ? products : [],
         "[0]",
@@ -82,19 +91,6 @@ export default () => {
           className="w-full py-10 md:py-14 lg:py-16"
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
-          <style>{`
-            .cp5-image {
-              position: relative;
-              width: 100%;
-              min-height: 220px;
-            }
-            @media (min-width: 768px) {
-              .cp5-image { min-height: 300px; }
-            }
-            @media (min-width: 1024px) {
-              .cp5-image { min-height: 360px; }
-            }
-          `}</style>
           <Container>
             <div
               className="grid grid-cols-2 items-center gap-8 md:gap-10 lg:gap-16"
@@ -134,18 +130,123 @@ export default () => {
                 </Link>
               </div>
 
-              <div className="cp5-image col-start-2 row-start-1">
-                {imageUrl ? (
-                  <Image
-                    src={formatImageUrl(imageUrl)}
-                    alt={title || "Collection"}
-                    fill
-                    className="object-contain object-right"
-                    sizes="(min-width: 768px) 65vw, 100vw"
-                  />
-                ) : (
-                  <div className="flex min-h-[220px] items-center justify-center text-sm text-[#7a817f] font-raleway md:min-h-[300px] lg:min-h-[360px]">
-                    Add a collection image
+              <div className="col-start-2 row-start-1 min-w-0">
+                <div className="w-full">
+                  {imageUrl ? (
+                    <Image
+                      src={formatImageUrl(imageUrl)}
+                      alt={title || "Collection"}
+                      width={1600}
+                      height={600}
+                      className="block h-auto max-h-[240px] w-full object-contain object-right"
+                      sizes="(min-width: 768px) 65vw, 100vw"
+                    />
+                  ) : (
+                    <div className="flex min-h-[220px] w-full items-center justify-center text-sm text-[#7a817f] font-raleway md:min-h-[300px] lg:min-h-[360px]">
+                      Add a collection image
+                    </div>
+                  )}
+                </div>
+                {_.size(products) > 0 && (
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    {_.map(products, (product, index) => {
+                      const variant = _.get(product, "productVariants[0]", {});
+                      const productImage =
+                        _.get(variant, "variantImageUrl", "") ||
+                        _.get(product, "productImageUrl", "");
+                      const productTitle =
+                        _.get(product, "productTitle", "") ||
+                        _.get(variant, "extraProductTitle", "");
+                      const productSlug =
+                        _.get(variant, "slug", "") ||
+                        _.get(product, "slug", "");
+                      const productHref = productSlug
+                        ? `/product-detail/${productSlug}`
+                        : "";
+                      const price =
+                        _.get(variant, "offerPrice", 0) ||
+                        _.get(variant, "discountPrice", 0) ||
+                        _.get(variant, "price", 0) ||
+                        _.get(product, "salePrice", 0);
+                      const productContent = (
+                        <>
+                          <div className="w-full">
+                            {productImage && (
+                              productHref ? (
+                                <Link
+                                  href={productHref}
+                                  className="block cursor-pointer"
+                                >
+                                  <Image
+                                    src={formatImageUrl(productImage)}
+                                    alt={productTitle || "Collection product"}
+                                    width={480}
+                                    height={320}
+                                    className="block h-20 w-full object-contain"
+                                    sizes="(min-width: 640px) 20vw, 40vw"
+                                  />
+                                </Link>
+                              ) : (
+                                <Image
+                                  src={formatImageUrl(productImage)}
+                                  alt={productTitle || "Collection product"}
+                                  width={480}
+                                  height={320}
+                                  className="block h-20 w-full object-contain"
+                                  sizes="(min-width: 640px) 20vw, 40vw"
+                                />
+                              )
+                            )}
+                          </div>
+                          {price > 0 && (
+                            productHref ? (
+                              <Link
+                                href={productHref}
+                                className="mt-1 block cursor-pointer text-xs font-medium text-[#202729] font-raleway hover:underline"
+                              >
+                                AED {price}
+                              </Link>
+                            ) : (
+                              <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
+                                AED {price}
+                              </p>
+                            )
+                          )}
+                        </>
+                      );
+                      const cardClassName =
+                        "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
+                      const cardStyle = {
+                        borderColor: productBorderColor || "#EBEBEB",
+                      };
+
+                      return productSlug ? (
+                        <Link
+                          key={_.get(
+                            product,
+                            "_id",
+                            _.get(product, "slug", index)
+                          )}
+                          href={`/product-detail/${productSlug}`}
+                          className={cardClassName}
+                          style={cardStyle}
+                        >
+                          {productContent}
+                        </Link>
+                      ) : (
+                        <article
+                          key={_.get(
+                            product,
+                            "_id",
+                            _.get(product, "slug", index)
+                          )}
+                          className={cardClassName}
+                          style={cardStyle}
+                        >
+                          {productContent}
+                        </article>
+                      );
+                    })}
                   </div>
                 )}
               </div>
