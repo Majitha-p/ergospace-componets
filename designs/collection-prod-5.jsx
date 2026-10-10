@@ -92,13 +92,10 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div
-              className="grid grid-cols-2 items-center gap-8 md:gap-10 lg:gap-16"
-              style={{ gridTemplateColumns: "minmax(0, 1fr) minmax(0, 2fr)" }}
-            >
-              <div className="col-start-1 row-start-1 min-w-0">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-10 lg:gap-16 md:[grid-template-columns:minmax(0,1fr)_minmax(0,2fr)]">
+              <div className="order-1 min-w-0 md:order-1">
                 {title && (
-                  <h2 className="max-w-sm text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
+                  <h2 className="max-w-sm break-words text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
                     {title}
                   </h2>
                 )}
@@ -130,7 +127,7 @@ export default () => {
                 </Link>
               </div>
 
-              <div className="col-start-2 row-start-1 min-w-0">
+              <div className="order-2 min-w-0 md:order-2">
                 <div className="w-full">
                   {imageUrl ? (
                     <Image
@@ -138,7 +135,7 @@ export default () => {
                       alt={title || "Collection"}
                       width={1600}
                       height={600}
-                      className="block h-auto max-h-[240px] w-full object-contain object-right"
+                      className="block h-auto max-h-[240px] w-full object-contain object-right md:max-h-[280px] lg:max-h-[360px]"
                       sizes="(min-width: 768px) 65vw, 100vw"
                     />
                   ) : (

@@ -88,25 +88,24 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div
-              className="grid grid-cols-2 items-center gap-8 md:gap-10 lg:gap-16"
-              style={{ gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)" }}
-            >
-              <div className="col-start-1 row-start-1 min-w-0">
-                {imageUrl ? (
-                  <Image
-                    src={formatImageUrl(imageUrl)}
-                    alt={title || "Collection"}
-                    width={1600}
-                    height={600}
-                    className="block h-auto max-h-[240px] w-full object-contain object-left"
-                    sizes="(min-width: 768px) 65vw, 100vw"
-                  />
-                ) : (
-                  <div className="flex min-h-[220px] w-full items-center justify-center text-sm text-[#7a817f] font-raleway md:min-h-[300px] lg:min-h-[360px]">
-                    Add a collection image
-                  </div>
-                )}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-10 lg:gap-16 md:[grid-template-columns:minmax(0,1fr)_minmax(0,2fr)]">
+              <div className="order-1 min-w-0 md:col-start-1 md:row-start-1">
+                <div className="w-full">
+                  {imageUrl ? (
+                    <Image
+                      src={formatImageUrl(imageUrl)}
+                      alt={title || "Collection"}
+                      width={1600}
+                      height={600}
+                      className="block h-auto max-h-[240px] w-full object-contain object-left md:max-h-[280px] lg:max-h-[360px]"
+                      sizes="(min-width: 768px) 65vw, 100vw"
+                    />
+                  ) : (
+                    <div className="flex min-h-[220px] w-full items-center justify-center text-sm text-[#7a817f] font-raleway md:min-h-[300px] lg:min-h-[360px]">
+                      Add a collection image
+                    </div>
+                  )}
+                </div>
                 {_.size(products) > 0 && (
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     {_.map(products, (product, index) => {
@@ -181,9 +180,9 @@ export default () => {
                 )}
               </div>
 
-              <div className="col-start-2 row-start-1 min-w-0">
+              <div className="order-2 min-w-0 md:col-start-2 md:row-start-1">
                 {title && (
-                  <h2 className="max-w-sm text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
+                  <h2 className="max-w-sm break-words text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
                     {title}
                   </h2>
                 )}
