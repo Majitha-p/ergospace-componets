@@ -5,9 +5,8 @@ export default () => {
       title: { type: "text", label: "Main heading" },
       description: { type: "textarea", label: "Description" },
       leftImageUrl: { type: "text", label: "Left image URL" },
-      leftImageAlt: { type: "text", label: "Left image alt text" },
-      backgroundImage: { type: "text", label: "Right image URL" },
-      rightImageAlt: { type: "text", label: "Right image alt text" },
+      leftImageAlt: { type: "text", label: "Left image alt text", default: "" },
+      rightImageUrl: { type: "text", label: "Right image URL" },
       textColor: { type: "text", label: "Text color" },
       backgroundColor: { type: "text", label: "Background color" },
       buttonLabel: { type: "text", label: "Button label" },
@@ -15,14 +14,12 @@ export default () => {
     },
 
     defaultProps: {
-      eyebrow: "DESIGNED FOR EVERY DAY",
-      title: "Make room for better work.",
-      description:
-        "Thoughtful design brings clarity to your day, shaping spaces for focus, comfort, and better work.",
+      eyebrow: "",
+      title: "",
+      description: "",
       leftImageUrl: "",
-      leftImageAlt: "People in a thoughtfully designed workspace",
-      backgroundImage: "",
-      rightImageAlt: "A closer look at thoughtfully designed furniture",
+      leftImageAlt: "",
+      rightImageUrl: "",
       textColor: "#171815",
       backgroundColor: "#f2f0eb",
       buttonLabel: "Explore the collection",
@@ -30,28 +27,36 @@ export default () => {
     },
 
     render: ({
+      data,
       eyebrow,
       title,
       description,
       leftImageUrl,
       leftImageAlt,
-      backgroundImage,
-      rightImageAlt,
+      rightImageUrl,
       textColor,
       backgroundColor,
       buttonLabel,
       buttonLink,
     }) => {
-      const leftImageSrc = leftImageUrl ? formatImageUrl(leftImageUrl) : "";
-      const rightImageSrc = backgroundImage ? formatImageUrl(backgroundImage) : "";
+      let mapData = Array.isArray(data?.data) ? data?.data?.[0] : data?.data;
+      mapData = mapData || {};
+      const resolvedEyebrow = (eyebrow || "").trim() || (_.get(mapData, "bannerSubTitle") || "").trim();
+      const resolvedTitle = (title || "").trim() || (_.get(mapData, "bannerTitle") || "").trim();
+      const resolvedDescription = (description || "").trim() || (_.get(mapData, "description") || "").trim();
+      const resolvedRightImageUrl =
+        _.get(mapData, "bannerImages[0].bannerImageUrl") || rightImageUrl || "/two-person-workstation.jpeg";
+      const resolvedLeftImageUrl = (leftImageUrl || "").trim();
+      const resolvedTextColor = (textColor || "").trim() || "#171815";
+      const resolvedButtonLabel = (buttonLabel || "").trim();
+      const resolvedButtonLink = (buttonLink || "").trim();
+      const leftImageSrc = resolvedLeftImageUrl ? formatImageUrl(resolvedLeftImageUrl) : "";
+      const rightImageSrc = resolvedRightImageUrl ? formatImageUrl(resolvedRightImageUrl) : "";
 
       return (
         <section
           className="hero-section w-full py-8 sm:py-10 md:py-14"
-          style={{
-            backgroundColor: backgroundColor || "#f2f0eb",
-            color: textColor || "#171815",
-          }}
+          style={{ backgroundColor: backgroundColor || "#f2f0eb" }}
         >
           <style>{`
             .hero-section-layout {
@@ -164,15 +169,29 @@ export default () => {
             <div className="hero-section-layout mx-auto max-w-7xl">
               <div className="hero-section-intro">
                 <div>
-                  {eyebrow && <p className="hero-section-eyebrow">{eyebrow}</p>}
-                  {title && <h1 className="hero-section-title">{title}</h1>}
+                  {resolvedEyebrow && (
+                    <p className="hero-section-eyebrow" style={{ color: resolvedTextColor }}>
+                      {resolvedEyebrow}
+                    </p>
+                  )}
+                  {resolvedTitle && (
+                    <h1 className="hero-section-title" style={{ color: resolvedTextColor }}>
+                      {resolvedTitle}
+                    </h1>
+                  )}
                 </div>
 
                 <div className="hero-section-details">
-                  {description && <p className="hero-section-description">{description}</p>}
-                  {buttonLabel && (
-                    <Link className="hero-section-cta" href={buttonLink || "#"}>
-                      {buttonLabel}
+                  {resolvedDescription && (
+                    <div
+                      className="hero-section-description"
+                      style={{ color: resolvedTextColor }}
+                      dangerouslySetInnerHTML={{ __html: resolvedDescription }}
+                    />
+                  )}
+                  {resolvedButtonLabel && (
+                    <Link className="hero-section-cta" href={resolvedButtonLink || "#"}>
+                      {resolvedButtonLabel}
                     </Link>
                   )}
                 </div>
@@ -183,7 +202,7 @@ export default () => {
                   {leftImageSrc && (
                     <Image
                       src={leftImageSrc}
-                      alt={leftImageAlt || ""}
+                      alt={(leftImageAlt || "").trim()}
                       fill
                       sizes="(min-width: 640px) 36vw, 100vw"
                       className="hero-section-image"
@@ -195,7 +214,7 @@ export default () => {
                   {rightImageSrc && (
                     <Image
                       src={rightImageSrc}
-                      alt={rightImageAlt || ""}
+                      alt={resolvedTitle || ""}
                       fill
                       sizes="(min-width: 640px) 62vw, 100vw"
                       className="hero-section-image"
