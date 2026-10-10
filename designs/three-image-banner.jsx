@@ -112,12 +112,13 @@ export default () => {
                   </p>
                 )}
                 {bannerHeading && (
-                  <h1 className="max-w-xl text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-[#20352e] sm:text-5xl lg:text-6xl">
+                  <h1 className="max-w-xl text-4xl font-bold uppercase leading-[1.08] tracking-[-0.04em]  sm:text-5xl lg:text-6xl"
+                  style={{ color: "#20352e" }}>
                     {bannerHeading}
                   </h1>
                 )}
                 {visibleDescription && (
-                  <div className="mt-5 max-w-lg text-base leading-relaxed text-[#56645e] md:mt-6 md:text-lg">
+                  <div className="mt-5 max-w-lg text-base leading-relaxed  md:mt-6 md:text-lg">
                     {bannerDescription ? (
                       <div dangerouslySetInnerHTML={{ __html: bannerDescription }} />
                     ) : (
