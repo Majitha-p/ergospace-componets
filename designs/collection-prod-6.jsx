@@ -89,7 +89,7 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-10 lg:gap-16 md:[grid-template-columns:minmax(0,1fr)_minmax(0,2fr)]">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-6 lg:gap-8 md:[grid-template-columns:minmax(0,1fr)_minmax(0,1fr)]">
               <div className="order-1 min-w-0 md:col-start-1 md:row-start-1">
                 <div className="w-full">
                   {imageUrl ? (
@@ -188,13 +188,13 @@ export default () => {
                   </p>
                 )}
                 {title && (
-                  <h2 className="max-w-sm break-words text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
+                  <h2 className="break-words text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
                     {title}
                   </h2>
                 )}
                 {description && (
                   <div
-                    className="mt-5 max-w-md text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
+                    className="mt-5 text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}
