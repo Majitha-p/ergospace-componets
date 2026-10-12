@@ -60,6 +60,8 @@ export default () => {
           <style>{`
             .three-image-banner-layout {
               display: grid;
+              height: auto;
+              min-height: 700px;
               grid-template-columns: minmax(0, 1fr);
               grid-template-areas:
                 "feature"
@@ -88,7 +90,7 @@ export default () => {
               .three-image-banner-layout {
                 column-gap: 1rem;
                 row-gap: 0;
-                min-height: 680px;
+                height: 700px;
                 grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
                 grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
                 grid-template-areas:
@@ -105,7 +107,7 @@ export default () => {
               className="three-image-banner-layout mx-auto max-w-7xl overflow-hidden"
               style={{ backgroundColor: backgroundColor || "#f5f4ef" }}
             >
-              <div className="three-image-banner-copy flex flex-col items-start justify-center px-6 py-10 sm:px-10 md:px-12 md:py-12 lg:px-16">
+              <div className="three-image-banner-copy flex flex-col items-start justify-center px-6 py-8 sm:px-10 md:px-12 md:py-12 lg:px-16">
                 {bannerEyebrow && (
                   <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-[#557267]">
                     {bannerEyebrow}
