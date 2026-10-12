@@ -7,7 +7,7 @@ export default () => {
       },
       subheading: {
         type: "text",
-        label: "Collection Subheading (Optional)",
+        label: "Collection Eyebrow (Optional)",
       },
       collectionImage: {
         type: "text",
@@ -57,6 +57,7 @@ export default () => {
       const hasCollectionFields =
         _.has(data, "collectionTitle") ||
         _.has(data, "collectionSubTitle") ||
+        _.has(data, "description") ||
         _.has(data, "collectionImageUrl") ||
         _.has(data, "collectionsProducts");
       const source = hasCollectionFields ? data : _.get(data, "data", data);
@@ -73,8 +74,9 @@ export default () => {
         {}
       );
       const title = heading || _.get(collection, "collectionTitle", "");
-      const description =
+      const eyebrow =
         subheading || _.get(collection, "collectionSubTitle", "");
+      const description = _.get(collection, "description", "");
       const imageUrl =
         collectionImage ||
         _.get(collection, "collectionImageUrl", "") ||
@@ -94,15 +96,21 @@ export default () => {
           <Container>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-10 lg:gap-16 md:[grid-template-columns:minmax(0,1fr)_minmax(0,2fr)]">
               <div className="order-1 min-w-0 md:order-1">
+                {eyebrow && (
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                    {eyebrow}
+                  </p>
+                )}
                 {title && (
                   <h2 className="max-w-sm break-words text-3xl font-medium leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-5xl">
                     {title}
                   </h2>
                 )}
                 {description && (
-                  <p className="mt-5 max-w-md text-sm leading-6 text-[#4b5153] font-raleway md:text-base">
-                    {description}
-                  </p>
+                  <div
+                    className="mt-5 max-w-md text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
+                    dangerouslySetInnerHTML={{ __html: description }}
+                  />
                 )}
                 <Link
                   href={collectionHref}
