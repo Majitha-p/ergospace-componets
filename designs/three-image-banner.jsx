@@ -150,6 +150,7 @@ export default () => {
                     src={imageRightSrc}
                     alt={bannerHeading || "Featured workspace"}
                     fill
+                    quality={100}
                     sizes="(min-width: 768px) 46vw, 100vw"
                     className="object-cover object-center"
                     priority
@@ -164,6 +165,7 @@ export default () => {
                       src={imageLeftSrc}
                       alt="Workspace detail"
                       fill
+                      quality={100}
                       sizes="(min-width: 768px) 24vw, 50vw"
                       className="object-cover object-center"
                     />
@@ -175,6 +177,7 @@ export default () => {
                       src={imageCenterSrc}
                       alt="Workspace detail"
                       fill
+                      quality={100}
                       sizes="(min-width: 768px) 24vw, 50vw"
                       className="object-cover object-center"
                     />
