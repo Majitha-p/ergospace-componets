@@ -169,17 +169,18 @@ export default () => {
               display: inline-flex;
               align-items: center;
               justify-content: center;
-              padding: 0.75rem 1.75rem;
-              border-radius: 9999px;
-              background: linear-gradient(to right, #1b4d4f, #153f41);
-              color: #ffffff;
-              font-size: 0.875rem;
+              padding: 1rem 2.25rem;
+              border-radius: 0;
+              background: transparent;
+              border: 1px solid #1b4d4f;
+              color: #1b4d4f;
+              font-size: 1rem;
               font-weight: 600;
               text-decoration: none;
               line-height: 1.25;
             }
             .cp4-cta:hover {
-              opacity: 0.9;
+              background: #f5f4f1;
             }
             .cp4-products {
               display: grid;
@@ -188,6 +189,7 @@ export default () => {
               margin-top: 2rem;
             }
             .cp3-card {
+              position: relative;
               height: 100%;
               min-width: 0;
               max-width: 100%;
@@ -199,6 +201,11 @@ export default () => {
               box-shadow: 0 6px 18px rgba(17, 17, 17, 0.06);
               overflow: hidden;
               box-sizing: border-box;
+            }
+            .cp3-card-link {
+              position: absolute;
+              inset: 0;
+              z-index: 2;
             }
             .cp3-card-media {
               position: relative;
@@ -253,6 +260,9 @@ export default () => {
               opacity: 0;
             }
             .cp3-card-body {
+              position: relative;
+              z-index: 3;
+              pointer-events: none;
               padding: 8px 10px 10px;
               display: flex;
               flex-direction: column;
@@ -262,6 +272,7 @@ export default () => {
               box-sizing: border-box;
             }
             .cp3-card-title {
+              pointer-events: auto;
               margin: 0;
               font-size: 13px;
               font-weight: 600;
@@ -273,13 +284,19 @@ export default () => {
               -webkit-box-orient: vertical;
               overflow: hidden;
             }
-            .cp3-card-price {
+            .cp3-card .cp3-card-price {
               margin: 0;
-              font-size: 12px;
-              font-weight: 600;
-              color: #555555;
+              font-size: 16px;
+              font-weight: 700;
+              color: #1b4d4f;
+            }
+            .cp3-card .cp3-card-currency {
+              font-size: 11px;
             }
             .cp3-cart {
+              position: relative;
+              z-index: 4;
+              pointer-events: auto;
               margin-top: auto;
               display: flex;
               align-items: center;
@@ -363,19 +380,6 @@ export default () => {
                     <Link
                       href={collectionHref}
                       className="cp4-cta font-raleway"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "12px 28px",
-                        borderRadius: "9999px",
-                        background:
-                          "linear-gradient(to right, #1b4d4f, #153f41)",
-                        color: "#ffffff",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        textDecoration: "none",
-                      }}
                     >
                       {ctaLabel || "Explore collection"}
                     </Link>
@@ -421,6 +425,13 @@ export default () => {
                           )}
                           className="cp3-card"
                         >
+                          {productHref && (
+                            <Link
+                              href={productHref}
+                              className="cp3-card-link"
+                              aria-label={productTitle || "View product"}
+                            />
+                          )}
                           <div className="cp3-card-media">
                             {seriesLabel && (
                               <span className="cp3-badge font-raleway">
@@ -501,7 +512,8 @@ export default () => {
                               ))}
                             {price > 0 && (
                               <p className="cp3-card-price font-raleway">
-                                AED {price}
+                                <span className="cp3-card-currency">AED</span>{" "}
+                                {price}
                               </p>
                             )}
                             {productHref && (
