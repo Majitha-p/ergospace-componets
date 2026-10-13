@@ -102,7 +102,7 @@ export default () => {
                   </p>
                 )}
                 {title && (
-                  <h2 className="max-w-sm text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e] font-raleway md:text-4xl lg:text-3xl">
+                  <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e]  md:text-3xl lg:text-3xl">
                     {title}
                   </h2>
                 )}
