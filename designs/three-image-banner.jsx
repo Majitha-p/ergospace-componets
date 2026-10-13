@@ -128,20 +128,6 @@ export default () => {
                     )}
                   </div>
                 )}
-                {buttonLabel && (
-                  <Link
-                    href={linkHref}
-                    className="mt-5 inline-flex min-h-12 items-center justify-center px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#38574b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#557267] focus-visible:ring-offset-2"
-                    style={{
-                      backgroundColor: "#20352e",
-                      borderRadius: 0,
-                      color: "#ffffff",
-                      textDecoration: "none",
-                    }}
-                  >
-                    {buttonLabel}
-                  </Link>
-                )}
               </div>
 
               <div className="three-image-banner-feature relative min-h-[340px] overflow-hidden bg-[#e5e8e2] sm:min-h-[440px] md:min-h-0">
