@@ -40,8 +40,7 @@ export default () => {
       collection2BorderColor: "",
       collection2CtaLabel: "Learn More",
       collection2Url: "",
-      // Existing single-collection data continues to populate column 1.
-      // Supply a second collection in this data object/array to populate column 2.
+      
       data: {
         _id: "acoustic-booth-collection",
         collectionTitle: "Premium Acoustic Booth",
@@ -142,35 +141,111 @@ export default () => {
         return (
           <article
             key={index}
-            className="collection-prodect-7-column grid h-full min-w-0 grid-cols-1 p-5 text-left md:grid-cols-2 md:p-6"
+            className="collection-prodect-7-column flex h-full min-w-0 flex-col p-5 text-left md:p-6"
             style={{
               "--collection-mobile-bg": overrides.mobileBgColor || "transparent",
             }}
           >
-            <div className="collection-prodect-7-content">
-              {description && (
-                <p
-                  className="collection-prodect-7-eyebrow mb-2 text-xs font-semibold uppercase text-[#4b5153] font-raleway"
-                  style={{ fontSize: "0.7rem", letterSpacing: "0.2em" }}
-                >
-                  {description}
-                </p>
-              )}
-              {title && (
-                <h2 className="collection-prodect-7-title mb-2 text-2xl font-bold md:text-3xl lg:text-3xl">
-                  {title}
-                </h2>
-              )}
+            {description && (
+              <p
+                className="mb-2 text-xs font-semibold uppercase text-[#4b5153] font-raleway"
+                style={{ fontSize: "0.7rem", letterSpacing: "0.2em" }}
+              >
+                {description}
+              </p>
+            )}
+            {title && (
+              <h2 className="mb-2 text-2xl font-bold md:text-3xl lg:text-3xl">
+                {title}
+              </h2>
+            )}
+            {imageUrl ? (
+              <Image
+                src={formatImageUrl(imageUrl)}
+                alt={title || `Collection ${index + 1}`}
+                width={900}
+                height={520}
+                className=" block h-44 w-full object-contain sm:h-52 md:h-44 lg:h-56"
+                sizes="(min-width: 768px) 50vw, 100vw"
+              />
+            ) : (
+              <div className="flex h-44 w-full items-center justify-center text-sm text-[#7a817f] font-raleway sm:h-52 md:h-44 lg:h-56">
+                Add a collection image
+              </div>
+            )}
+
+            {_.size(products) > 0 && (
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {_.map(products, (product, productIndex) => {
+                  const variant = _.get(product, "productVariants[0]", {});
+                  const productImage =
+                    _.get(variant, "variantImageUrl", "") ||
+                    _.get(product, "productImageUrl", "");
+                  const productTitle =
+                    _.get(product, "productTitle", "") ||
+                    _.get(variant, "extraProductTitle", "");
+                  const productSlug =
+                    _.get(variant, "slug", "") || _.get(product, "slug", "");
+                  const productHref = productSlug
+                    ? `/product-detail/${productSlug}`
+                    : "";
+                  const price =
+                    _.get(variant, "offerPrice", 0) ||
+                    _.get(variant, "discountPrice", 0) ||
+                    _.get(variant, "price", 0) ||
+                    _.get(product, "salePrice", 0);
+                  const key = _.get(product, "_id", _.get(product, "slug", productIndex));
+                  const card = (
+                    <>
+                      {productImage && (
+                        <Image
+                          src={formatImageUrl(productImage)}
+                          alt={productTitle || "Collection product"}
+                          width={480}
+                          height={320}
+                          className="block h-20 w-full object-contain"
+                          sizes="(min-width: 640px) 20vw, 40vw"
+                        />
+                      )}
+                      {price > 0 && (
+                        <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
+                          AED {price}
+                        </p>
+                      )}
+                    </>
+                  );
+                  const className =
+                    "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
+                  const style = { borderColor: overrides.borderColor || "#EBEBEB" };
+
+                  return productHref ? (
+                    <Link key={key} href={productHref} className={className} style={style}>
+                      {card}
+                    </Link>
+                  ) : (
+                    <article key={key} className={className} style={style}>
+                      {card}
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+
+            <div
+              className={`flex flex-1 flex-col items-start ${
+                collectionDescription ? "pt-5" : ""
+              }`}
+            >
               {collectionDescription && (
                 descriptionContainsHtml ? (
                   <div
-                    className="collection-prodect-7-description max-w-xl pt-5 text-base leading-7 text-[#172238] font-raleway md:text-lg"
+                    className=" max-w-xl text-base leading-7 text-[#172238] font-raleway md:text-lg"
                     dangerouslySetInnerHTML={{
                       __html: collectionDescription,
                     }}
                   />
                 ) : (
-                  <div className="collection-prodect-7-description max-w-xl pt-5 text-base leading-7 text-[#172238] font-raleway md:text-lg">
+                  <div className=" max-w-xl text-base leading-7 text-[#172238] font-raleway md:text-lg">
                     {collectionDescription}
                   </div>
                 )
@@ -178,9 +253,9 @@ export default () => {
               <Link
                 href={collectionHref}
                 aria-label={`${overrides.ctaLabel || "Learn More"}${title ? `: ${title}` : ""}`}
-                className="collection-prodect-7-cta mt-4 inline-flex items-center gap-3 text-sm font-medium text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
+                className="mt-4 inline-flex items-center gap-3 text-lg font-bold text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                   <path
                     d="m4.5 2.5 3.5 3.5-3.5 3.5"
                     stroke="currentColor"
@@ -191,82 +266,6 @@ export default () => {
                 </svg>
                 {overrides.ctaLabel || "Learn More"}
               </Link>
-            </div>
-
-            <div className="collection-prodect-7-media">
-              <div className="collection-prodect-7-image">
-                {imageUrl ? (
-                  <Image
-                    src={formatImageUrl(imageUrl)}
-                    alt={title || `Collection ${index + 1}`}
-                    width={900}
-                    height={520}
-                    className=" block h-44 w-full object-contain sm:h-52 md:h-44 lg:h-56"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                  />
-                ) : (
-                  <div className="flex h-44 w-full items-center justify-center text-sm text-[#7a817f] font-raleway sm:h-52 md:h-44 lg:h-56">
-                    Add a collection image
-                  </div>
-                )}
-              </div>
-
-              {_.size(products) > 0 && (
-                <div className="collection-prodect-7-products mt-4 grid grid-cols-3 gap-2">
-                  {_.map(products, (product, productIndex) => {
-                    const variant = _.get(product, "productVariants[0]", {});
-                    const productImage =
-                      _.get(variant, "variantImageUrl", "") ||
-                      _.get(product, "productImageUrl", "");
-                    const productTitle =
-                      _.get(product, "productTitle", "") ||
-                      _.get(variant, "extraProductTitle", "");
-                    const productSlug =
-                      _.get(variant, "slug", "") || _.get(product, "slug", "");
-                    const productHref = productSlug
-                      ? `/product-detail/${productSlug}`
-                      : "";
-                    const price =
-                      _.get(variant, "offerPrice", 0) ||
-                      _.get(variant, "discountPrice", 0) ||
-                      _.get(variant, "price", 0) ||
-                      _.get(product, "salePrice", 0);
-                    const key = _.get(product, "_id", _.get(product, "slug", productIndex));
-                    const card = (
-                      <>
-                        {productImage && (
-                          <Image
-                            src={formatImageUrl(productImage)}
-                            alt={productTitle || "Collection product"}
-                            width={480}
-                            height={320}
-                            className="block h-20 w-full object-contain"
-                            sizes="(min-width: 640px) 20vw, 40vw"
-                          />
-                        )}
-                        {price > 0 && (
-                          <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
-                            AED {price}
-                          </p>
-                        )}
-                      </>
-                    );
-                    const className =
-                      "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
-                    const style = { borderColor: overrides.borderColor || "#EBEBEB" };
-
-                    return productHref ? (
-                      <Link key={key} href={productHref} className={className} style={style}>
-                        {card}
-                      </Link>
-                    ) : (
-                      <article key={key} className={className} style={style}>
-                        {card}
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
             </div>
           </article>
         );
@@ -305,34 +304,6 @@ export default () => {
                 background-color: var(--collection-mobile-bg);
                 box-shadow: 0 0 0 100vmax var(--collection-mobile-bg);
                 clip-path: inset(-20px -100vmax);
-                row-gap: 12px;
-              }
-              .collection-prodect-7-content,
-              .collection-prodect-7-media {
-                display: contents;
-              }
-              .collection-prodect-7-eyebrow {
-                order: 1;
-                margin-bottom: 0;
-              }
-              .collection-prodect-7-title {
-                order: 2;
-                margin-bottom: 0;
-              }
-              .collection-prodect-7-image {
-                order: 3;
-              }
-              .collection-prodect-7-products {
-                order: 4;
-                margin-top: 0;
-              }
-              .collection-prodect-7-description {
-                order: 5;
-                padding-top: 0;
-              }
-              .collection-prodect-7-cta {
-                order: 6;
-                margin-top: 0;
               }
             }
           `}</style>

@@ -9,8 +9,6 @@ export default () => {
       rightImageUrl: { type: "text", label: "Right image URL" },
       textColor: { type: "text", label: "Text color" },
       backgroundColor: { type: "text", label: "Background color" },
-      buttonLabel: { type: "text", label: "Button label" },
-      buttonLink: { type: "text", label: "Button link" },
     },
 
     defaultProps: {
@@ -22,8 +20,6 @@ export default () => {
       rightImageUrl: "",
       textColor: "#171815",
       backgroundColor: "#f2f0eb",
-      buttonLabel: "Explore the collection",
-      buttonLink: "/collections",
     },
 
     render: ({
@@ -36,8 +32,6 @@ export default () => {
       rightImageUrl,
       textColor,
       backgroundColor,
-      buttonLabel,
-      buttonLink,
     }) => {
       let mapData = Array.isArray(data?.data) ? data?.data?.[0] : data?.data;
       mapData = mapData || {};
@@ -48,8 +42,6 @@ export default () => {
         _.get(mapData, "bannerImages[0].bannerImageUrl") || rightImageUrl || "/two-person-workstation.jpeg";
       const resolvedLeftImageUrl = (leftImageUrl || "").trim();
       const resolvedTextColor = (textColor || "").trim() || "#171815";
-      const resolvedButtonLabel = (buttonLabel || "").trim();
-      const resolvedButtonLink = (buttonLink || "").trim();
       const leftImageSrc = resolvedLeftImageUrl ? formatImageUrl(resolvedLeftImageUrl) : "";
       const rightImageSrc = resolvedRightImageUrl ? formatImageUrl(resolvedRightImageUrl) : "";
 
@@ -95,27 +87,6 @@ export default () => {
               font-size: 0.95rem;
               line-height: 1.65;
               opacity: 0.76;
-            }
-            .hero-section-cta {
-              display: inline-flex;
-              min-height: 2.75rem;
-              align-items: center;
-              justify-content: center;
-              border-radius: 9999px;
-              padding: 0.65rem 1.25rem;
-              background-color: #171815;
-              color: #ffffff;
-              font-size: 0.875rem;
-              font-weight: 500;
-              text-decoration: none;
-              transition: background-color 180ms ease;
-            }
-            .hero-section-cta:hover {
-              background-color: #3a3b37;
-            }
-            .hero-section-cta:focus-visible {
-              outline: 2px solid currentColor;
-              outline-offset: 4px;
             }
             .hero-section-gallery {
               display: grid;
@@ -188,11 +159,6 @@ export default () => {
                       style={{ color: resolvedTextColor }}
                       dangerouslySetInnerHTML={{ __html: resolvedDescription }}
                     />
-                  )}
-                  {resolvedButtonLabel && (
-                    <Link className="hero-section-cta" href={resolvedButtonLink || "#"}>
-                      {resolvedButtonLabel}
-                    </Link>
                   )}
                 </div>
               </div>

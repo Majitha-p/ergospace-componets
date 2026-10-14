@@ -416,13 +416,13 @@ export default () => {
                   </p>
                 )}
                 {title && (
-                  <h2 className="text-3xl font-bold leading-tight text-[#1B4D4F] font-raleway md:text-5xl lg:text-6xl">
+                  <h2 className="text-4xl font-bold leading-tight text-[#1B4D4F] font-raleway md:text-4xl lg:text-4xl">
                     {title}
                   </h2>
                 )}
                 {description && (
                   <div
-                    className="mt-5 max-w-xl text-base leading-7 text-[#34413f] font-raleway md:text-lg lg:mx-0 mx-auto"
+                    className="mt-5 text-base leading-7 text-[#34413f] font-raleway md:text-lg lg:mx-0 mx-auto"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}

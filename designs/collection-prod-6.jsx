@@ -200,11 +200,11 @@ export default () => {
                 )}
                 <Link
                   href={collectionHref}
-                  className="mt-4 inline-flex items-center gap-3 text-sm font-medium text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
+                  className="mt-4 inline-flex items-center gap-3 text-lg font-bold text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
                 >
                   <svg
-                    width="12"
-                    height="12"
+                    width="15"
+                    height="15"
                     viewBox="0 0 12 12"
                     fill="none"
                     aria-hidden="true"
