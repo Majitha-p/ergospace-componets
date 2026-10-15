@@ -194,6 +194,18 @@ export default () => {
               </div>
 
               <div className="order-2 min-w-0 md:col-start-2 md:row-start-1">
+                <div className="hidden md:block">
+                  {eyebrow && (
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                      {eyebrow}
+                    </p>
+                  )}
+                  {title && (
+                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e] md:text-3xl lg:text-3xl">
+                      {title}
+                    </h2>
+                  )}
+                </div>
                 {description && (
                   <div
                     className="mt-5 text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
