@@ -95,25 +95,23 @@ export default () => {
         "collectionsProducts",
         []
       );
+      const firstCollectionProducts = _.isArray(firstCollectionProductsValue)
+        ? firstCollectionProductsValue.slice(0, 3)
+        : [];
       const collection2Products =
         _.isArray(collection2ProductsValue) && _.size(collection2ProductsValue) > 0
           ? collection2ProductsValue.slice(0, 3)
           : _.isArray(firstCollectionProductsValue)
             ? firstCollectionProductsValue.slice(3, 6)
             : [];
+      const products = [...firstCollectionProducts, ...collection2Products];
+      const carouselId = `collection-prodect-7-${String(
+        _.get(collections[0], "_id", "collection")
+      ).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
-      const renderCollection = (collection, index, overrides, productsOverride) => {
+      const renderCollection = (collection, index, overrides, imageProducts) => {
         const item = collection || {};
-        const productsValue = _.get(item, "collectionsProducts", []);
-        const products =
-          productsOverride === undefined
-            ? _.isArray(productsValue)
-              ? productsValue.slice(0, 3)
-              : []
-            : _.isArray(productsOverride)
-              ? productsOverride
-              : [];
-        const firstProduct = _.get(products, "[0]", {});
+        const firstProduct = _.get(imageProducts, "[0]", {});
         const title = overrides.heading || _.get(item, "collectionTitle", "");
         const description = overrides.subheading || _.get(item, "collectionSubTitle", "");
         const puckDescription =
@@ -141,7 +139,7 @@ export default () => {
         return (
           <article
             key={index}
-            className="collection-prodect-7-column flex h-full min-w-0 flex-col p-5 text-left md:p-6"
+            className="collection-prodect-7-column flex h-full min-w-0 flex-col text-left"
             style={{
               "--collection-mobile-bg": overrides.mobileBgColor || "transparent",
             }}
@@ -171,63 +169,6 @@ export default () => {
             ) : (
               <div className="flex h-44 w-full items-center justify-center text-sm text-[#7a817f] font-raleway sm:h-52 md:h-44 lg:h-56">
                 Add a collection image
-              </div>
-            )}
-
-            {_.size(products) > 0 && (
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {_.map(products, (product, productIndex) => {
-                  const variant = _.get(product, "productVariants[0]", {});
-                  const productImage =
-                    _.get(variant, "variantImageUrl", "") ||
-                    _.get(product, "productImageUrl", "");
-                  const productTitle =
-                    _.get(product, "productTitle", "") ||
-                    _.get(variant, "extraProductTitle", "");
-                  const productSlug =
-                    _.get(variant, "slug", "") || _.get(product, "slug", "");
-                  const productHref = productSlug
-                    ? `/product-detail/${productSlug}`
-                    : "";
-                  const price =
-                    _.get(variant, "offerPrice", 0) ||
-                    _.get(variant, "discountPrice", 0) ||
-                    _.get(variant, "price", 0) ||
-                    _.get(product, "salePrice", 0);
-                  const key = _.get(product, "_id", _.get(product, "slug", productIndex));
-                  const card = (
-                    <>
-                      {productImage && (
-                        <Image
-                          src={formatImageUrl(productImage)}
-                          alt={productTitle || "Collection product"}
-                          width={480}
-                          height={320}
-                          className="block h-20 w-full object-contain"
-                          sizes="(min-width: 640px) 20vw, 40vw"
-                        />
-                      )}
-                      {price > 0 && (
-                        <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
-                          AED {price}
-                        </p>
-                      )}
-                    </>
-                  );
-                  const className =
-                    "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
-                  const style = { borderColor: overrides.borderColor || "#EBEBEB" };
-
-                  return productHref ? (
-                    <Link key={key} href={productHref} className={className} style={style}>
-                      {card}
-                    </Link>
-                  ) : (
-                    <article key={key} className={className} style={style}>
-                      {card}
-                    </article>
-                  );
-                })}
               </div>
             )}
 
@@ -316,19 +257,67 @@ export default () => {
               <Container>
                 <div className="grid grid-cols-1 items-stretch gap-10 md:grid-cols-2 md:gap-8 lg:gap-12">
                   {settings.map((overrides, index) =>
-                    index === 1
-                      ? renderCollection(
-                          collections[index],
-                          index,
-                          overrides,
-                          collection2Products
-                        )
-                      : renderCollection(collections[index], index, overrides)
+                    renderCollection(
+                      collections[index],
+                      index,
+                      overrides,
+                      index === 1 ? collection2Products : firstCollectionProducts
+                    )
                   )}
                 </div>
               </Container>
             </div>
           </section>
+          {_.size(products) > 0 && (
+            <section className="w-full py-8 md:py-10">
+              <Container>
+                <div className="w-full min-w-0">
+                  <div className="mb-4 flex justify-end gap-2 px-1">
+                    <button
+                      type="button"
+                      aria-label="Previous products"
+                      className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                    >
+                      <span aria-hidden="true">&larr;</span>
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next products"
+                      className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                    >
+                      <span aria-hidden="true">&rarr;</span>
+                    </button>
+                  </div>
+                  <Swiper
+                    modules={[Navigation]}
+                    navigation={{
+                      prevEl: `.${carouselId}-prev`,
+                      nextEl: `.${carouselId}-next`,
+                    }}
+                    spaceBetween={24}
+                    slidesPerView={2}
+                    breakpoints={{
+                      640: { slidesPerView: 2, spaceBetween: 24 },
+                      768: { slidesPerView: 3, spaceBetween: 24 },
+                      1024: { slidesPerView: 5, spaceBetween: 24 },
+                    }}
+                    className="!w-full !pb-2 !pt-2 !px-1"
+                  >
+                    {_.map(products, (product, index) => (
+                      <SwiperSlide
+                        key={_.get(product, "_id", _.get(product, "slug", index))}
+                        className="!h-auto py-1"
+                      >
+                        <div className="h-full min-w-0">
+                          <ProductItem productItem={product} />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+              </Container>
+            </section>
+          )}
         </>
       );
     },

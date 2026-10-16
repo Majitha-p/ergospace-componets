@@ -153,8 +153,8 @@ export default () => {
                             />
                           )}
                           {price > 0 && (
-                            <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
-                              AED {price}
+                            <p className="mt-1 text-xs font-medium text-[#1b4d4f] font-raleway">
+                              AED <span className="text-base font-bold">{price}</span>
                             </p>
                           )}
                         </>
