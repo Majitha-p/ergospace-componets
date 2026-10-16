@@ -21,10 +21,6 @@ export default () => {
         type: "text",
         label: "Background Color",
       },
-      productBorderColor: {
-        type: "text",
-        label: "Product Border Color",
-      },
     },
 
     defaultProps: {
@@ -33,7 +29,6 @@ export default () => {
       collectionImage: "",
       ctaLabel: "Learn More",
       bgColor: "#FFFFFF",
-      productBorderColor: "#EBEBEB",
       data: {
         _id: "acoustic-booth-collection",
         collectionTitle: "Premium Acoustic Booth",
@@ -52,7 +47,6 @@ export default () => {
       collectionImage,
       ctaLabel,
       bgColor,
-      productBorderColor,
     }) => {
       const hasCollectionFields =
         _.has(data, "collectionTitle") ||
@@ -65,7 +59,7 @@ export default () => {
         : source || {};
       const productsValue = _.get(collection, "collectionsProducts", []);
       const products = _.isArray(productsValue)
-        ? productsValue.slice(0, 3)
+        ? productsValue.slice(0, 6)
         : [];
       const firstProduct = _.get(products, "[0]", {});
       const title = heading || _.get(collection, "collectionTitle", "");
@@ -82,6 +76,9 @@ export default () => {
       )
         ? _.get(collection, "customPageRedirectionUrl", "")
         : `/product-listing?collectionproduct=${_.get(collection, "_id", "")}`;
+      const carouselId = `collection-prod-6-${String(
+        _.get(collection, "_id", "collection")
+      ).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
       return (
         <section
@@ -119,78 +116,6 @@ export default () => {
                     </div>
                   )}
                 </div>
-                {_.size(products) > 0 && (
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    {_.map(products, (product, index) => {
-                      const variant = _.get(product, "productVariants[0]", {});
-                      const productImage =
-                        _.get(variant, "variantImageUrl", "") ||
-                        _.get(product, "productImageUrl", "");
-                      const productTitle =
-                        _.get(product, "productTitle", "") ||
-                        _.get(variant, "extraProductTitle", "");
-                      const productSlug =
-                        _.get(variant, "slug", "") ||
-                        _.get(product, "slug", "");
-                      const productHref = productSlug
-                        ? `/product-detail/${productSlug}`
-                        : "";
-                      const price =
-                        _.get(variant, "offerPrice", 0) ||
-                        _.get(variant, "discountPrice", 0) ||
-                        _.get(variant, "price", 0) ||
-                        _.get(product, "salePrice", 0);
-                      const productCard = (
-                        <>
-                          {productImage && (
-                            <Image
-                              src={formatImageUrl(productImage)}
-                              alt={productTitle || "Collection product"}
-                              width={480}
-                              height={320}
-                              className="block h-20 w-full object-contain"
-                              sizes="(min-width: 640px) 20vw, 40vw"
-                            />
-                          )}
-                          {price > 0 && (
-                            <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
-                              AED {price}
-                            </p>
-                          )}
-                        </>
-                      );
-                      const productCardClass =
-                        "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
-                      const productCardStyle = {
-                        borderColor: productBorderColor || "#EBEBEB",
-                      };
-                      const productKey = _.get(
-                        product,
-                        "_id",
-                        _.get(product, "slug", index)
-                      );
-
-                      return productHref ? (
-                        <Link
-                          key={productKey}
-                          href={productHref}
-                          className={productCardClass}
-                          style={productCardStyle}
-                        >
-                          {productCard}
-                        </Link>
-                      ) : (
-                        <article
-                          key={productKey}
-                          className={productCardClass}
-                          style={productCardStyle}
-                        >
-                          {productCard}
-                        </article>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
 
               <div className="order-2 min-w-0 md:col-start-2 md:row-start-1">
@@ -235,6 +160,52 @@ export default () => {
                 </Link>
               </div>
             </div>
+            {_.size(products) > 0 && (
+              <div className="mt-8 w-full min-w-0 md:mt-10">
+                <div className="mb-4 flex justify-end gap-2 px-1">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  navigation={{
+                    prevEl: `.${carouselId}-prev`,
+                    nextEl: `.${carouselId}-next`,
+                  }}
+                  spaceBetween={24}
+                  slidesPerView={2}
+                  breakpoints={{
+                    640: { slidesPerView: 2, spaceBetween: 24 },
+                    768: { slidesPerView: 3, spaceBetween: 24 },
+                    1024: { slidesPerView: 5, spaceBetween: 24 },
+                  }}
+                  className="!w-full !pb-2 !pt-2 !px-1"
+                >
+                  {_.map(products, (product, index) => (
+                    <SwiperSlide
+                      key={_.get(product, "_id", _.get(product, "slug", index))}
+                      className="!h-auto py-1"
+                    >
+                      <div className="h-full min-w-0">
+                        <ProductItem productItem={product} />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
           </Container>
         </section>
       );
