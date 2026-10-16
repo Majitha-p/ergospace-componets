@@ -265,59 +265,55 @@ export default () => {
                     )
                   )}
                 </div>
+                {_.size(products) > 0 && (
+                  <div className="mt-8 w-full min-w-0 md:mt-10">
+                    <div className="mb-4 flex justify-end gap-2 px-1">
+                      <button
+                        type="button"
+                        aria-label="Previous products"
+                        className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                      >
+                        <span aria-hidden="true">&larr;</span>
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Next products"
+                        className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                      >
+                        <span aria-hidden="true">&rarr;</span>
+                      </button>
+                    </div>
+                    <Swiper
+                      modules={[Navigation]}
+                      navigation={{
+                        prevEl: `.${carouselId}-prev`,
+                        nextEl: `.${carouselId}-next`,
+                      }}
+                      spaceBetween={24}
+                      slidesPerView={2}
+                      breakpoints={{
+                        640: { slidesPerView: 2, spaceBetween: 24 },
+                        768: { slidesPerView: 3, spaceBetween: 24 },
+                        1024: { slidesPerView: 5, spaceBetween: 24 },
+                      }}
+                      className="!w-full !pb-2 !pt-2 !px-1"
+                    >
+                      {_.map(products, (product, index) => (
+                        <SwiperSlide
+                          key={_.get(product, "_id", _.get(product, "slug", index))}
+                          className="!h-auto py-1"
+                        >
+                          <div className="h-full min-w-0">
+                            <ProductItem productItem={product} />
+                          </div>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                  </div>
+                )}
               </Container>
             </div>
           </section>
-          {_.size(products) > 0 && (
-            <section className="w-full py-8 md:py-10">
-              <Container>
-                <div className="w-full min-w-0">
-                  <div className="mb-4 flex justify-end gap-2 px-1">
-                    <button
-                      type="button"
-                      aria-label="Previous products"
-                      className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
-                    >
-                      <span aria-hidden="true">&larr;</span>
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Next products"
-                      className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
-                    >
-                      <span aria-hidden="true">&rarr;</span>
-                    </button>
-                  </div>
-                  <Swiper
-                    modules={[Navigation]}
-                    navigation={{
-                      prevEl: `.${carouselId}-prev`,
-                      nextEl: `.${carouselId}-next`,
-                    }}
-                    spaceBetween={24}
-                    slidesPerView={2}
-                    breakpoints={{
-                      640: { slidesPerView: 2, spaceBetween: 24 },
-                      768: { slidesPerView: 3, spaceBetween: 24 },
-                      1024: { slidesPerView: 5, spaceBetween: 24 },
-                    }}
-                    className="!w-full !pb-2 !pt-2 !px-1"
-                  >
-                    {_.map(products, (product, index) => (
-                      <SwiperSlide
-                        key={_.get(product, "_id", _.get(product, "slug", index))}
-                        className="!h-auto py-1"
-                      >
-                        <div className="h-full min-w-0">
-                          <ProductItem productItem={product} />
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                </div>
-              </Container>
-            </section>
-          )}
         </>
       );
     },

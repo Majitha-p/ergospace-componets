@@ -21,10 +21,6 @@ export default () => {
         type: "text",
         label: "Background Color",
       },
-      productBorderColor: {
-        type: "text",
-        label: "Product Border Color",
-      },
     },
 
     defaultProps: {
@@ -33,7 +29,6 @@ export default () => {
       collectionImage: "",
       ctaLabel: "Learn More",
       bgColor: "#FFFFFF",
-      productBorderColor: "#EBEBEB",
       data: {
         _id: "acoustic-booth-collection",
         collectionTitle: "Premium Acoustic Booth",
@@ -52,7 +47,6 @@ export default () => {
       collectionImage,
       ctaLabel,
       bgColor,
-      productBorderColor,
     }) => {
       const hasCollectionFields =
         _.has(data, "collectionTitle") ||
@@ -66,7 +60,7 @@ export default () => {
         : source || {};
       const productsValue = _.get(collection, "collectionsProducts", []);
       const products = _.isArray(productsValue)
-        ? productsValue.slice(0, 3)
+        ? productsValue.slice(0, 6)
         : [];
       const firstProduct = _.get(
         _.isArray(products) ? products : [],
@@ -87,42 +81,86 @@ export default () => {
       )
         ? _.get(collection, "customPageRedirectionUrl", "")
         : `/product-listing?collectionproduct=${_.get(collection, "_id", "")}`;
+      const carouselId = `collection-prod-5-${String(
+        _.get(collection, "_id", "collection")
+      ).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
       return (
         <section
           className="w-full pt-10 pb-6 md:pt-14 md:pb-8 lg:pt-16 lg:pb-10"
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
+          <style>{`
+            .collection-cta-wrap {
+              display: flex;
+              justify-content: center;
+              margin-top: 28px;
+            }
+            @media (min-width: 768px) {
+              .collection-cta-wrap {
+                margin-top: 40px;
+              }
+            }
+            .collection-cta {
+              border: 1px solid #202729;
+              background-color: transparent;
+              color: #202729;
+              padding: 10px 22px;
+              transition:
+                background-color 200ms ease,
+                color 200ms ease,
+                border-color 200ms ease;
+            }
+            .collection-cta:hover {
+              border-color: #202729;
+              background-color: #202729;
+              color: #ffffff;
+            }
+          `}</style>
           <Container>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-6 lg:gap-8 md:[grid-template-columns:minmax(0,1fr)_minmax(0,1.2fr)]">
               <div className="order-2 min-w-0 md:order-1">
+                <div className="hidden md:block">
+                  {eyebrow && (
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                      {eyebrow}
+                    </p>
+                  )}
+                  {title && (
+                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e] md:text-3xl lg:text-3xl">
+                      {title}
+                    </h2>
+                  )}
+                </div>
                 {description && (
                   <div
                     className="mt-5 text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}
-                <Link
-                  href={collectionHref}
-                  className="mt-4 inline-flex items-center gap-3 text-lg font-bold text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
-                >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    aria-hidden="true"
+                <div className="collection-cta-wrap">
+                  <Link
+                    href={collectionHref}
+                    className="collection-cta inline-flex items-center gap-3 text-lg font-bold font-raleway focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
                   >
-                    <path
-                      d="m4.5 2.5 3.5 3.5-3.5 3.5"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {ctaLabel || "Learn More"}
-                </Link>
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m4.5 2.5 3.5 3.5-3.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    {ctaLabel || "Learn More"}
+                  </Link>
+                </div>
               </div>
 
               <div className="order-1 min-w-0 md:order-2">
@@ -154,110 +192,54 @@ export default () => {
                     </div>
                   )}
                 </div>
-                {_.size(products) > 0 && (
-                  <div className="mt-4 grid grid-cols-3 gap-2">
-                    {_.map(products, (product, index) => {
-                      const variant = _.get(product, "productVariants[0]", {});
-                      const productImage =
-                        _.get(variant, "variantImageUrl", "") ||
-                        _.get(product, "productImageUrl", "");
-                      const productTitle =
-                        _.get(product, "productTitle", "") ||
-                        _.get(variant, "extraProductTitle", "");
-                      const productSlug =
-                        _.get(variant, "slug", "") ||
-                        _.get(product, "slug", "");
-                      const productHref = productSlug
-                        ? `/product-detail/${productSlug}`
-                        : "";
-                      const price =
-                        _.get(variant, "offerPrice", 0) ||
-                        _.get(variant, "discountPrice", 0) ||
-                        _.get(variant, "price", 0) ||
-                        _.get(product, "salePrice", 0);
-                      const productContent = (
-                        <>
-                          <div className="w-full">
-                            {productImage && (
-                              productHref ? (
-                                <Link
-                                  href={productHref}
-                                  className="block cursor-pointer"
-                                >
-                                  <Image
-                                    src={formatImageUrl(productImage)}
-                                    alt={productTitle || "Collection product"}
-                                    width={480}
-                                    height={320}
-                                    className="block h-20 w-full object-contain"
-                                    sizes="(min-width: 640px) 20vw, 40vw"
-                                  />
-                                </Link>
-                              ) : (
-                                <Image
-                                  src={formatImageUrl(productImage)}
-                                  alt={productTitle || "Collection product"}
-                                  width={480}
-                                  height={320}
-                                  className="block h-20 w-full object-contain"
-                                  sizes="(min-width: 640px) 20vw, 40vw"
-                                />
-                              )
-                            )}
-                          </div>
-                          {price > 0 && (
-                            productHref ? (
-                              <Link
-                                href={productHref}
-                                className="mt-1 block cursor-pointer text-xs font-medium text-[#202729] font-raleway hover:underline"
-                              >
-                                AED {price}
-                              </Link>
-                            ) : (
-                              <p className="mt-1 text-xs font-medium text-[#202729] font-raleway">
-                                AED {price}
-                              </p>
-                            )
-                          )}
-                        </>
-                      );
-                      const cardClassName =
-                        "block min-w-0 border p-1.5 transition-opacity hover:opacity-80";
-                      const cardStyle = {
-                        borderColor: productBorderColor || "#EBEBEB",
-                      };
-
-                      return productSlug ? (
-                        <Link
-                          key={_.get(
-                            product,
-                            "_id",
-                            _.get(product, "slug", index)
-                          )}
-                          href={`/product-detail/${productSlug}`}
-                          className={cardClassName}
-                          style={cardStyle}
-                        >
-                          {productContent}
-                        </Link>
-                      ) : (
-                        <article
-                          key={_.get(
-                            product,
-                            "_id",
-                            _.get(product, "slug", index)
-                          )}
-                          className={cardClassName}
-                          style={cardStyle}
-                        >
-                          {productContent}
-                        </article>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
             </div>
+            {_.size(products) > 0 && (
+              <div className="mt-8 w-full min-w-0 md:mt-10">
+                <div className="mb-4 flex justify-end gap-2 px-1">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  navigation={{
+                    prevEl: `.${carouselId}-prev`,
+                    nextEl: `.${carouselId}-next`,
+                  }}
+                  spaceBetween={24}
+                  slidesPerView={2}
+                  breakpoints={{
+                    640: { slidesPerView: 2, spaceBetween: 24 },
+                    768: { slidesPerView: 3, spaceBetween: 24 },
+                    1024: { slidesPerView: 5, spaceBetween: 24 },
+                  }}
+                  className="!w-full !pb-2 !pt-2 !px-1"
+                >
+                  {_.map(products, (product, index) => (
+                    <SwiperSlide
+                      key={_.get(product, "_id", _.get(product, "slug", index))}
+                      className="!h-auto py-1"
+                    >
+                      <div className="h-full min-w-0">
+                        <ProductItem productItem={product} />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
           </Container>
         </section>
       );
