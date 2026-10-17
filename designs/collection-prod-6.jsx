@@ -121,12 +121,12 @@ export default () => {
               <div className="order-2 min-w-0 md:col-start-2 md:row-start-1">
                 <div className="hidden md:block">
                   {eyebrow && (
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#484848] font-raleway md:text-sm">
                       {eyebrow}
                     </p>
                   )}
                   {title && (
-                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e] md:text-3xl lg:text-3xl">
+                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#1B4D4F] md:text-3xl lg:text-3xl">
                       {title}
                     </h2>
                   )}
@@ -137,27 +137,29 @@ export default () => {
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}
-                <Link
-                  href={collectionHref}
-                  className="mt-4 inline-flex items-center gap-3 text-lg font-bold text-[#202729] font-raleway transition-opacity hover:opacity-65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
-                >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    aria-hidden="true"
+                <div className="mt-12 flex justify-start">
+                  <Link
+                    href={collectionHref}
+                    className="inline-flex items-center gap-3 border border-[#1f1f1f] bg-transparent px-4 py-1.5 text-base font-bold font-raleway text-[#1f1f1f] transition-colors duration-200 hover:bg-[#176161] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4 md:px-6 md:py-3 md:text-lg"
                   >
-                    <path
-                      d="m4.5 2.5 3.5 3.5-3.5 3.5"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  {ctaLabel || "Learn More"}
-                </Link>
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m4.5 2.5 3.5 3.5-3.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    {ctaLabel || "Learn More"}
+                  </Link>
+                </div>
               </div>
             </div>
             {_.size(products) > 0 && (
