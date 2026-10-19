@@ -1,112 +1,161 @@
 export default () => {
   return {
     fields: {
-      collectionLabel: { type: "text", label: "Collection label" },
-      topRightLabel: { type: "text", label: "Top right label" },
+      bgColor: { type: "text", label: "Background Color" },
       eyebrow: { type: "text", label: "Eyebrow" },
-      heading: { type: "text", label: "Heading" },
+      heading: { type: "text", label: "Heading", default: "" },
       description: { type: "textarea", label: "Description" },
-      imageUrl: { type: "text", label: "Image URL" },
+      collectionImage: {
+        type: "text",
+        label: "Collection Image URL (Optional)",
+        default: "",
+      },
+      
       imageAlt: { type: "text", label: "Image alt text" },
-      footerLeft: { type: "text", label: "Left footer text" },
-      footerRight: { type: "text", label: "Right footer text" },
-      detailsHeading: { type: "text", label: "Details heading" },
-      detailOneTop: { type: "text", label: "Detail 1 title" },
-      detailOneBottom: { type: "text", label: "Detail 1 description" },
-      detailTwoTop: { type: "text", label: "Detail 2 title" },
-      detailTwoBottom: { type: "text", label: "Detail 2 description" },
-      detailThreeTop: { type: "text", label: "Detail 3 title" },
-      detailThreeBottom: { type: "text", label: "Detail 3 description" },
-      detailFourTop: { type: "text", label: "Detail 4 title" },
-      detailFourBottom: { type: "text", label: "Detail 4 description" },
+      ctaLabel: { type: "text", label: "Button label" },
+      ctaUrl: { type: "text", label: "Button URL" },
+      detailOneTop: { type: "text", label: "Card 1 text" },
+      detailTwoTop: { type: "text", label: "Card 2 text" },
+      detailThreeTop: { type: "text", label: "Card 3 text" },
+      detailFourTop: { type: "text", label: "Card 4 text" },
+      text1: { type: "text", label: "Text 1" },
+      text2: { type: "text", label: "Text 2" },
+      text3: { type: "text", label: "Text 3" },
+      text4: { type: "text", label: "Text 4" },
     },
 
     defaultProps: {
-      collectionLabel: "THE COLLECTION",
-      topRightLabel: "DESIGNED FOR WORK",
-      eyebrow: "01 / THE SYNC SERIES",
-      heading: "Space to work together.",
+      bgColor: "",
+      eyebrow: "",
+      heading: "",
       description:
-        "A versatile collection for the ways teams work today. Considered surfaces and modular forms bring clarity to shared spaces.",
-      imageUrl: "/designs/design.jpeg",
-      imageAlt: "A collaborative office meeting space",
-      footerLeft: "Modular workspace collection",
-      footerRight: "Made in UAE",
-      detailsHeading: "The details.",
-      detailOneTop: "36mm Table Top",
-      detailOneBottom: "Modular Design",
-      detailTwoTop: "40 x 15mm Aluminum Leg",
-      detailTwoBottom: "Easy Installation & Relocation",
-      detailThreeTop: "40 x 18mm Front Panel",
-      detailThreeBottom: "5 Years Warranty",
-      detailFourTop: "12mm PET Panel",
-      detailFourBottom: "Made in UAE",
+        "Discover a collection of high-end office solutions designed for distinction.",
+      collectionImage: "",
+      imageAlt: "sync series collection",
+      ctaLabel: "Explore the Collection",
+      ctaUrl: "",
+      detailOneTop: "36mm table top",
+      detailTwoTop: "40x15 aluminum leg",
+      detailThreeTop: "40x18mm front panel",
+      detailFourTop: "12mm pet panel",
+      text1: "Text 1",
+      text2: "Text 2",
+      text3: "Text 3",
+      text4: "Text 4",
+      data: {
+        collectionImageUrl:
+          "https://ergospaceae.s3.me-central-1.amazonaws.com/collection/collectionImage-1767446316429-838707078.webp",
+      },
     },
 
     render: ({
-      collectionLabel,
-      topRightLabel,
+      bgColor,
+      data,
       eyebrow,
       heading,
       description,
-      imageUrl,
+      collectionImage,
       imageAlt,
-      footerLeft,
-      footerRight,
-      detailsHeading,
+      ctaLabel,
+      ctaUrl,
       detailOneTop,
-      detailOneBottom,
       detailTwoTop,
-      detailTwoBottom,
       detailThreeTop,
-      detailThreeBottom,
       detailFourTop,
-      detailFourBottom,
+      text1,
+      text2,
+      text3,
+      text4,
     }) => {
+      const collection = Array.isArray(data?.data)
+        ? data.data[0]
+        : data?.data || data || {};
+      const resolvedHeading =
+        (_.get(collection, "collectionTitle") || "").trim() || heading || "";
+      const productsValue = _.get(collection, "collectionsProducts", []);
+      const products = _.isArray(productsValue)
+        ? productsValue.slice(0, 5)
+        : [];
+      const resolvedEyebrow =
+        (eyebrow || "").trim() ||
+        (_.get(collection, "collectionSubTitle") || "").trim();
+      const resolvedDescription =
+        (description || "").trim() ||
+        (_.get(collection, "description") || "").trim();
+      const imageUrl =
+        collectionImage || _.get(collection, "collectionImageUrl", "") || "";
+      const customUrl = (_.get(collection, "customPageRedirectionUrl") || "").trim();
+      const collectionId = _.get(collection, "_id", "");
+      const sourceLink = customUrl
+        ? customUrl
+        : collectionId
+          ? `/product-listing?collectionproduct=${collectionId}`
+          : "";
+      const ctaHref =
+        (ctaUrl || "").trim() || sourceLink || "#collection-products";
+      const carouselId = `collection-intro-products-${String(collectionId || "collection").replace(
+        /[^a-zA-Z0-9_-]/g,
+        "-"
+      )}`;
       const details = [
-        { title: detailOneTop, description: detailOneBottom },
-        { title: detailTwoTop, description: detailTwoBottom },
-        { title: detailThreeTop, description: detailThreeBottom },
-        { title: detailFourTop, description: detailFourBottom },
+        detailOneTop,
+        detailTwoTop,
+        detailThreeTop,
+        detailFourTop,
       ];
 
       return (
-        <section className="w-full bg-[#f8f8f8] py-8 text-[#1f1f1f]">
+        <section
+          className="w-full pt-10 pb-6 text-[#1f1f1f] md:py-8"
+          style={{ backgroundColor: bgColor || "transparent" }}
+        >
           <Container>
-            <div className="mb-6 flex items-center gap-4">
-              <p className="shrink-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#176161] md:text-xs">
-                {collectionLabel}
-              </p>
-              <div className="hidden flex-1 border-t border-[#e0e0e0] md:block" />
-              <p className="shrink-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#176161] md:text-xs">
-                {topRightLabel}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 items-center gap-7 md:grid-cols-5 md:gap-8">
-              <div className="md:col-span-2">
-                {eyebrow && (
-                  <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-[#176161]">
-                    {eyebrow}
+            <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-12 md:gap-6">
+              <div className="md:col-span-4">
+                {resolvedEyebrow && (
+                  <p
+                    className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-700"
+                  >
+                    {resolvedEyebrow}
                   </p>
                 )}
-                {heading && (
-                  <h2 className="mb-4 font-serif text-2xl font-medium leading-tight tracking-tight md:text-3xl">
-                    {heading}
+                {resolvedHeading && (
+                  <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+                    {resolvedHeading}
                   </h2>
                 )}
-                {description && (
-                  <p className="max-w-md text-sm leading-[1.4] text-[#333] md:text-base">
-                    {description}
+                {resolvedDescription && (
+                  <p
+                    className="max-w-md text-base leading-relaxed text-gray-700"
+                  >
+                    {resolvedDescription}
                   </p>
                 )}
-                <div className="mt-6 flex items-center justify-between gap-4 border-t border-[#e0e0e0] pt-3 text-[11px] text-[#555] md:mt-6 md:text-xs">
-                  <span>{footerLeft}</span>
-                  <span className="shrink-0">{footerRight}</span>
-                </div>
+                {ctaLabel && (
+                  <a
+                    href={ctaHref}
+                    className="mt-5 inline-flex rounded-lg bg-black/50 px-5 py-3 text-sm font-semibold text-white"
+                  >
+                    {ctaLabel}
+                  </a>
+                )}
+                {[text1, text2, text3, text4].some(Boolean) && (
+                  <div className="mt-4 grid grid-cols-2 pr-[60px]">
+                    <div className="py-2">{text1 && <span>{text1}</span>}</div>
+                    <div className="py-2 text-right">
+                      {text2 && <span>{text2}</span>}
+                    </div>
+                    <div className="border-t py-2">
+                      {text3 && <span>{text3}</span>}
+                    </div>
+                    <div className="border-t py-2 text-right">
+                      {text4 && <span>{text4}</span>}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="relative aspect-[16/9] overflow-hidden rounded-4xl md:col-span-3">
+              <div className="relative h-[500px] overflow-hidden rounded-xl md:col-span-8">
                 {imageUrl && (
                   <Image
                     src={formatImageUrl(imageUrl)}
@@ -117,25 +166,202 @@ export default () => {
                     priority
                   />
                 )}
+                <div className="absolute bottom-0 left-0 right-0 grid grid-cols-2 gap-1.5 bg-black/70 p-2 md:grid-cols-4">
+                  {details.map((text, index) => (
+                    <div
+                      key={index}
+                      className="min-w-0 rounded-md border border-gray-600 p-2 text-center"
+                    >
+                      <p className="break-words text-xs font-semibold leading-tight text-white sm:text-sm">
+                        {text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div className="mt-8 border-t border-[#e0e0e0] pt-6">
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-4">
-                <h3 className="font-serif text-xl font-medium">
-                  {detailsHeading}
-                </h3>
-                {details.map(({ title, description: detailDescription }, index) => (
-                  <div
-                    key={index}
-                    className="border-t border-[#e0e0e0] pt-3 text-sm"
+            {products.length > 0 && (
+              <div id="collection-products" className="mt-4 min-w-0">
+                <div className="mb-3 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-800 transition-colors`}
+                    style={{ cursor: "pointer" }}
                   >
-                    <p>{title}</p>
-                    <p className="mt-2">{detailDescription}</p>
-                  </div>
-                ))}
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-800 transition-colors`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  spaceBetween={12}
+                  slidesPerView={2}
+                  breakpoints={{
+                    480: { slidesPerView: 2 },
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 5 },
+                  }}
+                  navigation={{
+                    prevEl: `.${carouselId}-prev`,
+                    nextEl: `.${carouselId}-next`,
+                  }}
+                  className="!w-full !pb-2"
+                >
+                  {_.map(products, (product, index) => {
+                    const variant = _.get(product, "productVariants[0]", {});
+                    const productTitle =
+                      _.get(product, "productTitle", "") ||
+                      _.get(variant, "extraProductTitle", "");
+                    const productImage =
+                      _.get(variant, "variantImageUrl", "") ||
+                      _.get(product, "productImageUrl", "");
+                    const hoverImage = productImage.replace(
+                      /3(?=\.[^./?#]+(?:[?#]|$))/,
+                      "1"
+                    );
+                    const productSlug =
+                      _.get(variant, "slug", "") || _.get(product, "slug", "");
+                    const productHref = productSlug
+                      ? `/product-detail/${productSlug}`
+                      : "";
+                    const price =
+                      _.get(variant, "offerPrice", 0) ||
+                      _.get(variant, "discountPrice", 0) ||
+                      _.get(variant, "price", 0) ||
+                      _.get(product, "salePrice", 0);
+                    const seriesMatch = String(productTitle).match(
+                      /\b([\w&'-]+)\s+Series\b/i
+                    );
+                    const seriesLabel = seriesMatch
+                      ? seriesMatch[1]
+                      : (() => {
+                          const imageSeries = String(productImage).match(
+                            /\/series\/([^/?#]+)/i
+                          );
+                          return imageSeries
+                            ? decodeURIComponent(imageSeries[1])
+                                .replace(/[-_]+/g, " ")
+                                .replace(/\b\w/g, (letter) => letter.toUpperCase())
+                            : "";
+                        })();
+
+                    return (
+                      <SwiperSlide
+                        key={_.get(product, "_id", _.get(product, "slug", index))}
+                        className="!h-auto py-1"
+                      >
+                        <article
+                          className="relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-[#ececec] bg-white shadow-sm"
+                          onMouseEnter={(event) => {
+                            const primary = event.currentTarget.querySelector(
+                              ".collection-product-image-primary"
+                            );
+                            const alternate = event.currentTarget.querySelector(
+                              ".collection-product-image-hover"
+                            );
+                            if (primary && alternate) {
+                              primary.classList.replace("opacity-100", "opacity-0");
+                              alternate.classList.replace("opacity-0", "opacity-100");
+                            }
+                          }}
+                          onMouseLeave={(event) => {
+                            const primary = event.currentTarget.querySelector(
+                              ".collection-product-image-primary"
+                            );
+                            const alternate = event.currentTarget.querySelector(
+                              ".collection-product-image-hover"
+                            );
+                            if (primary && alternate) {
+                              primary.classList.replace("opacity-0", "opacity-100");
+                              alternate.classList.replace("opacity-100", "opacity-0");
+                            }
+                          }}
+                        >
+                          {productHref && (
+                            <Link
+                              href={productHref}
+                              className="absolute inset-0 z-10"
+                              aria-label={productTitle || "View product"}
+                            />
+                          )}
+
+                          <div className="relative aspect-[4/3] overflow-hidden bg-[#f8f8f8]">
+                            {seriesLabel && (
+                              <span className="absolute right-2 top-2 z-20 max-w-full truncate rounded-md border border-[#ececec] bg-white/90 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-[#176161]">
+                                {seriesLabel}
+                              </span>
+                            )}
+                            {productImage ? (
+                              <>
+                                <Image
+                                  src={formatImageUrl(productImage)}
+                                  alt={productTitle || "Product"}
+                                  fill
+                                  className="collection-product-image-primary object-contain opacity-100 transition-opacity duration-300"
+                                />
+                                {hoverImage !== productImage && (
+                                  <Image
+                                    src={formatImageUrl(hoverImage)}
+                                    alt={`${productTitle || "Product"} in a room setting`}
+                                    fill
+                                    className="collection-product-image-hover object-contain opacity-0 transition-opacity duration-300"
+                                  />
+                                )}
+                              </>
+                            ) : (
+                              <span className="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
+                                Product image
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="relative z-20 flex min-w-0 flex-1 flex-col gap-1 p-3">
+                            {productTitle &&
+                              (productHref ? (
+                                <Link
+                                  href={productHref}
+                                  className="relative line-clamp-2 text-xs font-semibold leading-snug text-[#1f1f1f]"
+                                >
+                                  {productTitle}
+                                </Link>
+                              ) : (
+                                <h3 className="line-clamp-2 text-[14px] font-semibold leading-snug text-[#1f1f1f]">
+                                  {productTitle}
+                                </h3>
+                              ))}
+
+                            {price > 0 && (
+                              <p className="text-base font-bold text-[#176161]">
+                                <span className="text-xs font-medium">AED</span>{" "}
+                                {price}
+                              </p>
+                            )}
+
+                            {productHref && (
+                              <Link
+                                href={productHref}
+                                className="relative mt-auto flex items-center justify-center rounded-md bg-black/70 px-4 py-1.5 text-sm font-semibold text-white"
+                              >
+                                Add to cart
+                              </Link>
+                            )}
+                          </div>
+                        </article>
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
               </div>
-            </div>
+            )}
           </Container>
         </section>
       );

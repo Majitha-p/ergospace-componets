@@ -90,44 +90,17 @@ export default () => {
           className="w-full pt-10 pb-6 md:pt-14 md:pb-8 lg:pt-16 lg:pb-10"
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
-          <style>{`
-            .collection-cta-wrap {
-              display: flex;
-              justify-content: center;
-              margin-top: 28px;
-            }
-            @media (min-width: 768px) {
-              .collection-cta-wrap {
-                margin-top: 40px;
-              }
-            }
-            .collection-cta {
-              border: 1px solid #202729;
-              background-color: transparent;
-              color: #202729;
-              padding: 10px 22px;
-              transition:
-                background-color 200ms ease,
-                color 200ms ease,
-                border-color 200ms ease;
-            }
-            .collection-cta:hover {
-              border-color: #202729;
-              background-color: #202729;
-              color: #ffffff;
-            }
-          `}</style>
           <Container>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-6 lg:gap-8 md:[grid-template-columns:minmax(0,1fr)_minmax(0,1.2fr)]">
               <div className="order-2 min-w-0 md:order-1">
                 <div className="hidden md:block">
                   {eyebrow && (
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#484848] font-raleway md:text-sm">
                       {eyebrow}
                     </p>
                   )}
                   {title && (
-                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e] md:text-3xl lg:text-3xl">
+                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#1B4D4F] md:text-3xl lg:text-3xl">
                       {title}
                     </h2>
                   )}
@@ -138,10 +111,10 @@ export default () => {
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}
-                <div className="collection-cta-wrap">
+                <div className="mt-12 flex justify-start">
                   <Link
                     href={collectionHref}
-                    className="collection-cta inline-flex items-center gap-3 text-lg font-bold font-raleway focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4"
+                    className="inline-flex items-center gap-3 border border-[#1f1f1f] bg-transparent px-4 py-1.5 text-base font-bold font-raleway text-[#1f1f1f] transition-colors duration-200 hover:bg-[#176161] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4 md:px-6 md:py-3 md:text-lg"
                   >
                     <svg
                       width="15"
