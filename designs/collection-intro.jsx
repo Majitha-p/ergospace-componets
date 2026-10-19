@@ -1,106 +1,150 @@
 export default () => {
   return {
     fields: {
+      bgColor: { type: "text", label: "Background Color" },
       eyebrow: { type: "text", label: "Eyebrow" },
-      heading: { type: "text", label: "Heading" },
+      heading: { type: "text", label: "Heading", default: "" },
       description: { type: "textarea", label: "Description" },
-      imageUrl: { type: "text", label: "Image URL" },
+      collectionImage: {
+        type: "text",
+        label: "Collection Image URL (Optional)",
+        default: "",
+      },
+      
       imageAlt: { type: "text", label: "Image alt text" },
-      footerLeft: { type: "text", label: "Left footer text" },
-      footerRight: { type: "text", label: "Right footer text" },
-      detailsHeading: { type: "text", label: "Details heading" },
-      detailOneTop: { type: "text", label: "Detail 1 title" },
-      detailOneBottom: { type: "text", label: "Detail 1 description" },
-      detailTwoTop: { type: "text", label: "Detail 2 title" },
-      detailTwoBottom: { type: "text", label: "Detail 2 description" },
-      detailThreeTop: { type: "text", label: "Detail 3 title" },
-      detailThreeBottom: { type: "text", label: "Detail 3 description" },
-      detailFourTop: { type: "text", label: "Detail 4 title" },
-      detailFourBottom: { type: "text", label: "Detail 4 description" },
+      ctaLabel: { type: "text", label: "Button label" },
+      ctaUrl: { type: "text", label: "Button URL" },
+      detailOneTop: { type: "text", label: "Card 1 text" },
+      detailTwoTop: { type: "text", label: "Card 2 text" },
+      detailThreeTop: { type: "text", label: "Card 3 text" },
+      detailFourTop: { type: "text", label: "Card 4 text" },
+      text1: { type: "text", label: "Text 1" },
+      text2: { type: "text", label: "Text 2" },
+      text3: { type: "text", label: "Text 3" },
+      text4: { type: "text", label: "Text 4" },
     },
 
     defaultProps: {
-      eyebrow: "01 / THE SYNC SERIES",
-      heading: "Space to work together.",
+      bgColor: "",
+      eyebrow: "",
+      heading: "",
       description:
-        "A versatile collection for the ways teams work today. Considered surfaces and modular forms bring clarity to shared spaces.",
-      imageUrl: "/designs/design.jpeg",
-      imageAlt: "A collaborative office meeting space",
-      footerLeft: "Modular workspace collection",
-      footerRight: "Made in UAE",
-      detailsHeading: "The details.",
-      detailOneTop: "36mm Table Top",
-      detailOneBottom: "Modular Design",
-      detailTwoTop: "40 x 15mm Aluminum Leg",
-      detailTwoBottom: "Easy Installation & Relocation",
-      detailThreeTop: "40 x 18mm Front Panel",
-      detailThreeBottom: "5 Years Warranty",
-      detailFourTop: "12mm PET Panel",
-      detailFourBottom: "Made in UAE",
+        "Discover a collection of high-end office solutions designed for distinction.",
+      collectionImage: "",
+      imageAlt: "sync series collection",
+      ctaLabel: "Explore the Collection",
+      ctaUrl: "#collection-products",
+      detailOneTop: "36mm table top",
+      detailTwoTop: "40x15 aluminum leg",
+      detailThreeTop: "40x18mm front panel",
+      detailFourTop: "12mm pet panel",
+      text1: "Text 1",
+      text2: "Text 2",
+      text3: "Text 3",
+      text4: "Text 4",
+      data: {
+        collectionImageUrl:
+          "https://ergospaceae.s3.me-central-1.amazonaws.com/collection/collectionImage-1767446316429-838707078.webp",
+      },
     },
+
     render: ({
+      bgColor,
       data,
       eyebrow,
       heading,
       description,
-      imageUrl,
+      collectionImage,
       imageAlt,
-      footerLeft,
-      footerRight,
-      detailsHeading,
+      ctaLabel,
+      ctaUrl,
       detailOneTop,
-      detailOneBottom,
       detailTwoTop,
-      detailTwoBottom,
       detailThreeTop,
-      detailThreeBottom,
       detailFourTop,
-      detailFourBottom,
+      text1,
+      text2,
+      text3,
+      text4,
     }) => {
-      const source = _.get(data, "data", data);
-      const collection = _.isArray(source)
-        ? _.get(source, "[0]", {})
-        : source || {};
+      const collection = Array.isArray(data?.data)
+        ? data.data[0]
+        : data?.data || data || {};
+      const resolvedHeading =
+        (_.get(collection, "collectionTitle") || "").trim() || heading || "";
       const productsValue = _.get(collection, "collectionsProducts", []);
-      const products = _.isArray(productsValue) ? productsValue.slice(0, 2) : [];
+      const products = _.isArray(productsValue)
+        ? productsValue.slice(0, 5)
+        : [];
+      const resolvedEyebrow =
+        (eyebrow || "").trim() ||
+        (_.get(collection, "collectionSubTitle") || "").trim();
+      const imageUrl =
+        collectionImage || _.get(collection, "collectionImageUrl", "") || "";
+      const collectionId = _.get(collection, "_id", "collection");
+      const carouselId = `collection-intro-products-${String(collectionId).replace(
+        /[^a-zA-Z0-9_-]/g,
+        "-"
+      )}`;
       const details = [
-        { label: detailOneTop, icon: "layers" },
-        { label: detailFourTop, icon: "panel" },
-        { label: detailOneBottom, icon: "expand" },
-        { label: detailTwoTop, icon: "ruler" },
-        { label: detailThreeTop, icon: "frame" },
-        { label: detailTwoBottom, icon: "tool" },
+        detailOneTop,
+        detailTwoTop,
+        detailThreeTop,
+        detailFourTop,
       ];
 
       return (
-        <section className="w-full bg-white py-8 text-black md:py-12">
+        <section
+          className="w-full pt-10 pb-6 text-[#1f1f1f] md:py-8"
+          style={{ backgroundColor: bgColor || "transparent" }}
+        >
           <Container>
-            <div className="grid grid-cols-1 items-start gap-y-0 gap-x-6 md:grid-cols-5">
-              <div className="pb-4 md:col-span-2">
-                {eyebrow && (
-                  <p className="mb-2 text-xs font-medium uppercase tracking-wider text-teal-800">
-                    {eyebrow}
+            <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-12 md:gap-6">
+              <div className="md:col-span-4">
+                {resolvedEyebrow && (
+                  <p
+                    className="mb-3 text-xs font-medium uppercase tracking-wider text-gray-700"
+                  >
+                    {resolvedEyebrow}
                   </p>
                 )}
-                {heading && (
-                  <h2 className="mb-2 text-2xl font-bold leading-tight tracking-tight text-black md:text-3xl">
-                    {heading}
+                {resolvedHeading && (
+                  <h2 className="mb-3 text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+                    {resolvedHeading}
                   </h2>
                 )}
                 {description && (
-                  <p className="mt-1 max-w-md text-sm leading-7 text-gray-800 md:text-base">
+                  <p
+                    className="max-w-md text-base leading-relaxed text-gray-700"
+                  >
                     {description}
                   </p>
                 )}
-                {(footerLeft || footerRight) && (
-                  <div className="mt-2 flex items-center justify-between gap-2 border-t border-gray-200 pt-2 text-xs text-gray-600">
-                    <span>{footerLeft}</span>
-                    <span className="shrink-0">{footerRight}</span>
+                {ctaLabel && (
+                  <a
+                    href={ctaUrl || "#"}
+                    className="mt-5 inline-flex rounded-lg bg-black/50 px-5 py-3 text-sm font-semibold text-white"
+                  >
+                    {ctaLabel}
+                  </a>
+                )}
+                {[text1, text2, text3, text4].some(Boolean) && (
+                  <div className="mt-4 grid grid-cols-2 pr-[60px]">
+                    <div className="py-2">{text1 && <span>{text1}</span>}</div>
+                    <div className="py-2 text-right">
+                      {text2 && <span>{text2}</span>}
+                    </div>
+                    <div className="border-t py-2">
+                      {text3 && <span>{text3}</span>}
+                    </div>
+                    <div className="border-t py-2 text-right">
+                      {text4 && <span>{text4}</span>}
+                    </div>
                   </div>
                 )}
               </div>
 
-              <div className="relative h-[400px] w-full overflow-hidden bg-gray-50 md:col-span-3">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-xl md:col-span-8">
                 {imageUrl && (
                   <Image
                     src={formatImageUrl(imageUrl)}
@@ -111,87 +155,69 @@ export default () => {
                     priority
                   />
                 )}
-              </div>
-
-              <div className="grid grid-cols-2 items-start gap-2 pt-4 md:col-span-3">
-                {_.map(products, (product, index) => (
-                  <div
-                    key={_.get(product, "_id", _.get(product, "slug", index))}
-                    className="min-w-0 self-start"
-                  >
-                    <ProductItem productItem={product} />
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-gray-50 p-6 md:col-span-2">
-                {(detailsHeading ||
-                  details.some(({ label }) => label) ||
-                  detailThreeBottom ||
-                  detailFourBottom) && (
-                  <div className="grid grid-cols-1 gap-3 rounded-sm border border-gray-200 bg-gray-50 p-4 md:grid-cols-3">
-                    <h3 className="border-b border-gray-200 pb-2 font-serif text-xl font-medium md:col-span-3">
-                      {detailsHeading}
-                    </h3>
-                    {_.map(
-                      _.filter(details, ({ label }) => label),
-                      ({ label, icon }, index) => (
-                        <div
-                          key={`detail-${index}`}
-                          className="flex items-center gap-2 text-sm"
-                        >
-                          <svg
-                            className="h-4 w-4 shrink-0 text-gray-700"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            {icon === "layers" && (
-                              <>
-                                <path d="m12 3 9 5-9 5-9-5 9-5Z" />
-                                <path d="m3 12 9 5 9-5M3 16l9 5 9-5" />
-                              </>
-                            )}
-                            {icon === "panel" && (
-                              <>
-                                <path d="M6 3h12v18H6z" />
-                                <path d="m9 16 6-8" />
-                              </>
-                            )}
-                            {icon === "expand" && (
-                              <>
-                                <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" />
-                                <path d="m3 3 6 6m12-6-6 6M3 21l6-6m12 6-6-6" />
-                              </>
-                            )}
-                            {icon === "ruler" && (
-                              <path d="M12 3v18M8 5h4M9 9h3M8 13h4M9 17h3M8 21h4" />
-                            )}
-                            {icon === "frame" && (
-                              <>
-                                <rect x="4" y="5" width="16" height="14" rx="1" />
-                                <path d="M8 9h2m4 0h2" />
-                              </>
-                            )}
-                            {icon === "tool" && (
-                              <path d="M14 6a5 5 0 0 0-6.7 6.7L3 17l4 4 4.3-4.3A5 5 0 0 0 18 10l-3 3-4-4 3-3Z" />
-                            )}
-                          </svg>
-                          <span>{label}</span>
-                        </div>
-                      )
-                    )}
-                    <p className="sr-only">
-                      {detailThreeBottom} {detailFourBottom}
-                    </p>
-                  </div>
-                )}
+                <div className="absolute bottom-0 left-0 right-0 grid grid-cols-2 gap-1.5 bg-black/70 p-2 md:grid-cols-4">
+                  {details.map((text, index) => (
+                    <div
+                      key={index}
+                      className="min-w-0 rounded-md border border-gray-600 p-2 text-center"
+                    >
+                      <p className="break-words text-xs font-semibold leading-tight text-white sm:text-sm">
+                        {text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+
+            {products.length > 0 && (
+              <div id="collection-products" className="mt-4 min-w-0">
+                <div className="mb-3 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-800 transition-colors`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-300 text-gray-800 transition-colors`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
+                <Swiper
+                  modules={[Navigation]}
+                  spaceBetween={12}
+                  slidesPerView={2}
+                  breakpoints={{
+                    480: { slidesPerView: 2 },
+                    768: { slidesPerView: 3 },
+                    1024: { slidesPerView: 5 },
+                  }}
+                  navigation={{
+                    prevEl: `.${carouselId}-prev`,
+                    nextEl: `.${carouselId}-next`,
+                  }}
+                  className="!w-full !pb-2"
+                >
+                  {_.map(products, (product, index) => (
+                    <SwiperSlide
+                      key={_.get(product, "_id", _.get(product, "slug", index))}
+                      className="!h-auto py-1"
+                    >
+                      <div className="h-full min-w-0">
+                        <ProductItem productItem={product} />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
           </Container>
         </section>
       );
