@@ -33,7 +33,7 @@ export default () => {
       collectionImage: "",
       imageAlt: "sync series collection",
       ctaLabel: "Explore the Collection",
-      ctaUrl: "#collection-products",
+      ctaUrl: "",
       detailOneTop: "36mm table top",
       detailTwoTop: "40x15 aluminum leg",
       detailThreeTop: "40x18mm front panel",
@@ -79,10 +79,21 @@ export default () => {
       const resolvedEyebrow =
         (eyebrow || "").trim() ||
         (_.get(collection, "collectionSubTitle") || "").trim();
+      const resolvedDescription =
+        (description || "").trim() ||
+        (_.get(collection, "description") || "").trim();
       const imageUrl =
         collectionImage || _.get(collection, "collectionImageUrl", "") || "";
-      const collectionId = _.get(collection, "_id", "collection");
-      const carouselId = `collection-intro-products-${String(collectionId).replace(
+      const customUrl = (_.get(collection, "customPageRedirectionUrl") || "").trim();
+      const collectionId = _.get(collection, "_id", "");
+      const sourceLink = customUrl
+        ? customUrl
+        : collectionId
+          ? `/product-listing?collectionproduct=${collectionId}`
+          : "";
+      const ctaHref =
+        (ctaUrl || "").trim() || sourceLink || "#collection-products";
+      const carouselId = `collection-intro-products-${String(collectionId || "collection").replace(
         /[^a-zA-Z0-9_-]/g,
         "-"
       )}`;
@@ -113,16 +124,16 @@ export default () => {
                     {resolvedHeading}
                   </h2>
                 )}
-                {description && (
+                {resolvedDescription && (
                   <p
                     className="max-w-md text-base leading-relaxed text-gray-700"
                   >
-                    {description}
+                    {resolvedDescription}
                   </p>
                 )}
                 {ctaLabel && (
                   <a
-                    href={ctaUrl || "#"}
+                    href={ctaHref}
                     className="mt-5 inline-flex rounded-lg bg-black/50 px-5 py-3 text-sm font-semibold text-white"
                   >
                     {ctaLabel}
@@ -144,7 +155,7 @@ export default () => {
                 )}
               </div>
 
-              <div className="relative aspect-[16/10] overflow-hidden rounded-xl md:col-span-8">
+              <div className="relative h-[500px] overflow-hidden rounded-xl md:col-span-8">
                 {imageUrl && (
                   <Image
                     src={formatImageUrl(imageUrl)}
@@ -205,16 +216,149 @@ export default () => {
                   }}
                   className="!w-full !pb-2"
                 >
-                  {_.map(products, (product, index) => (
-                    <SwiperSlide
-                      key={_.get(product, "_id", _.get(product, "slug", index))}
-                      className="!h-auto py-1"
-                    >
-                      <div className="h-full min-w-0">
-                        <ProductItem productItem={product} />
-                      </div>
-                    </SwiperSlide>
-                  ))}
+                  {_.map(products, (product, index) => {
+                    const variant = _.get(product, "productVariants[0]", {});
+                    const productTitle =
+                      _.get(product, "productTitle", "") ||
+                      _.get(variant, "extraProductTitle", "");
+                    const productImage =
+                      _.get(variant, "variantImageUrl", "") ||
+                      _.get(product, "productImageUrl", "");
+                    const hoverImage = productImage.replace(
+                      /3(?=\.[^./?#]+(?:[?#]|$))/,
+                      "1"
+                    );
+                    const productSlug =
+                      _.get(variant, "slug", "") || _.get(product, "slug", "");
+                    const productHref = productSlug
+                      ? `/product-detail/${productSlug}`
+                      : "";
+                    const price =
+                      _.get(variant, "offerPrice", 0) ||
+                      _.get(variant, "discountPrice", 0) ||
+                      _.get(variant, "price", 0) ||
+                      _.get(product, "salePrice", 0);
+                    const seriesMatch = String(productTitle).match(
+                      /\b([\w&'-]+)\s+Series\b/i
+                    );
+                    const seriesLabel = seriesMatch
+                      ? seriesMatch[1]
+                      : (() => {
+                          const imageSeries = String(productImage).match(
+                            /\/series\/([^/?#]+)/i
+                          );
+                          return imageSeries
+                            ? decodeURIComponent(imageSeries[1])
+                                .replace(/[-_]+/g, " ")
+                                .replace(/\b\w/g, (letter) => letter.toUpperCase())
+                            : "";
+                        })();
+
+                    return (
+                      <SwiperSlide
+                        key={_.get(product, "_id", _.get(product, "slug", index))}
+                        className="!h-auto py-1"
+                      >
+                        <article
+                          className="relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-[#ececec] bg-white shadow-sm"
+                          onMouseEnter={(event) => {
+                            const primary = event.currentTarget.querySelector(
+                              ".collection-product-image-primary"
+                            );
+                            const alternate = event.currentTarget.querySelector(
+                              ".collection-product-image-hover"
+                            );
+                            if (primary && alternate) {
+                              primary.classList.replace("opacity-100", "opacity-0");
+                              alternate.classList.replace("opacity-0", "opacity-100");
+                            }
+                          }}
+                          onMouseLeave={(event) => {
+                            const primary = event.currentTarget.querySelector(
+                              ".collection-product-image-primary"
+                            );
+                            const alternate = event.currentTarget.querySelector(
+                              ".collection-product-image-hover"
+                            );
+                            if (primary && alternate) {
+                              primary.classList.replace("opacity-0", "opacity-100");
+                              alternate.classList.replace("opacity-100", "opacity-0");
+                            }
+                          }}
+                        >
+                          {productHref && (
+                            <Link
+                              href={productHref}
+                              className="absolute inset-0 z-10"
+                              aria-label={productTitle || "View product"}
+                            />
+                          )}
+
+                          <div className="relative aspect-[4/3] overflow-hidden bg-[#f8f8f8]">
+                            {seriesLabel && (
+                              <span className="absolute right-2 top-2 z-20 max-w-full truncate rounded-md border border-[#ececec] bg-white/90 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-[#176161]">
+                                {seriesLabel}
+                              </span>
+                            )}
+                            {productImage ? (
+                              <>
+                                <Image
+                                  src={formatImageUrl(productImage)}
+                                  alt={productTitle || "Product"}
+                                  fill
+                                  className="collection-product-image-primary object-contain opacity-100 transition-opacity duration-300"
+                                />
+                                {hoverImage !== productImage && (
+                                  <Image
+                                    src={formatImageUrl(hoverImage)}
+                                    alt={`${productTitle || "Product"} in a room setting`}
+                                    fill
+                                    className="collection-product-image-hover object-contain opacity-0 transition-opacity duration-300"
+                                  />
+                                )}
+                              </>
+                            ) : (
+                              <span className="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
+                                Product image
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="relative z-20 flex min-w-0 flex-1 flex-col gap-1 p-3">
+                            {productTitle &&
+                              (productHref ? (
+                                <Link
+                                  href={productHref}
+                                  className="relative line-clamp-2 text-xs font-semibold leading-snug text-[#1f1f1f]"
+                                >
+                                  {productTitle}
+                                </Link>
+                              ) : (
+                                <h3 className="line-clamp-2 text-[14px] font-semibold leading-snug text-[#1f1f1f]">
+                                  {productTitle}
+                                </h3>
+                              ))}
+
+                            {price > 0 && (
+                              <p className="text-base font-bold text-[#176161]">
+                                <span className="text-xs font-medium">AED</span>{" "}
+                                {price}
+                              </p>
+                            )}
+
+                            {productHref && (
+                              <Link
+                                href={productHref}
+                                className="relative mt-auto flex items-center justify-center rounded-md bg-black/70 px-4 py-1.5 text-sm font-semibold text-white"
+                              >
+                                Add to cart
+                              </Link>
+                            )}
+                          </div>
+                        </article>
+                      </SwiperSlide>
+                    );
+                  })}
                 </Swiper>
               </div>
             )}
