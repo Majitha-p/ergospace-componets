@@ -2,9 +2,8 @@ export default () => {
   return {
     fields: {
       bgColor: { type: "text", label: "Background Color" },
-      eyebrow: { type: "text", label: "Eyebrow" },
+      eyebrow: { type: "text", label: "Subtitle" },
       heading: { type: "text", label: "Heading", default: "" },
-      description: { type: "textarea", label: "Description" },
       collectionImage: {
         type: "text",
         label: "Collection Image URL (Optional)",
@@ -28,8 +27,6 @@ export default () => {
       bgColor: "",
       eyebrow: "",
       heading: "",
-      description:
-        "Discover a collection of high-end office solutions designed for distinction.",
       collectionImage: "",
       imageAlt: "sync series collection",
       ctaLabel: "Explore the Collection",
@@ -53,7 +50,6 @@ export default () => {
       data,
       eyebrow,
       heading,
-      description,
       collectionImage,
       imageAlt,
       ctaLabel,
@@ -72,7 +68,8 @@ export default () => {
         ? _.get(source, "[0]", {})
         : source || {};
       const resolvedHeading =
-        (_.get(collection, "collectionTitle") || "").trim() || heading || "";
+        (heading || "").trim() ||
+        (_.get(collection, "collectionTitle") || "").trim();
       const productsValue = _.get(collection, "collectionsProducts", []);
       const products = _.isArray(productsValue)
         ? productsValue.slice(0, 5)
@@ -80,6 +77,8 @@ export default () => {
       const resolvedEyebrow =
         (eyebrow || "").trim() ||
         (_.get(collection, "collectionSubTitle") || "").trim();
+      const resolvedDescription =
+        (_.get(collection, "description") || "").trim();
       const imageUrl =
         collectionImage || _.get(collection, "collectionImageUrl", "") || "";
       const customUrl = (
@@ -153,12 +152,12 @@ export default () => {
                     {resolvedHeading}
                   </h2>
                 )}
-                {description && (
-                  <p
+                {resolvedDescription && (
+                  <div
                     className="max-w-md text-base leading-relaxed text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: resolvedDescription }}
                   >
-                    {description}
-                  </p>
+                  </div>
                 )}
                 {ctaLabel && (
                   <a
