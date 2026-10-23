@@ -17,6 +17,10 @@ export default () => {
         type: "text",
         label: "Third Grid Image URL (Optional)",
       },
+      gridGap: {
+        type: "text",
+        label: "Grid Gap (px)",
+      },
       ctaLabel: {
         type: "text",
         label: "Collection CTA Label",
@@ -32,6 +36,7 @@ export default () => {
       subheading: "",
       secondGridImage: "",
       thirdGridImage: "",
+      gridGap: "12",
       ctaLabel: "Learn More",
       bgColor: "#FFFFFF",
       data: {
@@ -51,6 +56,7 @@ export default () => {
       subheading,
       secondGridImage,
       thirdGridImage,
+      gridGap,
       ctaLabel,
       bgColor,
     }) => {
@@ -68,6 +74,10 @@ export default () => {
       const products = _.isArray(productsValue)
         ? productsValue.slice(0, 6)
         : [];
+      const parsedGridGap = Number(gridGap);
+      const resolvedGridGap = Number.isFinite(parsedGridGap)
+        ? Math.max(0, parsedGridGap)
+        : 12;
       const title = heading || _.get(collection, "collectionTitle", "");
       const eyebrow =
         subheading || _.get(collection, "collectionSubTitle", "");
@@ -138,14 +148,17 @@ export default () => {
                 </div>
               </div>
             </div>
-            <div className="mt-8 grid w-full grid-cols-1 gap-0 overflow-hidden md:mt-10 md:grid-cols-2">
+            <div
+              className="mt-8 grid w-full grid-cols-1 md:mt-10 md:grid-cols-2"
+              style={{ gap: `${resolvedGridGap}px` }}
+            >
               {[
                 {
                   key: "first",
                   imageUrl: gridImages[0],
                   alt: `${title} collection`,
                   emptyText: "Add a collection image",
-                  className: "aspect-video md:col-span-2 md:aspect-[4/1]",
+                  className: "aspect-video md:col-span-2 md:aspect-[2/1]",
                   sizes: "100vw",
                 },
                 {
@@ -153,7 +166,7 @@ export default () => {
                   imageUrl: gridImages[1],
                   alt: `${title} second image`,
                   emptyText: "Add a second grid image URL",
-                  className: "aspect-[4/3] md:aspect-[3/2]",
+                  className: "aspect-[4/3] md:aspect-[2/1]",
                   sizes: "(min-width: 768px) 50vw, 100vw",
                 },
                 {
@@ -161,56 +174,50 @@ export default () => {
                   imageUrl: gridImages[2],
                   alt: `${title} third image`,
                   emptyText: "Add a third grid image URL",
-                  className: "aspect-[4/3] md:aspect-[3/2]",
+                  className: "aspect-[4/3] md:aspect-[2/1]",
                   sizes: "(min-width: 768px) 50vw, 100vw",
                 },
-              ].map(({ key, imageUrl, alt, emptyText, className, sizes }) =>
-                imageUrl ? (
-                  <div
-                    key={key}
-                    className={`group relative overflow-hidden ${className}`}
-                  >
-                    <Image
-                      src={formatImageUrl(imageUrl)}
-                      alt={alt}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes={sizes}
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <span className="translate-y-2 text-center text-lg font-semibold tracking-wide text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:text-2xl">
-                        {title || "Explore Collection"}
-                      </span>
+              ].map(
+                ({
+                  key,
+                  imageUrl,
+                  alt,
+                  emptyText,
+                  className,
+                  sizes,
+                }) =>
+                  imageUrl ? (
+                    <div
+                      key={key}
+                      className={`cp5-tile group relative overflow-hidden ${className}`}
+                    >
+                      <Image
+                        src={formatImageUrl(imageUrl)}
+                        alt={alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes={sizes}
+                      />
                     </div>
-                  </div>
-                ) : (
-                  <div
-                    key={key}
-                    className={`flex w-full items-center justify-center bg-[#f3f4f2] text-sm text-[#7a817f] font-raleway ${className}`}
-                  >
-                    {emptyText}
-                  </div>
-                )
+                  ) : (
+                    <div
+                      key={key}
+                      className={`flex w-full items-center justify-center bg-[#f3f4f2] text-sm text-[#7a817f] font-raleway ${className}`}
+                    >
+                      {emptyText}
+                    </div>
+                  )
               )}
             </div>
             {_.size(products) > 0 && (
-              <div className="mt-8 w-full min-w-0 md:mt-10">
-                <div className="mb-4 flex justify-end gap-2 px-1">
-                  <button
-                    type="button"
-                    aria-label="Previous products"
-                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
-                  >
-                    <span aria-hidden="true">&larr;</span>
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next products"
-                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500`}
-                  >
-                    <span aria-hidden="true">&rarr;</span>
-                  </button>
-                </div>
+              <div className="mt-8 flex w-full min-w-0 items-center gap-2 md:mt-10">
+                <button
+                  type="button"
+                  aria-label="Previous products"
+                  className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                >
+                  <span aria-hidden="true">&larr;</span>
+                </button>
                 <Swiper
                   modules={[Navigation]}
                   navigation={{
@@ -224,7 +231,7 @@ export default () => {
                     768: { slidesPerView: 3, spaceBetween: 24 },
                     1024: { slidesPerView: 5, spaceBetween: 24 },
                   }}
-                  className="!w-full !pb-2 !pt-2 !px-1"
+                  className="!w-full min-w-0 flex-1 !pb-2 !pt-2 !px-1"
                 >
                   {_.map(products, (product, index) => (
                     <SwiperSlide
@@ -237,6 +244,13 @@ export default () => {
                     </SwiperSlide>
                   ))}
                 </Swiper>
+                <button
+                  type="button"
+                  aria-label="Next products"
+                  className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                >
+                  <span aria-hidden="true">&rarr;</span>
+                </button>
               </div>
             )}
           </Container>
