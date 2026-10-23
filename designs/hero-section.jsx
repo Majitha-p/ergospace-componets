@@ -38,6 +38,7 @@ export default () => {
       const resolvedEyebrow = (eyebrow || "").trim() || (_.get(mapData, "bannerSubTitle") || "").trim();
       const resolvedTitle = (title || "").trim() || (_.get(mapData, "bannerTitle") || "").trim();
       const resolvedDescription = (description || "").trim() || (_.get(mapData, "description") || "").trim();
+      const descriptionHtml = resolvedDescription.replace(/<\/?(?:div|p)\b[^>]*>/gi, "");
       const resolvedRightImageUrl =
         _.get(mapData, "bannerImages[0].bannerImageUrl") || rightImageUrl || "/two-person-workstation.jpeg";
       const resolvedLeftImageUrl = (leftImageUrl || "").trim();
@@ -157,7 +158,7 @@ export default () => {
                     <div
                       className="hero-section-description"
                       style={{ color: resolvedTextColor }}
-                      dangerouslySetInnerHTML={{ __html: resolvedDescription }}
+                      dangerouslySetInnerHTML={{ __html: descriptionHtml }}
                     />
                   )}
                 </div>

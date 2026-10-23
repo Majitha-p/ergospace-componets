@@ -9,9 +9,13 @@ export default () => {
         type: "text",
         label: "Collection Eyebrow (Optional)",
       },
-      collectionImage: {
+      secondGridImage: {
         type: "text",
-        label: "Collection Image URL (Optional)",
+        label: "Second Grid Image URL (Optional)",
+      },
+      thirdGridImage: {
+        type: "text",
+        label: "Third Grid Image URL (Optional)",
       },
       ctaLabel: {
         type: "text",
@@ -26,7 +30,8 @@ export default () => {
     defaultProps: {
       heading: "",
       subheading: "",
-      collectionImage: "",
+      secondGridImage: "",
+      thirdGridImage: "",
       ctaLabel: "Learn More",
       bgColor: "#FFFFFF",
       data: {
@@ -44,7 +49,8 @@ export default () => {
       data,
       heading,
       subheading,
-      collectionImage,
+      secondGridImage,
+      thirdGridImage,
       ctaLabel,
       bgColor,
     }) => {
@@ -62,20 +68,15 @@ export default () => {
       const products = _.isArray(productsValue)
         ? productsValue.slice(0, 6)
         : [];
-      const firstProduct = _.get(
-        _.isArray(products) ? products : [],
-        "[0]",
-        {}
-      );
       const title = heading || _.get(collection, "collectionTitle", "");
       const eyebrow =
         subheading || _.get(collection, "collectionSubTitle", "");
       const description = _.get(collection, "description", "");
-      const imageUrl =
-        collectionImage ||
-        _.get(collection, "collectionImageUrl", "") ||
-        _.get(firstProduct, "productImageUrl", "") ||
-        _.get(firstProduct, "productVariants[0].variantImageUrl", "");
+      const gridImages = [
+        _.get(collection, "collectionImageUrl", ""),
+        secondGridImage || "",
+        thirdGridImage || "",
+      ];
       const collectionHref = !_.isEmpty(
         _.get(collection, "customPageRedirectionUrl", "")
       )
@@ -91,27 +92,28 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center md:gap-6 lg:gap-8 md:[grid-template-columns:minmax(0,1fr)_minmax(0,1.2fr)]">
-              <div className="order-2 min-w-0 md:order-1">
-                <div className="hidden md:block">
-                  {eyebrow && (
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#484848] font-raleway md:text-sm">
-                      {eyebrow}
-                    </p>
-                  )}
-                  {title && (
-                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#1B4D4F] md:text-3xl lg:text-3xl">
-                      {title}
-                    </h2>
-                  )}
-                </div>
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
+              <div className="min-w-0 md:w-1/2">
+                {eyebrow && (
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                    {eyebrow}
+                  </p>
+                )}
+                {title && (
+                  <h2 className="max-w-2xl text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-[#1B4D4F] md:text-4xl lg:text-5xl">
+                    {title}
+                  </h2>
+                )}
+              </div>
+
+              <div className="min-w-0 md:w-1/2 md:pb-1">
                 {description && (
                   <div
-                    className="mt-5 text-sm leading-6 text-[#4b5153] font-raleway md:text-base"
+                    className="text-sm leading-6 text-[#4b5153] font-raleway md:text-base md:leading-7"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
                 )}
-                <div className="mt-12 flex justify-start">
+                <div className="mt-6 flex justify-start">
                   <Link
                     href={collectionHref}
                     className="inline-flex items-center gap-3 border border-[#1f1f1f] bg-transparent px-4 py-1.5 text-base font-bold font-raleway text-[#1f1f1f] transition-colors duration-200 hover:bg-[#176161] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4 md:px-6 md:py-3 md:text-lg"
@@ -135,37 +137,61 @@ export default () => {
                   </Link>
                 </div>
               </div>
-
-              <div className="order-1 min-w-0 md:order-2">
-                <div className="mb-5 md:hidden">
-                  {eyebrow && (
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
-                      {eyebrow}
-                    </p>
-                  )}
-                  {title && (
-                    <h2 className="text-3xl font-bold leading-[0.98] tracking-[-0.045em] text-[#343b3e]">
-                      {title}
-                    </h2>
-                  )}
-                </div>
-                <div className="w-full">
-                  {imageUrl ? (
+            </div>
+            <div className="mt-8 grid w-full grid-cols-1 gap-0 overflow-hidden md:mt-10 md:grid-cols-2">
+              {[
+                {
+                  key: "first",
+                  imageUrl: gridImages[0],
+                  alt: `${title} collection`,
+                  emptyText: "Add a collection image",
+                  className: "aspect-video md:col-span-2 md:aspect-[4/1]",
+                  sizes: "100vw",
+                },
+                {
+                  key: "second",
+                  imageUrl: gridImages[1],
+                  alt: `${title} second image`,
+                  emptyText: "Add a second grid image URL",
+                  className: "aspect-[4/3] md:aspect-[3/2]",
+                  sizes: "(min-width: 768px) 50vw, 100vw",
+                },
+                {
+                  key: "third",
+                  imageUrl: gridImages[2],
+                  alt: `${title} third image`,
+                  emptyText: "Add a third grid image URL",
+                  className: "aspect-[4/3] md:aspect-[3/2]",
+                  sizes: "(min-width: 768px) 50vw, 100vw",
+                },
+              ].map(({ key, imageUrl, alt, emptyText, className, sizes }) =>
+                imageUrl ? (
+                  <div
+                    key={key}
+                    className={`group relative overflow-hidden ${className}`}
+                  >
                     <Image
                       src={formatImageUrl(imageUrl)}
-                      alt={title || "Collection"}
-                      width={1600}
-                      height={600}
-                      className="block h-auto max-h-[240px] w-full object-contain object-right md:max-h-[280px] lg:max-h-[360px]"
-                      sizes="(min-width: 768px) 65vw, 100vw"
+                      alt={alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes={sizes}
                     />
-                  ) : (
-                    <div className="flex min-h-[220px] w-full items-center justify-center text-sm text-[#7a817f] font-raleway md:min-h-[300px] lg:min-h-[360px]">
-                      Add a collection image
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <span className="translate-y-2 text-center text-lg font-semibold tracking-wide text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 md:text-2xl">
+                        {title || "Explore Collection"}
+                      </span>
                     </div>
-                  )}
-                </div>
-              </div>
+                  </div>
+                ) : (
+                  <div
+                    key={key}
+                    className={`flex w-full items-center justify-center bg-[#f3f4f2] text-sm text-[#7a817f] font-raleway ${className}`}
+                  >
+                    {emptyText}
+                  </div>
+                )
+              )}
             </div>
             {_.size(products) > 0 && (
               <div className="mt-8 w-full min-w-0 md:mt-10">
