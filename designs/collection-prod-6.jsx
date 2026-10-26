@@ -112,7 +112,42 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
+            <div
+              className="mt-8 grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:mt-10"
+              style={{ gap: `${resolvedGridGap}px` }}
+            >
+              {gridImages.map((imageUrl, index) => {
+                const key = ["first", "second", "third"][index];
+                const emptyText = [
+                  "Add a collection image",
+                  "Add a second grid image URL",
+                  "Add a third grid image URL",
+                ][index];
+
+                return imageUrl ? (
+                  <div
+                    key={key}
+                    className="group relative aspect-[4/3] overflow-hidden"
+                  >
+                    <Image
+                      src={formatImageUrl(imageUrl)}
+                      alt={`${title} ${index === 0 ? "collection" : `${key} image`}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    key={key}
+                    className="flex aspect-[4/3] w-full items-center justify-center bg-[#f3f4f2] text-sm text-[#7a817f] font-raleway"
+                  >
+                    {emptyText}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex flex-col gap-6 mt-4 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
               <div className="min-w-0 md:w-1/2">
                 {eyebrow && (
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
@@ -158,50 +193,8 @@ export default () => {
                 </div>
               </div>
             </div>
-            <div
-              className="mt-8 grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:mt-10"
-              style={{ gap: `${resolvedGridGap}px` }}
-            >
-              {gridImages.map((imageUrl, index) => {
-                const key = ["first", "second", "third"][index];
-                const emptyText = [
-                  "Add a collection image",
-                  "Add a second grid image URL",
-                  "Add a third grid image URL",
-                ][index];
-
-                return imageUrl ? (
-                  <div
-                    key={key}
-                    className="group relative aspect-[4/3] overflow-hidden"
-                  >
-                    <Image
-                      src={formatImageUrl(imageUrl)}
-                      alt={`${title} ${index === 0 ? "collection" : `${key} image`}`}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    key={key}
-                    className="flex aspect-[4/3] w-full items-center justify-center bg-[#f3f4f2] text-sm text-[#7a817f] font-raleway"
-                  >
-                    {emptyText}
-                  </div>
-                );
-              })}
-            </div>
             {_.size(products) > 0 && (
-              <div className="mt-8 flex w-full min-w-0 items-center gap-2 md:mt-10">
-                <button
-                  type="button"
-                  aria-label="Previous products"
-                  className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
-                >
-                  <span aria-hidden="true">&larr;</span>
-                </button>
+              <div className="mt-8 w-full min-w-0 md:mt-10">
                 <Swiper
                   modules={[Navigation]}
                   navigation={{
@@ -228,13 +221,22 @@ export default () => {
                     </SwiperSlide>
                   ))}
                 </Swiper>
-                <button
-                  type="button"
-                  aria-label="Next products"
-                  className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
-                >
-                  <span aria-hidden="true">&rarr;</span>
-                </button>
+                <div className="mt-4 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
               </div>
             )}
           </Container>

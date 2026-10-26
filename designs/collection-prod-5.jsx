@@ -102,52 +102,6 @@ export default () => {
           style={{ backgroundColor: bgColor || "#FFFFFF" }}
         >
           <Container>
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
-              <div className="min-w-0 md:w-1/2">
-                {eyebrow && (
-                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
-                    {eyebrow}
-                  </p>
-                )}
-                {title && (
-                  <h2 className="max-w-2xl text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-[#1B4D4F] md:text-4xl lg:text-5xl">
-                    {title}
-                  </h2>
-                )}
-              </div>
-
-              <div className="min-w-0 md:w-1/2 md:pb-1">
-                {description && (
-                  <div
-                    className="text-sm leading-6 text-[#4b5153] font-raleway md:text-base md:leading-7"
-                    dangerouslySetInnerHTML={{ __html: description }}
-                  />
-                )}
-                <div className="mt-6 flex justify-start">
-                  <Link
-                    href={collectionHref}
-                    className="inline-flex items-center gap-3 border border-[#1f1f1f] bg-transparent px-4 py-1.5 text-base font-bold font-raleway text-[#1f1f1f] transition-colors duration-200 hover:bg-[#176161] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4 md:px-6 md:py-3 md:text-lg"
-                  >
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="m4.5 2.5 3.5 3.5-3.5 3.5"
-                        stroke="currentColor"
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    {ctaLabel || "Learn More"}
-                  </Link>
-                </div>
-              </div>
-            </div>
             <div
               className="mt-8 grid w-full grid-cols-1 md:mt-10 md:grid-cols-2"
               style={{ gap: `${resolvedGridGap}px` }}
@@ -209,15 +163,54 @@ export default () => {
                   )
               )}
             </div>
+            <div className="flex flex-col gap-6 mt-4 md:flex-row md:items-end md:justify-between md:gap-10 lg:gap-16">
+              <div className="min-w-0 md:w-1/2">
+                {eyebrow && (
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] font-raleway md:text-sm">
+                    {eyebrow}
+                  </p>
+                )}
+                {title && (
+                  <h2 className="max-w-2xl text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-[#1B4D4F] md:text-4xl lg:text-5xl">
+                    {title}
+                  </h2>
+                )}
+              </div>
+
+              <div className="min-w-0 md:w-1/2 md:pb-1">
+                {description && (
+                  <div
+                    className="text-sm leading-6 text-[#4b5153] font-raleway md:text-base md:leading-7"
+                    dangerouslySetInnerHTML={{ __html: description }}
+                  />
+                )}
+                <div className="mt-6 flex justify-start">
+                  <Link
+                    href={collectionHref}
+                    className="inline-flex items-center gap-3 border border-[#1f1f1f] bg-transparent px-4 py-1.5 text-base font-bold font-raleway text-[#1f1f1f] transition-colors duration-200 hover:bg-[#176161] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1b4d4f] focus-visible:ring-offset-4 md:px-6 md:py-3 md:text-lg"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m4.5 2.5 3.5 3.5-3.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    {ctaLabel || "Learn More"}
+                  </Link>
+                </div>
+              </div>
+            </div>
             {_.size(products) > 0 && (
-              <div className="mt-8 flex w-full min-w-0 items-center gap-2 md:mt-10">
-                <button
-                  type="button"
-                  aria-label="Previous products"
-                  className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
-                >
-                  <span aria-hidden="true">&larr;</span>
-                </button>
+              <div className="mt-8 w-full min-w-0 md:mt-10">
                 <Swiper
                   modules={[Navigation]}
                   navigation={{
@@ -244,13 +237,22 @@ export default () => {
                     </SwiperSlide>
                   ))}
                 </Swiper>
-                <button
-                  type="button"
-                  aria-label="Next products"
-                  className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
-                >
-                  <span aria-hidden="true">&rarr;</span>
-                </button>
+                <div className="mt-4 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    aria-label="Previous products"
+                    className={`${carouselId}-prev flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                  >
+                    <span aria-hidden="true">&larr;</span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next products"
+                    className={`${carouselId}-next flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-lg text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
+                  >
+                    <span aria-hidden="true">&rarr;</span>
+                  </button>
+                </div>
               </div>
             )}
           </Container>

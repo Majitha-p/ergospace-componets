@@ -67,7 +67,7 @@ export default () => {
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-0 flex items-center justify-center px-4 py-8 sm:px-6">
               <div
-                className="flex w-full max-w-2xl flex-col items-center justify-center border-2 border-white px-4 py-8 text-center text-white sm:px-6 md:px-12 md:py-12"
+                className="flex w-full max-w-4xl flex-col items-center justify-center border-2 border-white px-4 py-8 text-center text-white sm:px-6 md:px-12 md:py-12"
               >
                 {resolvedEyebrow && (
                   <p className="mb-1 text-xs font-semibold uppercase leading-tight sm:text-sm">
@@ -80,7 +80,7 @@ export default () => {
                   </h1>
                 )}
                 {resolvedDescription && (
-                  <div className="mt-4 max-w-xl text-sm leading-relaxed sm:text-base md:text-xl">
+                  <div className="mt-4 max-w-2xl text-sm leading-relaxed sm:text-base md:text-xl">
                     {cmsDescription ? (
                       <div
                         dangerouslySetInnerHTML={{
