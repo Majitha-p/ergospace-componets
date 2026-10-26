@@ -6,6 +6,8 @@ export default () => {
       featureImageUrl: { type: "text", label: "Left feature image URL" },
       bannerImageUrl: { type: "text", label: "Banner image URL" },
       backgroundColor: { type: "text", label: "Background color" },
+      ctaLabel: { type: "text", label: "Button label" },
+      ctaUrl: { type: "text", label: "Button URL" },
     },
 
     defaultProps: {
@@ -13,7 +15,9 @@ export default () => {
       description: "",
       featureImageUrl: "",
       bannerImageUrl: "",
-      backgroundColor: "#e4d9cc",
+      backgroundColor: "#ffff",
+      ctaLabel: "Explore the Collection",
+      ctaUrl: "",
       data: {
         _id: "default-workspace-collection",
         collectionTitle: "Interactive Family Tree",
@@ -51,6 +55,8 @@ export default () => {
       featureImageUrl,
       bannerImageUrl,
       backgroundColor,
+      ctaLabel,
+      ctaUrl,
     }) => {
       const hasCollectionFields =
         _.has(data, "collectionTitle") ||
@@ -77,7 +83,17 @@ export default () => {
         _.get(collection, "bannerImageUrl", "") ||
         _.get(collection, "collectionImageUrl", "");
       const descriptionContainsHtml = /<\/?[a-z][\s\S]*>/i.test(body);
-      const resolvedBackground = backgroundColor || "#e4d9cc";
+      const resolvedBackground = backgroundColor || "#fff";
+      const customUrl = (
+        _.get(collection, "customPageRedirectionUrl") || ""
+      ).trim();
+      const collectionId = _.get(collection, "_id", "");
+      const ctaHref =
+        (ctaUrl || "").trim() ||
+        customUrl ||
+        (collectionId
+          ? `/product-listing?collectionproduct=${collectionId}`
+          : "#collection-products");
 
       const renderImage = (imageUrl, alt) =>
         imageUrl ? (
@@ -125,6 +141,14 @@ export default () => {
                       </p>
                     )
                   )}
+                  {ctaLabel && (
+                    <a
+                      href={ctaHref}
+                      className="mt-5 inline-flex rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#176161]"
+                    >
+                      {ctaLabel}
+                    </a>
+                  )}
                 </div>
 
                 <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:min-h-80 md:flex-1">
@@ -138,7 +162,10 @@ export default () => {
                 </div>
 
                 {products.length > 0 ? (
-                  <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  <div
+                    id="collection-products"
+                    className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+                  >
                     {products.map((product, index) => (
                       <div
                         key={_.get(product, "_id", _.get(product, "slug", index))}

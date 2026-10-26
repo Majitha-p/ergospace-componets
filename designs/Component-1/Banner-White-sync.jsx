@@ -2,10 +2,12 @@ export default () => {
   return {
     fields: {
       eyebrow: { type: "text", label: "Eyebrow", default: "SYNC SERIES" },
-      descriptionText: {
+      title: { type: "text", label: "Title", default: "White Series" },
+      subtitle: { type: "text", label: "Subtitle", default: "" },
+      description: {
         type: "textarea",
         label: "Description",
-        default: "",
+        default: "Create a workspace that feels more open, efficient, and human — built for everyday focus.",
       },
       imageUrl: { type: "text", label: "Image URL", default: "" },
       hoverImageUrl: { type: "text", label: "Hover image URL", default: "" },
@@ -16,7 +18,9 @@ export default () => {
 
     defaultProps: {
       eyebrow: "SYNC SERIES",
-      descriptionText: "Create a workspace that feels more open, efficient, and human — built for everyday focus.",
+      title: "White Series",
+      subtitle: "",
+      description: "Create a workspace that feels more open, efficient, and human — built for everyday focus.",
       imageUrl: "",
       hoverImageUrl: "",
       tag1: "STYLISH",
@@ -24,12 +28,13 @@ export default () => {
       tag3: "FLAWLESS",
     },
 
-    render: ({ data, eyebrow, description, descriptionText, manualDescription, imageUrl, hoverImageUrl, tag1, tag2, tag3 }) => {
+    render: ({ data, eyebrow, title, subtitle, description, descriptionText, manualDescription, imageUrl, hoverImageUrl, tag1, tag2, tag3 }) => {
       const mapData = Array.isArray(data?.data) ? data.data[0] : data?.data || data || {};
+      const titleText = _.get(mapData, "bannerTitle") || _.get(mapData, "title") || title || "";
+      const subtitleText = _.get(mapData, "bannerSubTitle") || _.get(mapData, "subtitle") || subtitle || "";
       const sourceDescription = _.get(mapData, "description", "");
-      const titleText = "White Series";
       const eyebrowText = eyebrow || "";
-      const manualDescriptionText = descriptionText || manualDescription || description || "";
+      const manualDescriptionText = description || descriptionText || manualDescription || "";
       const resolvedImageUrl = _.get(mapData, "bannerImages[0].bannerImageUrl", "") || imageUrl || "";
       const resolvedHoverImageUrl = (hoverImageUrl || "").trim();
       const hasImage = !_.isEmpty(resolvedImageUrl);
@@ -37,7 +42,7 @@ export default () => {
       const hasTags = !_.isEmpty(tag1) || !_.isEmpty(tag2) || !_.isEmpty(tag3);
 
       const tagClassName =
-        "banner-tag inline-flex min-w-0 items-center justify-center rounded-full px-3 py-2 text-center text-[11px] font-semibold tracking-[0.08em] uppercase md:px-5 md:py-2.5 font-raleway";
+        "banner-tag inline-flex min-w-0 items-center justify-center rounded-full px-3 py-2 text-center text-xs font-semibold tracking-wide uppercase md:px-5 font-raleway";
 
       return (
         <section className="w-full pt-8 pb-6 md:py-10">
@@ -103,7 +108,7 @@ export default () => {
             }
             @media (min-width: 768px) {
               .banner-image-fade {
-                background: linear-gradient(to right, transparent 58%, var(--banner-bg-color) 100%);
+                background: linear-gradient(to right, transparent 58%, #f8f8f8 100%);
               }
             }
           `}</style>
@@ -111,8 +116,7 @@ export default () => {
             <div className="banner-layout mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12">
               {/* Left Column: Image with Hover Transition */}
               <div
-                className={`banner-image-panel relative w-full overflow-hidden bg-gray-100 md:col-span-7 lg:col-span-7${hasHoverImage ? " banner-has-hover-image" : ""}`}
-                style={{ "--banner-bg-color": "#f7fafa" }}
+                className={`banner-image-panel relative w-full overflow-hidden bg-[#f8f8f8] md:col-span-7 lg:col-span-7${hasHoverImage ? " banner-has-hover-image" : ""}`}
               >
                 {hasImage && (
                   <Image
@@ -140,29 +144,34 @@ export default () => {
 
               {/* Right Column: Left-Aligned Content Panel */}
               <div
-                className="flex min-w-0 flex-col justify-center px-5 py-4 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
-                style={{ backgroundColor: "#f7fafa" }}
+                className="flex min-w-0 flex-col justify-center bg-[#f8f8f8] px-5 py-4 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
               >
-                <div className="flex w-full max-w-md flex-col justify-center text-left">
+                <div className="flex w-full max-w-md flex-col justify-center">
                   {eyebrowText && (
-                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-[#176161] font-raleway md:mb-5 lg:mb-6">
+                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#176161] font-raleway md:mb-6">
                       {eyebrowText}
                     </p>
                   )}
 
                   {titleText && (
-                    <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[#176161] font-raleway md:mb-6 md:text-5xl lg:mb-8 lg:text-6xl">
+                    <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-black font-raleway md:mb-6 md:text-6xl">
                       {titleText}
                     </h1>
                   )}
 
+                  {subtitleText && (
+                    <p className="mb-4 text-base font-medium leading-relaxed text-black font-raleway md:mb-6 md:text-xl">
+                      {subtitleText}
+                    </p>
+                  )}
+
                   {!_.isEmpty(sourceDescription) ? (
                     <div
-                      className="banner-description text-base font-medium md:mt-2 md:text-xl lg:mt-3"
+                      className="banner-description text-lg font-medium leading-relaxed text-black md:text-2xl"
                       dangerouslySetInnerHTML={{ __html: sourceDescription }}
                     />
                   ) : !_.isEmpty(manualDescriptionText) ? (
-                    <div className="banner-description text-base font-medium md:mt-2 md:text-xl lg:mt-3">
+                    <div className="banner-description text-lg font-medium leading-relaxed text-black md:text-2xl">
                       {manualDescriptionText}
                     </div>
                   ) : null}
