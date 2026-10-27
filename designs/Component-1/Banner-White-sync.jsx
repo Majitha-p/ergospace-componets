@@ -11,6 +11,16 @@ export default () => {
       },
       imageUrl: { type: "text", label: "Image URL", default: "" },
       hoverImageUrl: { type: "text", label: "Hover image URL", default: "" },
+      contentPanelBackgroundColor: {
+        type: "text",
+        label: "Content panel background color",
+        default: "#f8f8f8",
+      },
+      contentPanelTextColor: {
+        type: "text",
+        label: "Content panel text color",
+        default: "",
+      },
       tag1: { type: "text", label: "Tag 1", default: "STYLISH" },
       tag2: { type: "text", label: "Tag 2", default: "MODERN" },
       tag3: { type: "text", label: "Tag 3", default: "FLAWLESS" },
@@ -23,12 +33,14 @@ export default () => {
       description: "Create a workspace that feels more open, efficient, and human — built for everyday focus.",
       imageUrl: "",
       hoverImageUrl: "",
+      contentPanelBackgroundColor: "#f8f8f8",
+      contentPanelTextColor: "",
       tag1: "STYLISH",
       tag2: "MODERN",
       tag3: "FLAWLESS",
     },
 
-    render: ({ data, eyebrow, title, subtitle, description, descriptionText, manualDescription, imageUrl, hoverImageUrl, tag1, tag2, tag3 }) => {
+    render: ({ data, eyebrow, title, subtitle, description, descriptionText, manualDescription, imageUrl, hoverImageUrl, contentPanelBackgroundColor, contentPanelTextColor, tag1, tag2, tag3 }) => {
       const mapData = Array.isArray(data?.data) ? data.data[0] : data?.data || data || {};
       const titleText = _.get(mapData, "bannerTitle") || _.get(mapData, "title") || title || "";
       const subtitleText = _.get(mapData, "bannerSubTitle") || _.get(mapData, "subtitle") || subtitle || "";
@@ -37,6 +49,11 @@ export default () => {
       const manualDescriptionText = description || descriptionText || manualDescription || "";
       const resolvedImageUrl = _.get(mapData, "bannerImages[0].bannerImageUrl", "") || imageUrl || "";
       const resolvedHoverImageUrl = (hoverImageUrl || "").trim();
+      const resolvedPanelBackgroundColor = contentPanelBackgroundColor || "#f8f8f8";
+      const resolvedPanelTextColor = (contentPanelTextColor || "").trim();
+      const panelTextColorStyle = resolvedPanelTextColor
+        ? { color: resolvedPanelTextColor }
+        : undefined;
       const hasImage = !_.isEmpty(resolvedImageUrl);
       const hasHoverImage = !_.isEmpty(resolvedHoverImageUrl);
       const hasTags = !_.isEmpty(tag1) || !_.isEmpty(tag2) || !_.isEmpty(tag3);
@@ -108,12 +125,17 @@ export default () => {
             }
             @media (min-width: 768px) {
               .banner-image-fade {
-                background: linear-gradient(to right, transparent 58%, #f8f8f8 100%);
+                background: linear-gradient(to right, transparent 58%, var(--content-panel-background-color) 100%);
               }
             }
           `}</style>
           <Container>
-            <div className="banner-layout mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12">
+            <div
+              className="banner-layout mx-auto grid w-full grid-cols-1 overflow-hidden rounded-none md:grid-cols-12"
+              style={{
+                "--content-panel-background-color": resolvedPanelBackgroundColor,
+              }}
+            >
               {/* Left Column: Image with Hover Transition */}
               <div
                 className={`banner-image-panel relative w-full overflow-hidden bg-[#f8f8f8] md:col-span-7 lg:col-span-7${hasHoverImage ? " banner-has-hover-image" : ""}`}
@@ -144,23 +166,35 @@ export default () => {
 
               {/* Right Column: Left-Aligned Content Panel */}
               <div
-                className="flex min-w-0 flex-col justify-center bg-[#f8f8f8] px-5 py-4 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
+                className="flex min-w-0 flex-col justify-center px-5 py-4 text-left md:col-span-5 md:px-8 md:py-12 lg:col-span-5 lg:px-12"
+                style={{
+                  backgroundColor: resolvedPanelBackgroundColor,
+                }}
               >
                 <div className="flex w-full max-w-md flex-col justify-center">
                   {eyebrowText && (
-                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#176161] font-raleway md:mb-6">
+                    <p
+                      className="mb-2 text-sm font-bold uppercase tracking-widest text-[#176161] font-raleway md:mb-6"
+                      style={panelTextColorStyle}
+                    >
                       {eyebrowText}
                     </p>
                   )}
 
                   {titleText && (
-                    <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-black font-raleway md:mb-6 md:text-6xl">
+                    <h1
+                      className="mb-4 text-4xl font-extrabold tracking-tight text-black font-raleway md:mb-6 md:text-6xl"
+                      style={panelTextColorStyle}
+                    >
                       {titleText}
                     </h1>
                   )}
 
                   {subtitleText && (
-                    <p className="mb-4 text-base font-medium leading-relaxed text-black font-raleway md:mb-6 md:text-xl">
+                    <p
+                      className="mb-4 text-base font-medium leading-relaxed text-black font-raleway md:mb-6 md:text-xl"
+                      style={panelTextColorStyle}
+                    >
                       {subtitleText}
                     </p>
                   )}
@@ -168,19 +202,23 @@ export default () => {
                   {!_.isEmpty(sourceDescription) ? (
                     <div
                       className="banner-description text-lg font-medium leading-relaxed text-black md:text-2xl"
+                      style={panelTextColorStyle}
                       dangerouslySetInnerHTML={{ __html: sourceDescription }}
                     />
                   ) : !_.isEmpty(manualDescriptionText) ? (
-                    <div className="banner-description text-lg font-medium leading-relaxed text-black md:text-2xl">
+                    <div
+                      className="banner-description text-lg font-medium leading-relaxed text-black md:text-2xl"
+                      style={panelTextColorStyle}
+                    >
                       {manualDescriptionText}
                     </div>
                   ) : null}
 
                   {hasTags && (
                     <div className="mt-3 flex w-full flex-wrap items-left justify-left gap-2 pt-2 text-[#176161] md:mt-8 md:gap-3 md:pt-6">
-                      {tag1 && <span className={tagClassName}>{tag1}</span>}
-                      {tag2 && <span className={tagClassName}>{tag2}</span>}
-                      {tag3 && <span className={tagClassName}>{tag3}</span>}
+                      {tag1 && <span className={tagClassName} style={panelTextColorStyle}>{tag1}</span>}
+                      {tag2 && <span className={tagClassName} style={panelTextColorStyle}>{tag2}</span>}
+                      {tag3 && <span className={tagClassName} style={panelTextColorStyle}>{tag3}</span>}
                     </div>
                   )}
                 </div>
