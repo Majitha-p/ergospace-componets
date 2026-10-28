@@ -83,8 +83,8 @@ Every component is a factory function, default-exported, returning
 export default () => {
   return {
     fields: {
-      // one entry per editable prop; declare an explicit "type" so the
-      // CRM editor renders the correct input (text, textarea, image, etc.)
+      // one entry per editable prop; declare a field type supported by the
+      // CRM editor (for example text or textarea)
       exampleTitle: { type: "text", label: "Title" },
     },
 
@@ -111,6 +111,9 @@ Notes:
 - Props in `render` are **flat**, named exactly as declared in `fields` —
   do not assume a `{ data: { data: [...] } }` wrapper unless the component
   is explicitly meant to bind to an external content-type source.
+- The CRM editor does not register Puck's `image` field type. Use a `text`
+  field for image URLs; enabling file uploads requires an uploader field
+  configured in the CRM editor.
 - Use `_.get(obj, "path", fallback)` any time you're reading from a record
   that might be missing fields (especially when binding to external data).
 - All images should go through `formatImageUrl()` before being passed to
