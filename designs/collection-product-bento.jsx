@@ -1,10 +1,6 @@
 export default () => {
   return {
     fields: {
-      heading: { type: "text", label: "Collection Heading" },
-      subheading: { type: "text", label: "Collection Subheading" },
-      description: { type: "textarea", label: "Collection Description" },
-      primaryImageUrl: { type: "text", label: "Left Collection Image URL" },
       upperImageUrl: { type: "text", label: "Upper Center Image URL" },
       lowerImageUrl: { type: "text", label: "Lower Center Image URL" },
       contentBackgroundColor: {
@@ -16,30 +12,71 @@ export default () => {
     },
 
     defaultProps: {
-      heading: "ORANGE SERIES",
-      subheading: "Bold Design Brighter Workspaces.",
-      description:
-        "Discover modern office workstations with vibrant orange accents, designed to bring style and functionality to contemporary offices.",
-      primaryImageUrl:
-        "https://ergospaceae.s3.me-central-1.amazonaws.com/collection/collectionImage-1767446316429-838707078.webp",
       upperImageUrl: "",
       lowerImageUrl: "",
       contentBackgroundColor: "#30383d",
       gridFillColor: "#c9d2d9",
       backgroundColor: "#ffffff",
+      data: {
+        collectionTitle: "ORANGE SERIES",
+        collectionSubTitle: "Bold Design Brighter Workspaces.",
+        description:
+          "Discover modern office workstations with vibrant orange accents, designed to bring style and functionality to contemporary offices.",
+        collectionImageUrl:
+          "https://ergospaceae.s3.me-central-1.amazonaws.com/collection/collectionImage-1767446316429-838707078.webp",
+        collectionsProducts: [
+          {
+            _id: "default-product-1",
+            productTitle: "Color Straight Executive Desk",
+            productImageUrl:
+              "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
+          },
+          {
+            _id: "default-product-2",
+            productTitle: "Color Straight Executive Desk",
+            productImageUrl:
+              "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
+          },
+          {
+            _id: "default-product-3",
+            productTitle: "Color Straight Executive Desk",
+            productImageUrl:
+              "https://ergospaceae.s3.me-central-1.amazonaws.com/product/series/cove/color/es_cove97_lw3.webp",
+          },
+        ],
+      },
     },
 
     render: ({
-      heading,
-      subheading,
-      description,
-      primaryImageUrl,
+      data,
       upperImageUrl,
       lowerImageUrl,
       contentBackgroundColor,
       gridFillColor,
       backgroundColor,
     }) => {
+      const hasCollectionFields =
+        _.has(data, "collectionTitle") ||
+        _.has(data, "collectionSubTitle") ||
+        _.has(data, "description") ||
+        _.has(data, "collectionImageUrl") ||
+        _.has(data, "collectionsProducts");
+      const source = hasCollectionFields ? data : _.get(data, "data", data);
+      const collection = _.isArray(source)
+        ? _.get(source, "[0]", {})
+        : source || {};
+      const heading = _.get(collection, "collectionTitle", "");
+      const subheading = _.get(collection, "collectionSubTitle", "");
+      const description = _.get(collection, "description", "");
+      const primaryImageUrl = _.get(collection, "collectionImageUrl", "");
+      const productsValue = _.get(collection, "collectionsProducts", []);
+      const products = _.isArray(productsValue)
+        ? productsValue.slice(0, 3)
+        : [];
+      const descriptionContainsHtml =
+        typeof description === "string" &&
+        /<\/?[a-z][\s\S]*>/i.test(description);
+
       const renderImage = (imageUrl, alt) => {
         const imageSrc =
           typeof imageUrl === "string" ? imageUrl.trim() : "";
@@ -83,7 +120,7 @@ export default () => {
                   }}
                 >
                   {heading && (
-                    <h2 className="text-xl font-semibold uppercase tracking-wide">
+                    <h2 className="text-xl font-semibold tracking-wide">
                       {heading}
                     </h2>
                   )}
@@ -93,9 +130,16 @@ export default () => {
                     </p>
                   )}
                   {description && (
-                    <p className="mt-2 text-sm leading-relaxed text-white">
-                      {description}
-                    </p>
+                    descriptionContainsHtml ? (
+                      <div
+                        className="mt-2 text-sm leading-relaxed text-white"
+                        dangerouslySetInnerHTML={{ __html: description }}
+                      />
+                    ) : (
+                      <p className="mt-2 text-sm leading-relaxed text-white">
+                        {description}
+                      </p>
+                    )
                   )}
                 </div>
               </div>
@@ -109,14 +153,24 @@ export default () => {
                 </div>
               </div>
 
-              <div className="flex min-h-[500px] min-w-0 flex-col gap-3 md:col-span-2">
-                {[1, 2, 3].map((tile) => (
-                  <div
-                    key={tile}
-                    className="min-h-[95px] flex-1"
-                    style={{ backgroundColor: gridFillColor || "#c9d2d9" }}
-                  />
-                ))}
+              <div
+                id="collection-products"
+                className="grid min-h-[500px] min-w-0 grid-cols-2 gap-3 md:col-span-2 md:flex md:flex-col"
+              >
+                {products.length > 0 ? (
+                  products.map((product, index) => (
+                    <div
+                      key={_.get(product, "_id", _.get(product, "slug", index))}
+                      className="min-w-0"
+                    >
+                      <ProductItem productItem={product} />
+                    </div>
+                  ))
+                ) : (
+                  <p className="bg-white p-4 text-sm text-gray-700">
+                    No products are available in this collection yet.
+                  </p>
+                )}
               </div>
             </div>
           </Container>
