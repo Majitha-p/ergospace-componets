@@ -7,6 +7,12 @@ export default () => {
         type: "text",
         label: "Content Panel Background Color",
       },
+      contentTextColor: {
+        type: "text",
+        label: "Content Panel Text Color",
+      },
+      ctaLabel: { type: "text", label: "Button Label" },
+      ctaUrl: { type: "text", label: "Button URL" },
       gridFillColor: { type: "text", label: "Empty Grid Fill Color" },
       backgroundColor: { type: "text", label: "Section Background Color" },
     },
@@ -15,6 +21,9 @@ export default () => {
       upperImageUrl: "",
       lowerImageUrl: "",
       contentBackgroundColor: "#30383d",
+      contentTextColor: "#ffffff",
+      ctaLabel: "Explore the Collection",
+      ctaUrl: "",
       gridFillColor: "#c9d2d9",
       backgroundColor: "#ffffff",
       data: {
@@ -52,6 +61,9 @@ export default () => {
       upperImageUrl,
       lowerImageUrl,
       contentBackgroundColor,
+      contentTextColor,
+      ctaLabel,
+      ctaUrl,
       gridFillColor,
       backgroundColor,
     }) => {
@@ -68,6 +80,14 @@ export default () => {
       const heading = _.get(collection, "collectionTitle", "");
       const subheading = _.get(collection, "collectionSubTitle", "");
       const description = _.get(collection, "description", "");
+      const collectionId = _.get(collection, "_id", "");
+      const customUrl = _.get(collection, "customPageRedirectionUrl", "");
+      const ctaHref =
+        (typeof ctaUrl === "string" && ctaUrl.trim()) ||
+        (typeof customUrl === "string" && customUrl.trim()) ||
+        (collectionId
+          ? `/product-listing?collectionproduct=${collectionId}`
+          : "#collection-products");
       const primaryImageUrl = _.get(collection, "collectionImageUrl", "");
       const productsValue = _.get(collection, "collectionsProducts", []);
       const products = _.isArray(productsValue)
@@ -114,32 +134,45 @@ export default () => {
                   {renderImage(primaryImageUrl, heading || "Collection")}
                 </div>
                 <div
-                  className="flex flex-1 flex-col justify-center px-5 py-6 text-white"
+                  className="flex flex-1 flex-col justify-center px-5 py-6"
                   style={{
                     backgroundColor: contentBackgroundColor || "#30383d",
+                    color: contentTextColor || "#ffffff",
                   }}
                 >
                   {heading && (
-                    <h2 className="text-xl font-semibold tracking-wide">
+                    <h2 className="text-2xl font-bold tracking-wide">
                       {heading}
                     </h2>
                   )}
                   {subheading && (
-                    <p className="mt-1 text-base leading-snug">
+                    <p className="mt-2 text-base leading-snug">
                       {subheading}
                     </p>
                   )}
                   {description && (
                     descriptionContainsHtml ? (
                       <div
-                        className="mt-2 text-sm leading-relaxed text-white"
+                        className="mt-3 text-sm leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: description }}
                       />
                     ) : (
-                      <p className="mt-2 text-sm leading-relaxed text-white">
+                      <p className="mt-3 text-sm leading-relaxed">
                         {description}
                       </p>
                     )
+                  )}
+                  {ctaLabel && (
+                    <a
+                      href={ctaHref}
+                      className="mt-4 inline-flex self-start rounded-md px-5 py-3 text-sm font-semibold transition-colors"
+                      style={{
+                        backgroundColor: contentTextColor || "#ffffff",
+                        color: contentBackgroundColor || "#30383d",
+                      }}
+                    >
+                      {ctaLabel}
+                    </a>
                   )}
                 </div>
               </div>

@@ -64,9 +64,10 @@ export default () => {
       return (
         <section className="w-full pt-8 pb-6 md:py-10">
           <style>{`
-            .banner-description,
             .banner-description * {
               color: inherit !important;
+            }
+            .banner-description {
               font-family: inherit !important;
               font-size: inherit !important;
               font-weight: inherit !important;

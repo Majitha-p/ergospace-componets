@@ -338,7 +338,7 @@ export default () => {
                             {price > 0 && (
                               <p className="text-base font-bold text-[#176161]">
                                 <span className="text-xs font-medium">AED</span>{" "}
-                                {price}
+                                {Math.round(Number(price)).toLocaleString("en-US")}
                               </p>
                             )}
 

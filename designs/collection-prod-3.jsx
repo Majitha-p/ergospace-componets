@@ -609,7 +609,7 @@ export default () => {
                             {price > 0 && (
                               <p className="cp3-card-price font-raleway">
                                 <span className="cp3-card-currency">AED</span>{" "}
-                                {price}
+                                {Math.round(Number(price)).toLocaleString("en-US")}
                               </p>
                             )}
                             {productHref && (
