@@ -140,24 +140,24 @@ export default () => {
                     color: contentTextColor || "#ffffff",
                   }}
                 >
-                  {heading && (
-                    <h2 className="text-2xl font-bold tracking-wide">
-                      {heading}
-                    </h2>
-                  )}
                   {subheading && (
-                    <p className="mt-2 text-base leading-snug">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] sm:text-sm">
                       {subheading}
                     </p>
+                  )}
+                  {heading && (
+                    <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] sm:text-4xl">
+                      {heading}
+                    </h2>
                   )}
                   {description && (
                     descriptionContainsHtml ? (
                       <div
-                        className="mt-3 text-sm leading-relaxed"
+                        className="mt-5 max-w-lg text-base leading-[1.3] sm:text-lg"
                         dangerouslySetInnerHTML={{ __html: description }}
                       />
                     ) : (
-                      <p className="mt-3 text-sm leading-relaxed">
+                      <p className="mt-5 max-w-lg text-base leading-[1.3] sm:text-lg">
                         {description}
                       </p>
                     )
@@ -165,7 +165,7 @@ export default () => {
                   {ctaLabel && (
                     <a
                       href={ctaHref}
-                      className="mt-4 inline-flex self-start rounded-md px-5 py-3 text-sm font-semibold transition-colors"
+                      className="mt-5 inline-flex self-start rounded-md px-5 py-3 text-sm font-semibold transition-colors"
                       style={{
                         backgroundColor: contentTextColor || "#ffffff",
                         color: contentBackgroundColor || "#30383d",
