@@ -48,53 +48,59 @@ export default () => {
       const resolvedImageUrl = cleanText(imageUrl) || cmsImageUrl;
 
       return (
-        <section id="cove-colour-series" className="w-full">
-          <div
-            className="relative w-full overflow-hidden"
-            style={!resolvedImageUrl ? { minHeight: "700px" } : undefined}
-          >
-            {resolvedImageUrl && (
-              <img
-                src={formatImageUrl(resolvedImageUrl)}
-                alt={
-                  cleanText(imageAlt) ||
-                  resolvedHeading ||
-                  "Cove Colour Series workspace"
-                }
-                className="block h-auto w-full"
-              />
-            )}
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute inset-0 flex items-center justify-center px-4 py-8 sm:px-6">
-              <div
-                className="flex w-full max-w-4xl flex-col items-center justify-center border-2 border-white px-4 py-8 text-center text-white sm:px-6 md:px-12 md:py-12"
-              >
-                {resolvedEyebrow && (
-                  <p className="mb-1 text-xs font-semibold uppercase leading-tight sm:text-sm">
-                    {resolvedEyebrow}
-                  </p>
-                )}
-                {resolvedHeading && (
-                  <h1 className="max-w-2xl text-3xl font-bold leading-tight tracking-tight md:text-5xl">
-                    {resolvedHeading}
-                  </h1>
-                )}
-                {resolvedDescription && (
-                  <div className="mt-4 max-w-2xl text-sm leading-relaxed sm:text-base md:text-xl">
-                    {cmsDescription ? (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: resolvedDescription,
-                        }}
-                      />
-                    ) : (
-                      manualDescription
-                    )}
-                  </div>
-                )}
+        <section
+          id="cove-colour-series"
+          className="w-full px-3 py-3 sm:px-5"
+        >
+          <Container>
+            <div
+              className="relative w-full overflow-hidden"
+              style={{ minHeight: "clamp(560px, 65vw, 700px)" }}
+            >
+              {resolvedImageUrl && (
+                <Image
+                  src={formatImageUrl(resolvedImageUrl)}
+                  alt={
+                    cleanText(imageAlt) ||
+                    resolvedHeading ||
+                    "Cove Colour Series workspace"
+                  }
+                  fill
+                  sizes="(min-width: 1280px) 1280px, 100vw"
+                  className="object-cover object-center"
+                  priority
+                />
+              )}
+              <div className="absolute inset-0 bg-black/30" />
+              <div className="absolute inset-0 flex items-center justify-center px-4 py-8 sm:px-6">
+                <div className="flex w-full max-w-4xl flex-col items-center justify-center border-2 border-white px-4 py-8 text-center text-white sm:px-6 md:px-12 md:py-12">
+                  {resolvedEyebrow && (
+                    <p className="mb-1 text-xs font-semibold uppercase leading-tight sm:text-sm">
+                      {resolvedEyebrow}
+                    </p>
+                  )}
+                  {resolvedHeading && (
+                    <h1 className="max-w-2xl text-3xl font-bold leading-tight tracking-tight md:text-5xl">
+                      {resolvedHeading}
+                    </h1>
+                  )}
+                  {resolvedDescription && (
+                    <div className="mt-4 max-w-2xl text-sm leading-relaxed sm:text-base md:text-xl">
+                      {cmsDescription ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: resolvedDescription,
+                          }}
+                        />
+                      ) : (
+                        manualDescription
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          </Container>
         </section>
       );
     },

@@ -116,9 +116,9 @@ export default () => {
           style={{ backgroundColor: resolvedBackground }}
         >
           <Container>
-            <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-4">
+            <div className="grid grid-cols-1 items-stretch gap-2 md:grid-cols-2 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-4">
               <div className="flex min-w-0 flex-col gap-6">
-                <div className="max-w-xl">
+                <div className="">
                   {subtitle && (
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#8a7658] sm:text-sm">
                       {subtitle}
@@ -132,11 +132,11 @@ export default () => {
                   {body && (
                     descriptionContainsHtml ? (
                       <div
-                        className="mt-5 max-w-lg text-base leading-[1.3] sm:text-lg"
+                        className="mt-5 text-base leading-[1.3] sm:text-lg"
                         dangerouslySetInnerHTML={{ __html: body }}
                       />
                     ) : (
-                      <p className="mt-5 max-w-lg text-base leading-[1.3] sm:text-lg">
+                      <p className="mt-5 text-base leading-[1.3] sm:text-lg">
                         {body}
                       </p>
                     )
@@ -144,7 +144,7 @@ export default () => {
                   {ctaLabel && (
                     <a
                       href={ctaHref}
-                      className="mt-5 inline-flex rounded-md bg-black px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#176161]"
+                      className="mt-5 inline-flex bg-black px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#176161]"
                     >
                       {ctaLabel}
                     </a>

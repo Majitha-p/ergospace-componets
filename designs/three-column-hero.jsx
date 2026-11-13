@@ -63,15 +63,7 @@ export default () => {
               className="grid min-h-[700px] min-w-full grid-cols-1 items-stretch gap-2 md:grid-cols-12"
               style={{ minHeight: "700px" }}
             >
-              <div className="flex min-w-0 flex-col justify-center px-6 py-8 text-[#1B4D4F]">
-                {resolvedHeading && (
-                  <h1 className="text-4xl font-bold leading-tight">
-                    {resolvedHeading}
-                  </h1>
-                )}
-              </div>
-
-              <div className="relative min-h-[260px] min-w-0 overflow-hidden bg-[#eaeaea] md:col-span-7">
+              <div className="relative min-h-[260px] min-w-0 overflow-hidden bg-[#eaeaea] md:col-span-8">
                 {imageTwoSrc ? (
                   <Image
                     src={imageTwoSrc}
@@ -79,12 +71,17 @@ export default () => {
                     fill
                     sizes="(min-width: 1024px) 50vw, 100vw"
                     className="object-cover object-center"
-                    priority
+                    priorityF
                   />
                 ) : (
                   <div className="flex h-full min-h-[260px] items-center justify-center px-4 text-center text-sm text-[#777]">
                     Add the second column image URL in the editor
                   </div>
+                )}
+                {resolvedHeading && (
+                  <h1 className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 p-6 text-4xl font-bold leading-tight text-white">
+                    {resolvedHeading}
+                  </h1>
                 )}
               </div>
 
