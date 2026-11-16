@@ -3,6 +3,8 @@ export default () => {
     fields: {
       eyebrow: { type: "text", label: "Eyebrow" },
       heading: { type: "text", label: "Heading" },
+      backgroundColor: { type: "text", label: "Background color" },
+      foregroundColor: { type: "text", label: "Foreground color" },
       cardBackgroundColor: { type: "text", label: "Card background color" },
       borderColor: { type: "text", label: "Card border color" },
       benefitOneTitle: { type: "text", label: "Benefit 1 title" },
@@ -16,6 +18,8 @@ export default () => {
     defaultProps: {
       eyebrow: "The Ergospace promise",
       heading: "Better value, delivered with care.",
+      backgroundColor: "transparent",
+      foregroundColor: "#1b4d4f",
       cardBackgroundColor: "transparent",
       borderColor: "transparent",
       benefitOneTitle: "Affordable prices",
@@ -32,6 +36,8 @@ export default () => {
     render: ({
       eyebrow,
       heading,
+      backgroundColor,
+      foregroundColor,
       cardBackgroundColor,
       borderColor,
       benefitOneTitle,
@@ -41,6 +47,8 @@ export default () => {
       benefitThreeTitle,
       benefitThreeDescription,
     }) => {
+      const resolvedForegroundColor = foregroundColor || "#1b4d4f";
+
       const benefits = [
         {
           title: benefitOneTitle,
@@ -51,8 +59,8 @@ export default () => {
               height="32"
               aria-hidden="true"
               viewBox="0 0 24 24"
-              fill="#1b4d4f"
-              style={{ display: "block", flexShrink: 0 }}
+              fill="currentColor"
+              style={{ display: "block", flexShrink: 0, color: resolvedForegroundColor }}
             >
               <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.7 15.9V19h-1.4v-1.1c-1.3-.2-2.4-.9-3-2l1.2-.8c.6.9 1.3 1.4 2.4 1.4.9 0 1.8-.4 1.8-1.2 0-.7-.4-1-1.9-1.4-1.7-.5-3.1-1.1-3.1-2.8 0-1.4 1.1-2.3 2.6-2.5V7h1.4v1.1c1.1.2 1.9.8 2.5 1.7l-1.2.8c-.5-.7-1.1-1.1-2.1-1.1-.9 0-1.5.4-1.5 1 0 .7.6.9 2 1.3 1.8.5 3 .9 3 2.8 0 1.6-1.1 2.5-2.7 2.8z" />
             </svg>
@@ -67,8 +75,8 @@ export default () => {
               height="32"
               aria-hidden="true"
               viewBox="0 0 24 24"
-              fill="#1b4d4f"
-              style={{ display: "block", flexShrink: 0 }}
+              fill="currentColor"
+              style={{ display: "block", flexShrink: 0, color: resolvedForegroundColor }}
             >
               <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2a3 3 0 0 0 6 0h6a3 3 0 0 0 6 0h2v-5l-3-4zm-14 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM17 10h2l2 3h-4v-3zm1.5 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
             </svg>
@@ -83,8 +91,8 @@ export default () => {
               height="32"
               aria-hidden="true"
               viewBox="0 0 24 24"
-              fill="#1b4d4f"
-              style={{ display: "block", flexShrink: 0 }}
+              fill="currentColor"
+              style={{ display: "block", flexShrink: 0, color: resolvedForegroundColor }}
             >
               <path d="m12 2 2.1 4.26 4.7.68-3.4 3.32.8 4.69-4.2-2.21-4.2 2.21.8-4.69-3.4-3.32 4.7-.68L12 2zm-4.2 13.1L7 22l5-2.6 5 2.6-.8-6.9-4.2 2.2-4.2-2.2z" />
             </svg>
@@ -114,32 +122,45 @@ export default () => {
                   key={index}
                   className="group flex h-full flex-col items-start border p-7 text-left shadow-[0_8px_28px_rgba(27,77,79,0.045)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(27,77,79,0.10)] motion-reduce:transform-none motion-reduce:transition-none md:p-9"
                   style={{
-                    backgroundColor: cardBackgroundColor || "transparent",
+                    backgroundColor: backgroundColor || cardBackgroundColor || "transparent",
                     borderColor: borderColor || "transparent",
+                    color: resolvedForegroundColor,
                   }}
                 >
                   <div className="mb-8 flex w-full items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center text-[#1b4d4f]">
+                    <span
+                      className="flex h-12 w-12 items-center justify-center"
+                      style={{ color: resolvedForegroundColor }}
+                    >
                       {icon}
                     </span>
-                    <span className="font-raleway text-xs font-medium tracking-[0.16em] text-[#1b4d4f]/40">
+                    <span
+                      className="font-raleway text-xs font-medium tracking-[0.16em]"
+                      style={{ color: resolvedForegroundColor, opacity: 0.4 }}
+                    >
                       0{index + 1}
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col">
                     {title && (
-                      <h3 className="mb-3 text-xl font-semibold leading-snug tracking-[-0.02em] text-[#1b4d4f] font-raleway md:text-2xl">
+                      <h3
+                        className="mb-3 text-xl font-semibold leading-snug tracking-[-0.02em] font-raleway md:text-2xl"
+                        style={{ color: resolvedForegroundColor }}
+                      >
                         {title}
                       </h3>
                     )}
                     {description && (
-                      <p className="max-w-sm text-sm leading-7 text-[#626760] font-raleway md:text-[15px]">
+                      <p
+                        className="max-w-sm text-sm leading-7 font-raleway md:text-[15px]"
+                        style={{ color: resolvedForegroundColor, opacity: 0.72 }}
+                      >
                         {description}
                       </p>
                     )}
                   </div>
                 </article>
-                ))}
+              ))}
             </div>
           </Container>
         </section>
