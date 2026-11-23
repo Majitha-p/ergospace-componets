@@ -126,15 +126,6 @@ export default () => {
         >
           <Container>
             <div className="grid w-full grid-cols-1 gap-3 md:min-h-[420px] md:grid-cols-12">
-              <div className="flex min-h-[500px] min-w-0 flex-col gap-3 md:col-span-4">
-                <div className="relative min-h-[180px] flex-1 overflow-hidden">
-                  {renderImage(upperImageUrl, `${heading} upper feature`)}
-                </div>
-                <div className="relative min-h-[180px] flex-1 overflow-hidden">
-                  {renderImage(lowerImageUrl, `${heading} lower feature`)}
-                </div>
-              </div>
-
               <div className="flex min-h-[500px] min-w-0 flex-col gap-3 md:col-span-6">
                 <div
                   className="relative min-h-[260px] flex-1 overflow-hidden"
@@ -166,7 +157,7 @@ export default () => {
                         dangerouslySetInnerHTML={{ __html: description }}
                       />
                     ) : (
-                      <p className="mt-5 text-base leading-[1.3] sm:text-lg">
+                      <p className="mt-5 max-w-lg text-base leading-[1.3] sm:text-lg">
                         {description}
                       </p>
                     )
@@ -174,7 +165,7 @@ export default () => {
                   {ctaLabel && (
                     <a
                       href={ctaHref}
-                      className="mt-5 inline-flex self-start px-5 py-3 text-sm font-semibold transition-colors"
+                      className="mt-5 inline-flex self-start rounded-md px-5 py-3 text-sm font-semibold transition-colors"
                       style={{
                         backgroundColor: contentTextColor || "#ffffff",
                         color: contentBackgroundColor || "#30383d",
@@ -186,15 +177,24 @@ export default () => {
                 </div>
               </div>
 
+              <div className="flex min-h-[500px] min-w-0 flex-col gap-3 md:col-span-4">
+                <div className="relative min-h-[180px] flex-1 overflow-hidden">
+                  {renderImage(upperImageUrl, `${heading} upper feature`)}
+                </div>
+                <div className="relative min-h-[180px] flex-1 overflow-hidden">
+                  {renderImage(lowerImageUrl, `${heading} lower feature`)}
+                </div>
+              </div>
+
               <div
                 id="collection-products"
-                className="grid min-h-[500px] min-w-0 grid-cols-2 gap-3 md:col-span-2 md:flex md:flex-col"
+                className="grid min-w-0 grid-cols-2 gap-3 md:col-span-2 md:flex md:flex-col"
               >
                 {products.length > 0 ? (
                   products.map((product, index) => (
                     <div
                       key={_.get(product, "_id", _.get(product, "slug", index))}
-                      className="min-w-0"
+                      className={index === 2 ? "hidden min-w-0 md:block" : "min-w-0"}
                     >
                       <ProductItem productItem={product} />
                     </div>
